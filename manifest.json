@@ -11,8 +11,8 @@
   },
   "permissions": ["scripting", "storage", "tabs"],
   "host_permissions": [
-    "https://www.linkedin.com/jobs/search/*",
-    "https://www.indeed.com/jobs?*"
+    "https://*.linkedin.com/*",
+    "https://*.indeed.com/*"
   ],
   "action": {
     "default_title": "Hide n' Seek",
@@ -30,7 +30,7 @@
   "web_accessible_resources": [
     {
       "resources": ["/images/block-button-icon.svg"],
-      "matches": ["https://www.linkedin.com/*", "https://www.indeed.com/*"]
+      "matches": ["https://*.linkedin.com/*", "https://*.indeed.com/*"]
     }
   ]
 }
