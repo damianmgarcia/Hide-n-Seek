@@ -189,7 +189,7 @@
     </rect>
     <text style="fill: rgb(255, 255, 255); font-family: &quot;Open Sans&quot;; font-size: 50px; font-weight: 600; white-space: pre;" x="-19.326" y="3.241"><title>Text</title><tspan x="60.394" y="106.478" style="font-size: 50px; word-spacing: 0px;">View the jobs you seek. </tspan><tspan style="fill: rgb(255, 0, 0); font-size: 50px; word-spacing: 0px;">Hide the ones you don't.</tspan></text>
   </g>
-  <path d="M 580.55 439.752 H 639.45 L 639.45 419.752 L 699.45 459.752 L 639.45 499.752 L 639.45 479.752 H 580.55 V 439.752 Z" style="fill: rgb(255, 0, 0);" bx:shape="arrow 580.55 419.752 118.9 80 40 60 0 1@005d4c64"/>
+  <path d="M 580.55 448.241 H 653.405 L 653.405 429.055 L 699.45 459.752 L 653.405 490.449 L 653.405 471.263 H 580.55 V 448.241 Z" style="fill: rgb(255, 0, 0);" bx:shape="arrow 580.55 429.055 118.9 61.393 23.022 46.045 0 1@a3842a0d"/>
   <g transform="matrix(1, 0, 0, 1, 90.628616, 59.752502)">
     <title>Before</title>
     <g transform="matrix(1, 0, 0, 1, 0, -210.115509)" style="filter: url(#saturate-filter-0); mask: url(#mask-1);">
