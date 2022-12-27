@@ -30,6 +30,13 @@ All data required for Hide n' Seek to function, such as remembering which jobs t
 
 Hide n' Seek data may be synced with the user's other devices if their browser has extension data synchronization enabled.
 
+## **Permissions Required**
+
+- "Read and change your data on all indeed.com sites and all linkedin.com sites"
+  - Hide n' Seek requires this permission in order to add its UI elements, such as the "hide" buttons and the hidden job overlays, to the job board's website.
+- "Read your browsing history"
+  - Hide n' Seek requires this permission in order to detect when the user is searching for jobs on a supported job board's website so that it knows when to run.
+
 ## **Installation**
 
 Pending testing and publication to the Chrome Web Store
