@@ -1,5 +1,7 @@
 # **Hide n' Seek**
 
+![A promotional marquee for the Hide n' Seek browser extension. The Hide n' Seek logo and name are featured on the left side of the marquee. The logo is a simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. A "before and after" demonstration of how Hide n' Seek hides jobs is featured on the right side of the marquee, titled "View the jobs you seek. Hide the ones you don't"](/images/chrome%20web%20store/promotional-marquee.png)
+
 ## **Description**
 
 Hide n' Seek is a browser extension that allows its users to hide job listings by companies they are not interested in as they search job boards.
