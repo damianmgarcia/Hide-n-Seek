@@ -293,11 +293,10 @@
       );
     }
 
-    #processedJobElements = new WeakSet();
     #jobAttributeValuesToJobElementsMap = new Map();
     #jobElementToJobBlockElementsMap = new WeakMap();
     #processJobElement(jobElement) {
-      if (this.#processedJobElements.has(jobElement)) {
+      if (this.#jobElementToJobBlockElementsMap.has(jobElement)) {
         const { jobBlockElement } =
           this.#jobElementToJobBlockElementsMap.get(jobElement);
         if (jobBlockElement.isConnected) return;
@@ -306,8 +305,6 @@
           jobBlockElement
         );
       }
-
-      this.#processedJobElements.add(jobElement);
 
       const { jobAttributeValue, toggleButtonShouldBeAdded, toggleButtonText } =
         this.#jobElementDataGetter.getJobElementData(jobElement);
