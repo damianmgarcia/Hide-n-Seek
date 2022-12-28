@@ -121,11 +121,11 @@
   <rect width="1280" height="800" style="">
     <title>Background</title>
   </rect>
-  <rect x="640" width="640" height="680" style="fill: none;" y="120">
-    <title>Text Box</title>
-  </rect>
   <g>
     <title>Description</title>
+    <rect x="640" width="640" height="680" style="fill: none;" y="120">
+      <title>Text Box</title>
+    </rect>
     <text style="fill: rgb(255, 255, 255); font-family: &quot;Open Sans&quot;; font-size: 50px; font-weight: 600; white-space: pre; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 254.086914, 234.617432)" y="207.298" x="705.913">Reset all listings<tspan x="705.9130249023438" dy="1.5em">​</tspan>with just a click.</text>
   </g>
   <g transform="matrix(1, 0, 0, 1, -170, 0)">
@@ -396,7 +396,7 @@
           <rect style="pointer-events: auto; fill: rgb(179, 0, 0);" x="251.387" y="656.034" width="188.659" height="59.657" rx="10" ry="10">
             <title>Container</title>
           </rect>
-          <text style="fill: rgb(255, 255, 255); font-family: &quot;Open Sans&quot;; font-size: 16px;" x="289.749" y="691.985">Unhide All Jobs</text>
+          <text style="fill: rgb(255, 255, 255); font-family: &quot;Open Sans&quot;; font-size: 16px; white-space: pre;" x="289.749" y="691.985">Unhide All Jobs</text>
         </g>
         <g transform="matrix(1, 0, 0, 1, -33.203941, 0)" style="opacity: 0.1;">
           <title>Undo Button</title>
