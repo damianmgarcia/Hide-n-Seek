@@ -557,13 +557,13 @@
           <rect style="stroke: rgb(255, 255, 255); fill: rgb(255, 255, 255);" x="209.092" y="347.827" width="136.122" height="60.182" rx="10" ry="10">
             <title>Container</title>
           </rect>
-          <text style="font-family: Arial, sans-serif; font-size: 14px; white-space: pre;" x="225.279" y="371.588"><title>Company Name</title>PayYouLittle Inc.</text>
+          <text style="font-family: &quot;Open Sans&quot;; font-size: 14px; white-space: pre;" x="223.767" y="371.588"><title>Company Name</title>PayYouLittle Inc.</text>
           <g transform="matrix(1, 0, 0, 1, -23.606514, 0.821675)">
             <title>Indicator</title>
             <rect style="fill: rgb(128, 128, 128);" x="275.552" y="376.563" width="50.416" height="19.218" rx="9" ry="9">
               <title>Container</title>
             </rect>
-            <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 12px; white-space: pre;" x="281.745" y="390.29">Hidden</text>
+            <text style="fill: rgb(255, 255, 255); font-family: &quot;Open Sans&quot;; font-size: 12px; white-space: pre;" x="280.434" y="390.788">Hidden</text>
           </g>
         </g>
       </g>
