@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="211.286 426.699 957.5 166.1" width="1280" height="800" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <filter id="gaussian-blur-filter-1" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="gaussian-blur 1 10">
+      <feGaussianBlur stdDeviation="10 10" edgeMode="none"/>
+    </filter>
+    <filter id="drop-shadow-filter-0" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="drop-shadow 1 0 0 4 1 rgba(0,0,0,0.3)">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="0"/>
+      <feComponentTransfer result="offsetblur">
+        <feFuncA id="spread-ctrl" type="linear" slope="2"/>
+      </feComponentTransfer>
+      <feFlood flood-color="rgba(0,0,0,0.3)"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style bx:fonts="Open Sans">@import url(https://fonts.googleapis.com/css2?family=Open+Sans%3Aital%2Cwght%400%2C300%3B0%2C400%3B0%2C500%3B0%2C600%3B0%2C700%3B0%2C800%3B1%2C300%3B1%2C400%3B1%2C500%3B1%2C600%3B1%2C700%3B1%2C800&amp;display=swap);</style>
+  </defs>
+  <rect style="fill: rgb(244, 222, 182);" x="211.286" y="426.699" width="957.5" height="166.1" rx="0" ry="0">
+    <title>Background</title>
+  </rect>
+  <path d="M -749.488 498.238 H -676.633 L -676.633 479.052 L -630.588 509.749 L -676.633 540.445 L -676.633 521.26 H -749.488 V 498.238 Z" style="fill: rgb(223, 32, 32);" transform="matrix(-1, 0, 0, 1, 0, 0)" bx:shape="arrow -749.488 479.052 118.9 61.393 23.022 46.045 0 1@d2b7d22e"/>
+  <g transform="matrix(1, 0, 0, 1, 139.450653, 131.831497)">
+    <title>Job Ad</title>
+    <rect x="96.854" y="319.868" width="360.596" height="116.099" style="fill: rgb(230, 230, 230); stroke: rgb(179, 179, 179);">
+      <title>Container</title>
+    </rect>
+    <g transform="matrix(1, 0, 0, 1, 10, 18.941498)">
+      <title>Company Logo</title>
+      <rect x="106.854" y="329.868" width="58.216" height="58.216" style="">
+        <title>Container</title>
+      </rect>
+      <path d="M 136.499 238.69 Q 136.499 238.085 137.05 237.736 Q 137.638 237.364 138.407 237.589 Q 139.261 237.839 139.803 238.69 Q 140.412 239.646 140.314 240.893 Q 140.205 242.286 139.252 243.459 Q 138.197 244.757 136.499 245.298 Q 134.637 245.891 132.644 245.366 Q 130.48 244.797 128.869 243.095 Q 127.133 241.261 126.587 238.69 Q 126.003 235.937 126.961 233.183 Q 127.981 230.252 130.442 228.199 Q 133.048 226.024 136.499 225.474 Q 140.139 224.895 143.657 226.291 Q 147.355 227.758 149.852 230.981 Q 152.467 234.356 153.019 238.69 Q 153.595 243.216 151.759 247.5 Q 149.847 251.963 145.86 254.904 Q 141.717 257.96 136.499 258.513 Q 131.087 259.088 126.037 256.811 Q 120.808 254.455 117.424 249.703 Q 113.927 244.792 113.372 238.69 Q 112.799 232.393 115.516 226.576 Q 118.317 220.581 123.834 216.754 Q 129.513 212.815 136.499 212.259 Q 143.681 211.687 150.265 214.846 Q 157.027 218.09 161.297 224.373 Q 165.677 230.819 166.234 238.69 Q 166.805 246.758 163.204 254.108 Q 159.517 261.636 152.468 266.349 Q 145.255 271.172 136.499 271.729 Q 127.546 272.299 119.429 268.257 Q 111.135 264.126 105.979 256.311 Q 100.714 248.331 100.156 238.69 Q 99.587 228.852 104.071 219.968 Q 108.645 210.907 117.226 205.308 Q 125.973 199.601 136.499 199.043 Q 136.535 199.041 136.499 199.043" style="fill: rgb(223, 32, 32); paint-order: fill; stroke-dasharray: 8px; stroke-linecap: round; stroke-width: 5.05646px; stroke: rgb(85, 218, 85);" transform="matrix(0.621209, 0, 0, 0.565393, 53.207775, 225.862625)" bx:shape="spiral 136.499 238.69 0 39.647 0 1080 1@746db35f">
+        <title>Logo</title>
+      </path>
+    </g>
+    <text style="fill: rgb(0, 42, 255); font-family: &quot;Open Sans&quot;; font-size: 18px; font-weight: 700; white-space: pre;" transform="matrix(1, 0, 0, 1, 55.55901, 91.018478)"><title>Job Title</title><tspan x="139.511" y="277.334">Software Engineer</tspan><tspan x="139.51100158691406" dy="1em">​</tspan></text>
+    <text style="font-family: &quot;Open Sans&quot;; font-size: 18px; white-space: pre;" x="193.564" y="398.353"><title>Company Name</title>PayYouLittle Inc.</text>
+    <g transform="matrix(1.155068, 0, 0, 1.155068, -321.793549, -84.109703)">
+      <title>Block Button</title>
+      <circle style="fill: rgb(179, 179, 179);" cx="640" cy="400" r="17.315">
+        <title>Container</title>
+      </circle>
+      <path d="M 639.989 409.23 C 638.717 409.23 637.52 408.989 636.399 408.504 C 635.278 408.02 634.299 407.358 633.46 406.519 C 632.621 405.68 631.963 404.7 631.486 403.579 C 631.009 402.459 630.77 401.255 630.77 399.968 C 630.77 398.709 631.013 397.52 631.497 396.399 C 631.982 395.278 632.639 394.303 633.47 393.47 C 634.303 392.639 635.278 391.982 636.399 391.497 C 637.52 391.013 638.717 390.77 639.989 390.77 C 641.263 390.77 642.459 391.013 643.579 391.497 C 644.7 391.982 645.677 392.639 646.508 393.47 C 647.34 394.303 648.002 395.278 648.493 396.399 C 648.984 397.52 649.23 398.709 649.23 399.968 C 649.23 401.255 648.988 402.459 648.504 403.579 C 648.02 404.7 647.358 405.68 646.519 406.519 C 645.68 407.358 644.7 408.02 643.579 408.504 C 642.459 408.989 641.263 409.23 639.989 409.23 Z M 639.989 407.192 C 641.985 407.192 643.681 406.49 645.077 405.087 C 646.472 403.685 647.169 401.978 647.169 399.968 C 647.169 399.187 647.047 398.427 646.801 397.69 C 646.555 396.952 646.193 396.28 645.716 395.673 L 635.673 405.694 C 636.251 406.215 636.917 406.594 637.668 406.834 C 638.42 407.072 639.194 407.192 639.989 407.192 Z M 634.284 404.284 L 644.284 394.263 C 643.663 393.785 642.99 393.427 642.267 393.188 C 641.545 392.951 640.785 392.831 639.989 392.831 C 637.994 392.831 636.298 393.522 634.902 394.902 C 633.506 396.283 632.809 397.972 632.809 399.968 C 632.809 400.763 632.942 401.529 633.21 402.267 C 633.478 403.005 633.836 403.677 634.284 404.284 Z" style="fill: rgb(255, 0, 0);">
+        <title>Icon</title>
+      </path>
+    </g>
+  </g>
+  <g transform="matrix(1, 0, 0, 1, 686.317322, 131.831497)">
+    <title>Job Ad</title>
+    <rect x="96.854" y="319.868" width="360.596" height="116.099" style="stroke: rgb(179, 179, 179); fill: rgb(128, 128, 128);">
+      <title>Container</title>
+    </rect>
+    <g transform="matrix(1, 0, 0, 1, 10, 18.941498)" style="filter: url(#gaussian-blur-filter-1); opacity: 0.25;">
+      <title>Company Logo</title>
+      <rect x="106.854" y="329.868" width="58.216" height="58.216" style="">
+        <title>Container</title>
+      </rect>
+      <path d="M 136.499 238.69 Q 136.499 238.085 137.05 237.736 Q 137.638 237.364 138.407 237.589 Q 139.261 237.839 139.803 238.69 Q 140.412 239.646 140.314 240.893 Q 140.205 242.286 139.252 243.459 Q 138.197 244.757 136.499 245.298 Q 134.637 245.891 132.644 245.366 Q 130.48 244.797 128.869 243.095 Q 127.133 241.261 126.587 238.69 Q 126.003 235.937 126.961 233.183 Q 127.981 230.252 130.442 228.199 Q 133.048 226.024 136.499 225.474 Q 140.139 224.895 143.657 226.291 Q 147.355 227.758 149.852 230.981 Q 152.467 234.356 153.019 238.69 Q 153.595 243.216 151.759 247.5 Q 149.847 251.963 145.86 254.904 Q 141.717 257.96 136.499 258.513 Q 131.087 259.088 126.037 256.811 Q 120.808 254.455 117.424 249.703 Q 113.927 244.792 113.372 238.69 Q 112.799 232.393 115.516 226.576 Q 118.317 220.581 123.834 216.754 Q 129.513 212.815 136.499 212.259 Q 143.681 211.687 150.265 214.846 Q 157.027 218.09 161.297 224.373 Q 165.677 230.819 166.234 238.69 Q 166.805 246.758 163.204 254.108 Q 159.517 261.636 152.468 266.349 Q 145.255 271.172 136.499 271.729 Q 127.546 272.299 119.429 268.257 Q 111.135 264.126 105.979 256.311 Q 100.714 248.331 100.156 238.69 Q 99.587 228.852 104.071 219.968 Q 108.645 210.907 117.226 205.308 Q 125.973 199.601 136.499 199.043 Q 136.535 199.041 136.499 199.043" style="fill: rgb(223, 32, 32); paint-order: fill; stroke-dasharray: 8px; stroke-linecap: round; stroke-width: 5.05646px; stroke: rgb(85, 218, 85);" transform="matrix(0.621209, 0, 0, 0.565393, 53.207775, 225.862625)" bx:shape="spiral 136.499 238.69 0 39.647 0 1080 1@746db35f">
+        <title>Logo</title>
+      </path>
+    </g>
+    <text style="fill: rgb(0, 42, 255); font-family: &quot;Open Sans&quot;; font-size: 18px; font-weight: 700; white-space: pre; filter: url(#gaussian-blur-filter-1); opacity: 0.25;" transform="matrix(1, 0, 0, 1, 55.55901, 91.018478)"><title>Job Title</title><tspan x="139.511" y="277.334">Software Engineer</tspan><tspan x="139.51100158691406" dy="1em">​</tspan></text>
+    <text style="font-family: &quot;Open Sans&quot;; font-size: 18px; white-space: pre; filter: url(#gaussian-blur-filter-1); opacity: 0.25;" x="193.564" y="398.353"><title>Company Name</title>PayYouLittle Inc.</text>
+    <g style="" transform="matrix(1, 0, 0, 1, -0.000992, -0.000488)">
+      <title>Blocked Job Button</title>
+      <rect style="stroke: rgb(255, 255, 255); fill: rgb(255, 255, 255);" x="209.092" y="347.827" width="136.122" height="60.182" rx="10" ry="10">
+        <title>Container</title>
+      </rect>
+      <text style="font-family: &quot;Open Sans&quot;; font-size: 14px; white-space: pre;" x="223.761" y="371.588"><title>Company Name</title>PayYouLittle Inc.</text>
+      <g transform="matrix(1, 0, 0, 1, -23.606514, 0.821675)">
+        <title>Indicator</title>
+        <rect style="fill: rgb(128, 128, 128);" x="275.552" y="376.563" width="50.416" height="19.218" rx="9" ry="9">
+          <title>Container</title>
+        </rect>
+        <text style="fill: rgb(255, 255, 255); font-family: &quot;Open Sans&quot;; font-size: 12px; white-space: pre;" x="280.43" y="390.805">Hidden</text>
+      </g>
+    </g>
+  </g>
+  <g transform="matrix(1, 0, 0, 1, 443.96106, -3)">
+    <title>Clicking Cursor</title>
+    <path d="M 566.004 509.676 L 568.496 515.45 L 573.903 512.244 L 572.527 518.381 L 578.785 518.968 L 574.067 523.124 L 578.785 527.28 L 572.527 527.867 L 573.903 534.004 L 568.496 530.798 L 566.004 536.572 L 563.512 530.798 L 558.105 534.004 L 559.481 527.867 L 553.223 527.28 L 557.941 523.124 L 553.223 518.968 L 559.481 518.381 L 558.105 512.244 L 563.512 515.45 Z" style="stroke-width: 2px; fill: rgb(255, 255, 0); stroke: rgb(255, 128, 0);" bx:shape="star 566.004 523.124 13.439 13.448 0.6 10 1@c9701c42">
+      <title>Click</title>
+    </path>
+    <g transform="matrix(2.541284, 0, 0, 2.541284, 550.954773, 521.297974)" style="filter: url(#drop-shadow-filter-0);">
+      <title>Cursor</title>
+      <g transform="matrix(.23944 0 0 .23944 94.337 75.208)">
+        <path d="m-368.99-226.1v-9h-4v-8h-4v-8h-4v-9h-5v-4h-4v-8h9v4h4v12h4v-54h8v38h4v-17h9v17h4v-13h8v17h4v-13h5v5h4v29h-4v12h-5v9h-33z" fill="#fefefe" style=""/>
+        <path d="m-372.99-222.1v-13h-4v-8h-4v-8h-5v-9h-4v-4h-4v-12h13v4h4v-38h4v-4h8v4h4v17h9v4h12v4h9v4h4v5h4v29h-4v12h-4v13h-42zm37-4v-9h5v-12h4v-29h-4v-5h-5v13h-4v-17h-8v13h-4v-17h-9v17h-4v-38h-8v54h-4v-12h-4v-4h-9v8h4v4h5v9h4v8h4v8h4v9h33z" style=""/>
+      </g>
+    </g>
+  </g>
+</svg>
