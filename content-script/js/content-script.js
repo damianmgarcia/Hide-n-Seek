@@ -118,7 +118,7 @@
       jobBlockBlockButtonIcon.classList.add("job-block-block-button-icon");
       jobBlockBlockButtonIcon.setAttribute(
         "src",
-        `${chrome.runtime.getURL("images/block-button-icon.svg")}`
+        `${chrome.runtime.getURL("images/hide-button-icon.svg")}`
       );
 
       jobBlockBlockButton.insertAdjacentElement(
