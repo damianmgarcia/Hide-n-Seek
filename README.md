@@ -12,15 +12,15 @@ It also lets users hide _sponsored jobs_.
 
 - Click a job's "hide" button and all jobs by that company will be hidden behind an overlay
 
-![A "before and after" diagram shows the effect of hiding a job](/images/usage-hide-job-normalized.svg)<br><br>
+<img src="/images/usage-hide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of hiding a job' /><br><br>
 
 - Unhide a job by clicking its "unhide" button
 
-![A "before and after" diagram shows the effect of unhiding a job](/images/usage-unhide-job-normalized.svg)<br><br>
+<img src="/images/usage-unhide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of unhiding a job' /><br><br>
 
 - Easily unhide all jobs with the Hide n' Seek browser button
 
-![A diagram of Hide n' Seeks browser button, along with its popup, shows an option to unhide all jobs (along with an undo button).](/images/usage-unhide-all-jobs-normalized.svg)<br><br>
+<img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of Hide n' Seeks browser button, along with its popup, shows an option to unhide all jobs (along with an undo button)" /><br><br>
 
 ## **Supported Job Boards**
 
