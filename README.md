@@ -43,7 +43,7 @@ Hide n' Seek data may be synced with the user's other devices if their browser h
 
 Hide n' Seek needs the following permissions to work:
 
-- Read and change your data on all indeed.com sites and all linkedin.com sites"
+- Read and change your data on all indeed.com sites and all linkedin.com sites
   - Hide n' Seek needs this permission to add its UI elements, such as "hide" buttons and job overlays, to the job board's website.
 - Read your browsing history
   - Hide n' Seek needs this permission to detect when the user is searching for jobs on a supported job board's website so that it knows when to run.
