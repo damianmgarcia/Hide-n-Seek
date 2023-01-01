@@ -29,7 +29,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["/images/block-button-icon.svg"],
+      "resources": ["/images/hide-button-icon.svg"],
       "matches": ["https://*.linkedin.com/*", "https://*.indeed.com/*"]
     }
   ]
