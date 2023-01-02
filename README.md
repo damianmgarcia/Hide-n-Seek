@@ -27,10 +27,6 @@ It also lets users hide _sponsored jobs_.
 - LinkedIn
 - Indeed
 
-## **Supported Browsers**
-
-- Chrome
-
 ## **Privacy Policy**
 
 Nobody has access to Hide n' Seek data except for the users of the device that Hide n' Seek is installed on. Data is not shared or sold.
@@ -50,4 +46,6 @@ Hide n' Seek needs the following permissions to work:
 
 ## **Installation**
 
-Pending testing and publication to the Chrome Web Store
+Hide n' Seek is available on the following browsers:
+
+- [Chrome](https://chrome.google.com/webstore/detail/hide-n-seek/agghbaheofcoecndkbflbnggdjcmiaml)
