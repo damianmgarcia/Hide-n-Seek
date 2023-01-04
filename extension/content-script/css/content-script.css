@@ -136,7 +136,7 @@
 
 .job-block-attribute-toggle-button-text {
   max-width: 25ch;
-  overflow: clip visible;
+  overflow: visible;
   position: relative;
   text-align: center;
   text-overflow: ellipsis;
