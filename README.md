@@ -44,8 +44,23 @@ Hide n' Seek needs the following permissions to work:
 - Read your browsing history
   - Hide n' Seek needs this permission to detect when the user is searching for jobs on a supported job board's website so that it knows when to run.
 
-## **Installation**
+Note that the above permissions are written exactly as Chrome displays them to the user during installation of Hide n' Seek. Other browsers will ask for the same permissions, but the wording may vary.
 
-Hide n' Seek is available on the following browsers:
+## **Releases**
 
 - [Chrome](https://chrome.google.com/webstore/detail/hide-n-seek/agghbaheofcoecndkbflbnggdjcmiaml)
+- [Edge](https://microsoftedge.microsoft.com/addons/detail/hide-n-seek/lnfbapfcdippajlhlmefaabhkdbmgiog)
+
+## **Release Notes**
+
+### Chrome
+
+- 1.0.0
+  - Release date: 2023-01-02
+  - Initial release
+
+### Edge
+
+- 1.0.0
+  - Release date: 2023-01-03
+  - Initial release
