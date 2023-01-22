@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg viewBox="211.286 426.7 690 730" width="1280" height="800" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+<svg viewBox="211.286 426.7 690 730" width="1280" height="800" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
   <defs>
     <style bx:fonts="Open Sans">@import url(https://fonts.googleapis.com/css2?family=Open+Sans%3Aital%2Cwght%400%2C300%3B0%2C400%3B0%2C500%3B0%2C600%3B0%2C700%3B0%2C800%3B1%2C300%3B1%2C400%3B1%2C500%3B1%2C600%3B1%2C700%3B1%2C800&amp;display=swap);</style>
-    <filter id="outline-filter-2" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="outline 1 1 rgba(0,0,0,1)">
+    <filter id="filter-3" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="outline 1 1 rgba(0,0,0,1)">
       <feMorphology in="SourceAlpha" result="dilated" operator="dilate" radius="1"/>
       <feFlood flood-color="rgba(0,0,0,1)" result="flood"/>
       <feComposite in="flood" in2="dilated" operator="in" result="outline"/>
@@ -11,7 +11,7 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <filter id="outline-filter-1" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="outline 1 0 rgba(255,255,255,1)">
+    <filter id="filter-4" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="outline 1 0 rgba(255,255,255,1)">
       <feMorphology in="SourceAlpha" result="dilated" operator="dilate" radius="0"/>
       <feFlood flood-color="rgba(255,255,255,1)" result="flood"/>
       <feComposite in="flood" in2="dilated" operator="in" result="outline"/>
@@ -20,40 +20,40 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <mask id="mask-2">
+    <mask id="mask-5">
       <polygon style="fill: rgb(255, 255, 255);" points="91 -41 -44 -41 -44 94">
         <title>briefcase-2-mask</title>
       </polygon>
     </mask>
-    <clipPath id="clip-5">
+    <clipPath id="clip-9">
       <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
         <title>Left Eye Clip</title>
       </path>
     </clipPath>
-    <clipPath id="clip-6">
+    <clipPath id="clip-10">
       <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
         <title>Right Eye Clip</title>
       </path>
     </clipPath>
-    <mask id="mask-3">
+    <mask id="mask-6">
       <polygon style="fill: rgb(255, 255, 255);" points="-44 94 91 94 91 -41">
         <title>briefcase-3-mask</title>
       </polygon>
     </mask>
-    <filter id="saturate-filter-0" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="saturate 1 0">
+    <filter id="filter-5" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="saturate 1 0">
       <feColorMatrix type="saturate" values="0"/>
     </filter>
-    <clipPath id="clip-7">
+    <clipPath id="clip-11">
       <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
         <title>Left Eye Clip</title>
       </path>
     </clipPath>
-    <clipPath id="clip-8">
+    <clipPath id="clip-12">
       <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
         <title>Right Eye Clip</title>
       </path>
     </clipPath>
-    <filter id="outline-filter-0" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="outline 1 10 rgba(0,0,0,1)">
+    <filter id="filter-6" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="outline 1 10 rgba(0,0,0,1)">
       <feMorphology in="SourceAlpha" result="dilated" operator="dilate" radius="10"/>
       <feFlood flood-color="rgba(0,0,0,1)" result="flood"/>
       <feComposite in="flood" in2="dilated" operator="in" result="outline"/>
@@ -62,7 +62,7 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <filter id="filter-1" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="outline 1 0 rgba(255,255,255,1)">
+    <filter id="filter-7" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="outline 1 0 rgba(255,255,255,1)">
       <feMorphology in="SourceAlpha" result="dilated" operator="dilate" radius="0"/>
       <feFlood flood-color="rgba(255,255,255,1)" result="flood"/>
       <feComposite in="flood" in2="dilated" operator="in" result="outline"/>
@@ -71,44 +71,44 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <mask id="mask-1">
+    <mask id="mask-7">
       <polygon style="fill: rgb(255, 255, 255);" points="91 -41 -44 -41 -44 94">
         <title>briefcase-2-mask</title>
       </polygon>
     </mask>
-    <clipPath id="clip-1">
+    <clipPath id="clip-13">
       <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
         <title>Left Eye Clip</title>
       </path>
     </clipPath>
-    <clipPath id="clip-2">
+    <clipPath id="clip-14">
       <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
         <title>Right Eye Clip</title>
       </path>
     </clipPath>
-    <mask id="mask-4">
+    <mask id="mask-8">
       <polygon style="fill: rgb(255, 255, 255);" points="-44 94 91 94 91 -41">
         <title>briefcase-3-mask</title>
       </polygon>
     </mask>
-    <filter id="filter-2" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="saturate 1 0">
+    <filter id="filter-8" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="saturate 1 0">
       <feColorMatrix type="saturate" values="0"/>
     </filter>
-    <clipPath id="clip-3">
+    <clipPath id="clip-15">
       <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
         <title>Left Eye Clip</title>
       </path>
     </clipPath>
-    <clipPath id="clip-4">
+    <clipPath id="clip-16">
       <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
         <title>Right Eye Clip</title>
       </path>
     </clipPath>
-    <filter id="drop-shadow-filter-0" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="drop-shadow 1 0 0 4 1 rgba(0,0,0,0.3)">
+    <filter id="filter-9" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="drop-shadow 1 0 0 4 1 rgba(0,0,0,0.3)">
       <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
       <feOffset dx="0" dy="0"/>
       <feComponentTransfer result="offsetblur">
-        <feFuncA id="spread-ctrl" type="linear" slope="2"/>
+        <feFuncA id="feFuncA-1" type="linear" slope="2"/>
       </feComponentTransfer>
       <feFlood flood-color="rgba(0,0,0,0.3)"/>
       <feComposite in2="offsetblur" operator="in"/>
@@ -118,14 +118,14 @@
       </feMerge>
     </filter>
   </defs>
-  <rect style="fill: rgb(244, 222, 182);" x="211.286" y="426.7" width="690" height="730" rx="0" ry="0">
+  <rect style="fill: rgb(245, 221, 178);" x="211.286" y="426.7" width="690" height="800">
     <title>Background</title>
   </rect>
-  <g transform="matrix(1, 0, 0, 1, 66.286003, 331.699615)">
+  <g transform="matrix(1, 0, 0, 1, 66.285995, 331.700012)">
     <title>Browser</title>
     <g>
       <title>Window</title>
-      <rect style="fill: rgb(230, 230, 230); stroke-width: 4px;" x="170" y="120" width="640" height="680" rx="30" ry="30">
+      <rect style="fill: rgb(230, 230, 230); stroke-width: 4px;" x="170" y="120" width="640" height="750" rx="30" ry="30">
         <title>Container</title>
       </rect>
       <path style="fill: rgb(179, 179, 179);" d="M 200 120 H 780 A 30 30 0 0 1 810 150 V 195 H 170 V 150 A 30 30 0 0 1 200 120 Z" bx:shape="rect 170 120 640 75 30 30 0 0 1@38a31a4c">
@@ -137,7 +137,7 @@
       <rect y="195" width="640" height="75" style="stroke-width: 4px; fill: rgb(204, 204, 204);" x="170">
         <title>Container</title>
       </rect>
-      <path d="M 751.758 247.5 C 751.132 247.5 750.601 247.281 750.165 246.843 C 749.727 246.406 749.508 245.874 749.508 245.25 C 749.508 244.624 749.727 244.093 750.165 243.657 C 750.601 243.219 751.132 243 751.758 243 C 752.382 243 752.914 243.219 753.352 243.657 C 753.789 244.093 754.008 244.624 754.008 245.25 C 754.008 245.874 753.789 246.406 753.352 246.843 C 752.914 247.281 752.382 247.5 751.758 247.5 Z M 751.758 234.75 C 751.132 234.75 750.601 234.531 750.165 234.093 C 749.727 233.656 749.508 233.124 749.508 232.5 C 749.508 231.874 749.727 231.343 750.165 230.907 C 750.601 230.469 751.132 230.25 751.758 230.25 C 752.382 230.25 752.914 230.469 753.352 230.907 C 753.789 231.343 754.008 231.874 754.008 232.5 C 754.008 233.124 753.789 233.656 753.352 234.093 C 752.914 234.531 752.382 234.75 751.758 234.75 Z M 751.758 222 C 751.132 222 750.601 221.781 750.165 221.343 C 749.727 220.906 749.508 220.374 749.508 219.75 C 749.508 219.124 749.727 218.593 750.165 218.157 C 750.601 217.719 751.132 217.5 751.758 217.5 C 752.382 217.5 752.914 217.719 753.352 218.157 C 753.789 218.593 754.008 219.124 754.008 219.75 C 754.008 220.374 753.789 220.906 753.352 221.343 C 752.914 221.781 752.382 222 751.758 222 Z" style="filter: url(#outline-filter-2);">
+      <path d="M 751.758 247.5 C 751.132 247.5 750.601 247.281 750.165 246.843 C 749.727 246.406 749.508 245.874 749.508 245.25 C 749.508 244.624 749.727 244.093 750.165 243.657 C 750.601 243.219 751.132 243 751.758 243 C 752.382 243 752.914 243.219 753.352 243.657 C 753.789 244.093 754.008 244.624 754.008 245.25 C 754.008 245.874 753.789 246.406 753.352 246.843 C 752.914 247.281 752.382 247.5 751.758 247.5 Z M 751.758 234.75 C 751.132 234.75 750.601 234.531 750.165 234.093 C 749.727 233.656 749.508 233.124 749.508 232.5 C 749.508 231.874 749.727 231.343 750.165 230.907 C 750.601 230.469 751.132 230.25 751.758 230.25 C 752.382 230.25 752.914 230.469 753.352 230.907 C 753.789 231.343 754.008 231.874 754.008 232.5 C 754.008 233.124 753.789 233.656 753.352 234.093 C 752.914 234.531 752.382 234.75 751.758 234.75 Z M 751.758 222 C 751.132 222 750.601 221.781 750.165 221.343 C 749.727 220.906 749.508 220.374 749.508 219.75 C 749.508 219.124 749.727 218.593 750.165 218.157 C 750.601 217.719 751.132 217.5 751.758 217.5 C 752.382 217.5 752.914 217.719 753.352 218.157 C 753.789 218.593 754.008 219.124 754.008 219.75 C 754.008 220.374 753.789 220.906 753.352 221.343 C 752.914 221.781 752.382 222 751.758 222 Z" style="filter: url(#filter-3);">
         <title>Vertical Dots</title>
       </path>
       <path d="M 667.62 250 L 659.812 250 C 659.095 250 658.466 249.724 657.928 249.17 C 657.389 248.616 657.12 247.951 657.12 247.174 L 657.12 239.275 C 658.437 239.126 659.566 238.609 660.508 237.727 C 661.45 236.845 661.921 235.76 661.921 234.475 C 661.921 233.188 661.45 232.103 660.508 231.221 C 659.566 230.339 658.437 229.823 657.12 229.674 L 657.12 221.775 C 657.12 221.087 657.389 220.467 657.928 219.913 C 658.466 219.359 659.095 219.083 659.812 219.083 L 667.709 219.083 C 668.039 217.887 668.607 216.907 669.415 216.145 C 670.222 215.382 671.225 215 672.421 215 C 673.588 215 674.636 215.382 675.562 216.145 C 676.491 216.907 677.118 217.887 677.446 219.083 L 685.345 219.083 C 686.033 219.083 686.654 219.359 687.207 219.913 C 687.761 220.467 688.037 221.087 688.037 221.775 L 688.037 229.674 C 689.234 230.003 690.213 230.63 690.975 231.558 C 691.738 232.484 692.12 233.532 692.12 234.699 C 692.12 235.895 691.738 236.898 690.975 237.705 C 690.213 238.513 689.234 239.081 688.037 239.411 L 688.037 247.308 C 688.037 248.025 687.761 248.654 687.207 249.192 C 686.654 249.731 686.033 250 685.345 250 L 677.537 250 C 677.388 248.564 676.819 247.405 675.832 246.523 C 674.845 245.641 673.708 245.199 672.421 245.199 C 671.285 245.199 670.238 245.641 669.281 246.523 C 668.323 247.405 667.77 248.564 667.62 250 Z">
@@ -150,13 +150,13 @@
         </circle>
         <g style="" transform="matrix(0.486111, 0, 0, 0.486111, 566.3078, 219.494141)">
           <title>Hide-N-Seek-Icon</title>
-          <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="paint-order: fill; stroke-width: 4px; stroke: rgb(0, 0, 0); filter: url(#outline-filter-1);">
+          <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="paint-order: fill; stroke-width: 4px; stroke: rgb(0, 0, 0); filter: url(#filter-4);">
             <title>briefcase-prevent-seam</title>
           </path>
           <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; stroke: rgb(186, 218, 85);" d="M 13.695 42.728 C 5.181 42.499 -3.487 32.43 6.373 21.353 C 6.698 20.47 6.794 10.524 6.976 10.524 C 7.198 8.708 13.103 17.207 14.013 18.549 C 20.212 14.327 30.345 15.734 32.993 18.791 C 33.473 18.235 37.132 12.96 38.22 12.071 C 39.939 11.881 39.247 22.507 39.427 22.32 C 47.744 26.516 47.201 40.995 34.919 42.728">
             <title>head-prevent-seam</title>
           </path>
-          <g style="mask: url(#mask-2);">
+          <g style="mask: url(#mask-5);">
             <title>briefcase-upper-left</title>
             <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="stroke: rgb(0, 0, 0); fill: rgb(217, 168, 118);">
               <title>briefcase</title>
@@ -166,7 +166,7 @@
               <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; stroke: rgb(186, 218, 85);" d="M 155.839 416.452 C 74.076 414.246 -9.163 317.554 85.521 211.184 C 88.642 202.702 89.567 107.184 91.313 107.184 C 93.447 89.745 150.151 171.369 158.89 184.258 C 218.415 143.708 315.724 157.224 341.157 186.578 C 345.771 181.239 380.902 130.582 391.357 122.043 C 407.86 120.218 401.213 222.267 402.943 220.47 C 482.816 260.759 477.595 399.802 359.651 416.452">
                 <title>Head</title>
               </path>
-              <g style="clip-path: url(#clip-5);">
+              <g style="clip-path: url(#clip-9);">
                 <title>Left Eye</title>
                 <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; fill: rgb(217, 217, 118);" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
                   <title>Left Eye Outer</title>
@@ -175,7 +175,7 @@
                   <title>Left Eye Pupil</title>
                 </path>
               </g>
-              <g style="pointer-events: none; clip-path: url(#clip-6); visibility: hidden;">
+              <g style="pointer-events: none; visibility: hidden; clip-path: url(#clip-10);">
                 <title>Right Eye</title>
                 <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; stroke: rgb(186, 218, 85);" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
                   <title>Right Eye Outer</title>
@@ -207,17 +207,17 @@
               </path>
             </g>
           </g>
-          <g style="mask: url(#mask-3);">
+          <g style="mask: url(#mask-6);">
             <title>briefcase-lower-right</title>
             <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="stroke: rgb(0, 0, 0);">
               <title>briefcase</title>
             </path>
-            <g style="filter: url(#saturate-filter-0); opacity: 0; visibility: hidden;" transform="matrix(0.104132, 0, 0, 0.104132, -2.532993, -0.637008)">
+            <g style="opacity: 0; visibility: hidden; filter: url(#filter-5);" transform="matrix(0.104132, 0, 0, 0.104132, -2.532993, -0.637008)">
               <title>Charm</title>
               <path style="stroke-width: 3px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(51, 51, 51); stroke-linejoin: round; stroke-linecap: round; pointer-events: none; visibility: hidden;" d="M 155.839 416.452 C 74.076 414.246 -9.163 317.554 85.521 211.184 C 88.642 202.702 89.567 107.184 91.313 107.184 C 93.447 89.745 150.151 171.369 158.89 184.258 C 218.415 143.708 315.724 157.224 341.157 186.578 C 345.771 181.239 380.902 130.582 391.357 122.043 C 407.86 120.218 401.213 222.267 402.943 220.47 C 482.816 260.759 477.595 399.802 359.651 416.452">
                 <title>Head</title>
               </path>
-              <g style="clip-path: url(#clip-7);">
+              <g style="clip-path: url(#clip-11);">
                 <title>Left Eye</title>
                 <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
                   <title>Left Eye Outer</title>
@@ -226,7 +226,7 @@
                   <title>Left Eye Pupil</title>
                 </path>
               </g>
-              <g style="pointer-events: none; clip-path: url(#clip-8);">
+              <g style="pointer-events: none; clip-path: url(#clip-12);">
                 <title>Right Eye</title>
                 <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
                   <title>Right Eye Outer</title>
@@ -257,21 +257,18 @@
     </g>
     <g transform="matrix(1, 0, 0, 1, 0, -11)">
       <title>Popup</title>
-      <image width="398.768" height="477.349" x="201.463" y="287.086" style="pointer-events: none; visibility: hidden;" xlink:href="data:image/png;base64,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">
-        <title>Popup Template</title>
-      </image>
-      <rect style="fill: rgb(244, 222, 182); stroke-width: 0px; filter: url(#outline-filter-0);" x="214.428" y="300.12" width="375.257" height="452.557" rx="20" ry="20">
+      <rect style="stroke-width: 0px; filter: url(#filter-6); fill: rgb(245, 221, 178);" x="214.428" y="300.12" width="375.257" height="532.3" rx="20" ry="20">
         <title>Container</title>
       </rect>
       <g style="" transform="matrix(2.207734, 0, 0, 2.207734, 350.174744, 373.868134)">
         <title>Hide-N-Seek-Icon</title>
-        <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="paint-order: fill; stroke-width: 4px; stroke: rgb(0, 0, 0); filter: url(#filter-1);">
+        <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="paint-order: fill; stroke-width: 4px; stroke: rgb(0, 0, 0); filter: url(#filter-7);">
           <title>briefcase-prevent-seam</title>
         </path>
         <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; stroke: rgb(186, 218, 85);" d="M 13.695 42.728 C 5.181 42.499 -3.487 32.43 6.373 21.353 C 6.698 20.47 6.794 10.524 6.976 10.524 C 7.198 8.708 13.103 17.207 14.013 18.549 C 20.212 14.327 30.345 15.734 32.993 18.791 C 33.473 18.235 37.132 12.96 38.22 12.071 C 39.939 11.881 39.247 22.507 39.427 22.32 C 47.744 26.516 47.201 40.995 34.919 42.728">
           <title>head-prevent-seam</title>
         </path>
-        <g style="mask: url(#mask-1);">
+        <g style="mask: url(#mask-7);">
           <title>briefcase-upper-left</title>
           <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="stroke: rgb(0, 0, 0); fill: rgb(217, 168, 118);">
             <title>briefcase</title>
@@ -281,7 +278,7 @@
             <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; stroke: rgb(186, 218, 85);" d="M 155.839 416.452 C 74.076 414.246 -9.163 317.554 85.521 211.184 C 88.642 202.702 89.567 107.184 91.313 107.184 C 93.447 89.745 150.151 171.369 158.89 184.258 C 218.415 143.708 315.724 157.224 341.157 186.578 C 345.771 181.239 380.902 130.582 391.357 122.043 C 407.86 120.218 401.213 222.267 402.943 220.47 C 482.816 260.759 477.595 399.802 359.651 416.452">
               <title>Head</title>
             </path>
-            <g style="clip-path: url(#clip-1);">
+            <g style="clip-path: url(#clip-13);">
               <title>Left Eye</title>
               <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; fill: rgb(217, 217, 118);" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
                 <title>Left Eye Outer</title>
@@ -290,7 +287,7 @@
                 <title>Left Eye Pupil</title>
               </path>
             </g>
-            <g style="pointer-events: none; visibility: hidden; clip-path: url(#clip-2);">
+            <g style="pointer-events: none; visibility: hidden; clip-path: url(#clip-14);">
               <title>Right Eye</title>
               <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; stroke: rgb(186, 218, 85);" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
                 <title>Right Eye Outer</title>
@@ -322,17 +319,17 @@
             </path>
           </g>
         </g>
-        <g style="mask: url(#mask-4);">
+        <g style="mask: url(#mask-8);">
           <title>briefcase-lower-right</title>
           <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="stroke: rgb(0, 0, 0);">
             <title>briefcase</title>
           </path>
-          <g style="opacity: 0; visibility: hidden; filter: url(#filter-2);" transform="matrix(0.104132, 0, 0, 0.104132, -2.532993, -0.637008)">
+          <g style="opacity: 0; visibility: hidden; filter: url(#filter-8);" transform="matrix(0.104132, 0, 0, 0.104132, -2.532993, -0.637008)">
             <title>Charm</title>
             <path style="stroke-width: 3px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(51, 51, 51); stroke-linejoin: round; stroke-linecap: round; pointer-events: none; visibility: hidden;" d="M 155.839 416.452 C 74.076 414.246 -9.163 317.554 85.521 211.184 C 88.642 202.702 89.567 107.184 91.313 107.184 C 93.447 89.745 150.151 171.369 158.89 184.258 C 218.415 143.708 315.724 157.224 341.157 186.578 C 345.771 181.239 380.902 130.582 391.357 122.043 C 407.86 120.218 401.213 222.267 402.943 220.47 C 482.816 260.759 477.595 399.802 359.651 416.452">
               <title>Head</title>
             </path>
-            <g style="clip-path: url(#clip-3);">
+            <g style="clip-path: url(#clip-15);">
               <title>Left Eye</title>
               <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
                 <title>Left Eye Outer</title>
@@ -341,7 +338,7 @@
                 <title>Left Eye Pupil</title>
               </path>
             </g>
-            <g style="pointer-events: none; clip-path: url(#clip-4);">
+            <g style="pointer-events: none; clip-path: url(#clip-16);">
               <title>Right Eye</title>
               <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
                 <title>Right Eye Outer</title>
@@ -370,8 +367,8 @@
       </g>
       <text style="fill: rgb(51, 51, 51); font-family: &quot;Open Sans&quot;; font-size: 24px; font-weight: 700; white-space: pre;" x="328.779" y="536.089"><title>Hide n' Seek</title>Hide n' Seek</text>
       <g style="">
-        <title>Unhide All Jobs</title>
-        <rect style="fill: rgb(216, 169, 123);" x="232.738" y="581.136" width="338.637" height="153.169" rx="20" ry="20">
+        <title>Options Panel</title>
+        <rect style="fill: rgb(217, 168, 118);" x="232.738" y="581.136" width="338.637" height="232.9" rx="20" ry="20">
           <title>Container</title>
         </rect>
         <g transform="matrix(1.812327, 0, 0, 1.812327, 326.935547, 599.928162)" style="">
@@ -384,14 +381,24 @@
           <path class="st0" d="m53.4 10.3c-1.6 0-2.5 1-2.5 2.6s0.9 2.6 2.5 2.6 2.5-1 2.5-2.6-0.9-2.6-2.5-2.6m5.4 7.6h-2.9v-1.3c-0.7 1-1.9 1.6-3.1 1.6-3 0-5-2.2-5-5.2 0-2.8 1.7-5.4 4.6-5.4 1.3 0 2.5 0.4 3.2 1.3v-5.8h3.1l0.1 14.8z" style="fill: rgb(10, 102, 194);"/>
           <path class="st0" d="m81.3 0h-17.9c-0.8 0-1.5 0.7-1.6 1.5v18c0 0.8 0.7 1.5 1.6 1.5h17.9c0.8 0 1.5-0.7 1.6-1.5v-18c0-0.8-0.7-1.5-1.6-1.5zm-13.2 17.9h-3.1v-10h3.1v10zm-1.6-11.4c-1 0-1.8-0.8-1.8-1.8s0.8-1.8 1.8-1.8 1.8 0.8 1.8 1.8-0.8 1.8-1.8 1.8zm13.3 11.4h-3.1v-4.9c0-1.2 0-2.7-1.6-2.7s-1.9 1.3-1.9 2.6v5h-3.1v-10h3v1.4c0.6-1 1.7-1.7 2.9-1.6 3.2 0 3.7 2.1 3.7 4.8l0.1 5.4z" style="fill: rgb(10, 102, 194);"/>
         </g>
-        <g style="" transform="matrix(1, 0, 0, 1, 0.151941, 0)">
+        <g style="" transform="matrix(1, 0, 0, 1, 58.202515, -1.324005)">
+          <title>Remove Hidden Jobs Button</title>
+          <rect style="pointer-events: auto; fill: rgba(255, 255, 255, 0.1); stroke: rgb(153, 0, 0);" x="212.976" y="656.034" width="261.756" height="59.657" rx="10" ry="10">
+            <title>Container</title>
+          </rect>
+          <text style="fill: rgb(153, 0, 0); font-family: &quot;Open Sans&quot;; font-size: 16px; white-space: pre;" x="231.166" y="691.985">Do not display hidden jobs</text>
+          <rect style="stroke: rgb(128, 128, 128); fill: rgb(255, 255, 255);" x="444.516" y="679.806" width="12.027" height="12.027" rx="2" ry="2">
+            <title>Checkbox</title>
+          </rect>
+        </g>
+        <g style="" transform="matrix(1, 0, 0, 1, 0.151941, 78.332977)">
           <title>Unhide All Jobs Button</title>
           <rect style="pointer-events: auto; fill: rgb(179, 0, 0);" x="251.387" y="656.034" width="188.659" height="59.657" rx="10" ry="10">
             <title>Container</title>
           </rect>
           <text style="fill: rgb(255, 255, 255); font-family: &quot;Open Sans&quot;; font-size: 16px; white-space: pre;" x="289.749" y="691.985">Unhide All Jobs</text>
         </g>
-        <g transform="matrix(1, 0, 0, 1, -33.203941, 0)" style="opacity: 0.1;">
+        <g transform="matrix(1, 0, 0, 1, -33.203941, 78.332977)" style="opacity: 0.1;">
           <title>Undo Button</title>
           <rect style="pointer-events: auto; fill: rgb(77, 77, 77);" x="491.778" y="656.034" width="94" height="59.669" rx="10" ry="10">
             <title>Container</title>
@@ -399,7 +406,7 @@
           <text style="fill: rgb(255, 255, 255); font-family: &quot;Open Sans&quot;; font-size: 16px; white-space: pre;" x="518.332" y="691.991"><title>Text</title>Undo</text>
         </g>
       </g>
-      <g transform="matrix(2.541284, 0, 0, 2.541284, 399.882263, 693.701538)" style="filter: url(#drop-shadow-filter-0);">
+      <g transform="matrix(2.541284, 0, 0, 2.541284, 399.882263, 772.100281)" style="filter: url(#filter-9);">
         <title>Cursor</title>
         <g transform="matrix(.23944 0 0 .23944 94.337 75.208)">
           <path d="m-368.99-226.1v-9h-4v-8h-4v-8h-4v-9h-5v-4h-4v-8h9v4h4v12h4v-54h8v38h4v-17h9v17h4v-13h8v17h4v-13h5v5h4v29h-4v12h-5v9h-33z" fill="#fefefe" style=""/>
