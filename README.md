@@ -10,17 +10,19 @@ It also lets users hide _sponsored jobs_.
 
 ## **Usage**
 
-- Click a job's "hide" button and all jobs by that company will be hidden behind an overlay
+- Click a job's "hide" button and all jobs by that company will be hidden behind an overlay.
 
 <img src="/images/usage-hide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of hiding a job' /><br><br>
 
-- Unhide a job by clicking its "unhide" button
+- Click a job's "unhide" button to remove the overlays.
 
 <img src="/images/usage-unhide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of unhiding a job' /><br><br>
 
-- Easily unhide all jobs with the Hide n' Seek browser button
+- Click the Hide n' Seek browser button for some additional options:
+  - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays.
+  - Click the "Unhide all jobs" button to reset your hidden jobs list. This action can be undone by clicking the "Undo" button.
 
-<img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of Hide n' Seeks browser button, along with its popup, shows an option to unhide all jobs (along with an undo button)" /><br><br>
+<img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of Hide n' Seeks browser button, along with its popup, shows several buttons: &quot;Do not display hidden jobs&quot;, as well as a set of buttons below for unhiding all jobs, &quot;Unhide all jobs&quot;, and its undo button, &quot;Undo&quot;" /><br><br>
 
 ## **Supported Job Boards**
 
@@ -53,14 +55,23 @@ Note that the above permissions are written exactly as Chrome displays them to t
 
 ## **Release Notes**
 
-### Chrome
+### Chrome / Edge
+
+- 2.0.0
+
+  - Release date
+    - 2023-01-21
+  - New features
+    - Remove hidden jobs from display
+      - The Hide n' Seek browser button popup includes a new toggle button, "Do not display hidden jobs", that lets you remove hidden jobs from view, rather than hide them behind overlays.
+    - Hidden jobs tally
+      - Hide n' Seek now keeps a tally of what has been hidden next to the Hide n' Seek browser button. The tally increases or decreases by 1 each time a company is hidden or unhidden, respectively. It also increases or decreases by 1 if promoted or sponsored jobs are hidden or unhidden, respectively. A simple breakdown of the tally is displayed when your cursor hovers over the Hide n' Seek browser button.
+    - No more delay when unhiding all jobs
+      - Clicking the "Unhide all jobs" button (or its "Undo" button) now produces instantaneous results. Previously, there was a short delay.
+  - Bug fixes
+    - Multiple content-script and CSS injections
+      - A new script-check mechanism prevents multiple injections of content-scripts and stylesheets, which would occasionally lead to a "doubling" effect of the UI.
 
 - 1.0.0
-  - Release date: 2023-01-02
-  - Initial release
-
-### Edge
-
-- 1.0.0
-  - Release date: 2023-01-03
-  - Initial release
+  - Release date
+    - 2023-01-02
