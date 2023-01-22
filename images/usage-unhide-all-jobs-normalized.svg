@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg viewBox="211.286 426.7 690 730" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="211.286 426.7 690 800" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <filter id="filter-3" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%">
       <feMorphology in="SourceAlpha" result="dilated" operator="dilate" radius="1"/>
