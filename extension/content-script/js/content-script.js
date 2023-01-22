@@ -1,22 +1,5 @@
 (async () => {
   class Utilities {
-    static addCallBlockingForRepetitiveCallsButAllowLastCall(
-      functionToCallBlock,
-      minCallFreeTimeRequiredBeforeAllowingNextCall = NaN
-    ) {
-      let callBlockingTimer;
-
-      const functionWithCallBlockingAdded = (...args) => {
-        clearTimeout(callBlockingTimer);
-        callBlockingTimer = setTimeout(
-          () => functionToCallBlock(...args),
-          minCallFreeTimeRequiredBeforeAllowingNextCall
-        );
-      };
-
-      return functionWithCallBlockingAdded;
-    }
-
     static getStorageKeyName(jobBlockComponent, jobBoard, ...otherIdentifiers) {
       return [jobBlockComponent, jobBoard, ...otherIdentifiers].join(".");
     }
@@ -91,6 +74,80 @@
           childList: true,
         }
       );
+    }
+  }
+
+  class JobDisplayManager {
+    #jobBlockElementClosestSelector;
+    #removeHiddenJobs;
+    #removeHiddenJobsStorageKey;
+
+    constructor(jobBoardId, storage) {
+      const jobBlockElementClosestSelector = {
+        linkedIn: "li",
+        indeed: "li",
+      };
+      this.#jobBlockElementClosestSelector =
+        jobBlockElementClosestSelector[jobBoardId];
+
+      this.#removeHiddenJobsStorageKey = Utilities.getStorageKeyName(
+        this.constructor.name,
+        jobBoardId,
+        "removeHiddenJobs"
+      );
+
+      const storageIncludesRemoveHiddenJobsKey = Object.hasOwn(
+        storage,
+        this.#removeHiddenJobsStorageKey
+      );
+
+      this.#removeHiddenJobs = storageIncludesRemoveHiddenJobsKey
+        ? storage[this.#removeHiddenJobsStorageKey]
+        : false;
+    }
+
+    get removeHiddenJobs() {
+      return this.#removeHiddenJobs;
+    }
+
+    start() {
+      this.#startStorageListener();
+    }
+
+    #startStorageListener() {
+      chrome.storage.local.onChanged.addListener((storageChanges) => {
+        const containsChangesToRemoveHiddenJobs = Object.hasOwn(
+          storageChanges,
+          this.#removeHiddenJobsStorageKey
+        );
+
+        if (!containsChangesToRemoveHiddenJobs) return;
+
+        this.#removeHiddenJobs =
+          storageChanges[this.#removeHiddenJobsStorageKey].newValue;
+
+        const hiddenJobsBlockElements = document.querySelectorAll(
+          ".job-block-element[data-job-block-blocked-job='true']"
+        );
+
+        hiddenJobsBlockElements.forEach((hiddenJobBlockElement) =>
+          this.#removeHiddenJobs
+            ? this.removeHiddenJob(hiddenJobBlockElement)
+            : this.unremoveHiddenJob(hiddenJobBlockElement)
+        );
+      });
+    }
+
+    removeHiddenJob(jobBlockElement) {
+      jobBlockElement
+        .closest(this.#jobBlockElementClosestSelector)
+        .style.setProperty("display", "none");
+    }
+
+    unremoveHiddenJob(jobBlockElement) {
+      jobBlockElement
+        .closest(this.#jobBlockElementClosestSelector)
+        .style.removeProperty("display");
     }
   }
 
@@ -242,13 +299,27 @@
       return this.#jobAttributes[jobBoardId];
     }
 
+    static #blockedJobAttributeValueStorageKeys = new Set();
+    static addBlockedJobAttributeValueStorageKey(
+      blockedJobAttributeValueStorageKey
+    ) {
+      this.#blockedJobAttributeValueStorageKeys.add(
+        blockedJobAttributeValueStorageKey
+      );
+    }
+    static getBlockedJobAttributeValueStorageKeys() {
+      return [...this.#blockedJobAttributeValueStorageKeys];
+    }
+
     #jobAttribute;
     #jobBoardId;
     #jobRegistrar;
     #jobBlockElementSupplier;
     #jobBlockElementInserter;
     #jobElementDataGetter;
+    #jobDisplayManager;
     #blockedJobAttributeValuesStorageKey;
+    #blockedJobAttributeValues;
 
     constructor(
       jobAttribute,
@@ -256,7 +327,9 @@
       jobRegistrar,
       jobBlockElementSupplier,
       jobBlockElementInserter,
-      jobElementDataGetter
+      jobElementDataGetter,
+      jobDisplayManager,
+      storage
     ) {
       this.#jobAttribute = jobAttribute;
       this.#jobBoardId = jobBoardId;
@@ -264,6 +337,7 @@
       this.#jobBlockElementSupplier = jobBlockElementSupplier;
       this.#jobBlockElementInserter = jobBlockElementInserter;
       this.#jobElementDataGetter = jobElementDataGetter;
+      this.#jobDisplayManager = jobDisplayManager;
 
       this.#blockedJobAttributeValuesStorageKey = Utilities.getStorageKeyName(
         this.constructor.name,
@@ -271,20 +345,30 @@
         this.#jobAttribute,
         "blockedJobAttributeValues"
       );
+      this.#blockedJobAttributeValues = new Set(
+        storage[this.#blockedJobAttributeValuesStorageKey]
+      );
+
+      JobAttributeManager.addBlockedJobAttributeValueStorageKey(
+        this.#blockedJobAttributeValuesStorageKey
+      );
+
+      const initialStoragePropertiesToSet = [
+        this.#blockedJobAttributeValuesStorageKey,
+        `${this.#blockedJobAttributeValuesStorageKey}.backup`,
+      ]
+        .filter((storageKey) => !Object.hasOwn(storage, storageKey))
+        .map((storageKey) => [storageKey, []]);
+
+      if (initialStoragePropertiesToSet.length)
+        chrome.storage.local.set(
+          Object.fromEntries(initialStoragePropertiesToSet)
+        );
     }
 
-    #blockedJobAttributeValues = new Set();
-    async start() {
-      await this.#importBlockedJobAttributeValuesFromStorage();
+    start() {
       this.#subscribeToJobRegistrar();
       this.#startStorageListener();
-    }
-
-    async #importBlockedJobAttributeValuesFromStorage() {
-      const storage = await chrome.storage.sync.get();
-      const blockedJobAttributeValues =
-        storage[this.#blockedJobAttributeValuesStorageKey];
-      this.#blockedJobAttributeValues = new Set(blockedJobAttributeValues);
     }
 
     #subscribeToJobRegistrar() {
@@ -363,12 +447,12 @@
           jobAttributeToggleButtonElement;
       }
 
-      this.#updateJobBlockElementDataAttribute(jobBlockElement);
-
       this.#jobBlockElementInserter.insertJobBlockElement(
         jobElement,
         jobBlockElement
       );
+
+      this.#updateJobBlockElementDataAttribute(jobBlockElement);
 
       this.#jobElementToJobBlockElementsMap.set(jobElement, jobBlockElements);
     }
@@ -389,12 +473,19 @@
       const someJobAttributeValuesAreBlocked = jobBlockElement.querySelectorAll(
         "[data-job-attribute-value-blocked='true']"
       ).length;
+
       jobBlockElement.dataset.jobBlockBlockedJob =
         someJobAttributeValuesAreBlocked ? true : false;
+
+      if (!this.#jobDisplayManager.removeHiddenJobs) return;
+
+      someJobAttributeValuesAreBlocked
+        ? jobDisplayManager.removeHiddenJob(jobBlockElement)
+        : jobDisplayManager.unremoveHiddenJob(jobBlockElement);
     }
 
     #startStorageListener() {
-      chrome.storage.onChanged.addListener((changes) => {
+      chrome.storage.local.onChanged.addListener((changes) => {
         const containsChangesToThisJobAttribute = Object.hasOwn(
           changes,
           this.#blockedJobAttributeValuesStorageKey
@@ -449,7 +540,6 @@
       this.#updateJobBlockElementsWithJobAttributeValue(jobAttributeValue);
       if (!updateStorage) return;
       this.#changesPendingExport.set(jobAttributeValue, "block");
-      this.#clearBlockedJobAttributeValuesBackup();
       this.#exportBlockedJobAttributeValuesToStorage();
     }
 
@@ -494,72 +584,69 @@
       return jobElements;
     }
 
-    async #clearBlockedJobAttributeValuesBackup(
-      blockedJobAttributeValuesBackupFromStorage
-    ) {
-      await Promise.all(
-        Object.keys(
-          blockedJobAttributeValuesBackupFromStorage ||
-            (await this.#getBlockedJobAttributeValuesBackupFromStorage())
-        ).map((key) => chrome.storage.sync.remove(key))
-      );
-    }
-
-    async #getBlockedJobAttributeValuesBackupFromStorage(storage) {
-      return Object.fromEntries(
-        Object.entries(storage || (await chrome.storage.sync.get())).filter(
-          ([key]) =>
-            key.includes(this.#jobBoardId) &&
-            key.includes("blockedJobAttributeValues.backup")
+    #changesPendingExport = new Map();
+    #exportBlockedJobAttributeValuesToStorage() {
+      const clearedBackupProperties = Object.fromEntries(
+        JobAttributeManager.getBlockedJobAttributeValueStorageKeys().map(
+          (blockedJobAttributeValueStorageKey) => [
+            `${blockedJobAttributeValueStorageKey}.backup`,
+            [],
+          ]
         )
       );
-    }
 
-    #changesPendingExport = new Map();
-    #exportBlockedJobAttributeValuesToStorage =
-      Utilities.addCallBlockingForRepetitiveCallsButAllowLastCall(() => {
-        const storageableBlockedJobAttributeValues = Array.from(
-          this.#blockedJobAttributeValues
-        );
-        chrome.storage.sync.set({
-          [this.#blockedJobAttributeValuesStorageKey]:
-            storageableBlockedJobAttributeValues,
-        });
-        this.#changesPendingExport.clear();
-      }, 500);
+      const storageChanges = Object.assign(
+        {
+          [this.#blockedJobAttributeValuesStorageKey]: [
+            ...this.#blockedJobAttributeValues,
+          ],
+        },
+        clearedBackupProperties
+      );
+
+      chrome.storage.local.set(storageChanges);
+
+      this.#changesPendingExport.clear();
+    }
   }
 
-  const startContentScriptBeacon = () =>
-    chrome.runtime.onMessage.addListener(
-      ({ message }, sender, sendResponse) => {
-        if (message === "ping") sendResponse({ message: "ping" });
-      }
-    );
-  startContentScriptBeacon();
+  if (window.jobBlockContentScriptHasBeenInjected) return;
+
+  window.jobBlockContentScriptHasBeenInjected = true;
 
   const jobBoardId = JobBoardData.getJobBoardIdByHostname();
-  if (jobBoardId) {
-    const jobRegistrar = new JobRegistrar(jobBoardId);
-    const jobBlockElementSupplier = new JobBlockElementSupplier();
-    const jobBlockElementInserter = new JobBlockElementInserter(jobBoardId);
-    const jobAttributeManagers = JobAttributeManager.getJobAttributes(
-      jobBoardId
-    ).map(
-      (jobAttribute) =>
-        new JobAttributeManager(
-          jobAttribute,
-          jobBoardId,
-          jobRegistrar,
-          jobBlockElementSupplier,
-          jobBlockElementInserter,
-          new JobElementDataGetter(jobBoardId, jobAttribute)
-        )
-    );
-    await Promise.all(
-      jobAttributeManagers.map((jobAttributeManager) =>
-        jobAttributeManager.start()
+
+  if (!jobBoardId) return;
+
+  await chrome.runtime.sendMessage({ text: "inject css" });
+
+  const initialStorage = await chrome.storage.local.get();
+  const jobRegistrar = new JobRegistrar(jobBoardId);
+  const jobBlockElementSupplier = new JobBlockElementSupplier();
+  const jobBlockElementInserter = new JobBlockElementInserter(jobBoardId);
+  const jobDisplayManager = new JobDisplayManager(jobBoardId, initialStorage);
+  jobDisplayManager.start();
+  const jobAttributeManagers = JobAttributeManager.getJobAttributes(
+    jobBoardId
+  ).map(
+    (jobAttribute) =>
+      new JobAttributeManager(
+        jobAttribute,
+        jobBoardId,
+        jobRegistrar,
+        jobBlockElementSupplier,
+        jobBlockElementInserter,
+        new JobElementDataGetter(jobBoardId, jobAttribute),
+        jobDisplayManager,
+        initialStorage
       )
-    );
-    jobRegistrar.startRegisteringJobs();
-  }
+  );
+
+  await Promise.all(
+    jobAttributeManagers.map((jobAttributeManager) =>
+      jobAttributeManager.start()
+    )
+  );
+
+  jobRegistrar.startRegisteringJobs();
 })();
