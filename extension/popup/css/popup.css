@@ -22,14 +22,21 @@
     U+FEFF, U+FFFD;
 }
 
-html {
+* {
+  user-select: none;
+}
+
+body {
   background: hsl(0, 0%, 0%);
   color: hsl(0, 0%, 0%);
+  font-family: "Open Sans", sans-serif;
+  font-size: 100%;
   font-synthesis: none;
   line-height: 1.4;
 }
 
 main {
+  align-items: center;
   background: hsl(39, 77%, 83%);
   border-radius: 1rem;
   display: flex;
@@ -40,7 +47,6 @@ main {
 
 .hide-n-seek-title {
   color: hsl(0, 0%, 0%);
-  font-family: "Open Sans", sans-serif;
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0;
@@ -49,16 +55,17 @@ main {
 
 .logo-container {
   height: auto;
-  margin: 1rem auto;
-  width: 50%;
+  margin: 1rem;
+  width: 9rem;
 }
 
-.buttons-container {
-  background: hsl(30, 54.4%, 66.5%);
+.options-container {
+  background: hsl(30, 56.6%, 65.7%);
   border-radius: 1rem;
   display: grid;
   gap: 1rem;
   grid-template-columns: 2fr 1fr;
+  justify-items: center;
   padding: 1rem;
   width: 16rem;
 }
@@ -66,7 +73,6 @@ main {
 .job-board-name {
   grid-column: 1 / 3;
   grid-row: 1 / 2;
-  margin: 0 auto;
   width: 50%;
 }
 
@@ -76,10 +82,10 @@ button {
   color: hsl(0, 0%, 100%);
   cursor: pointer;
   font-family: "Open Sans", sans-serif;
+  font-size: calc(40px / 3);
   font-weight: 400;
   padding: 1rem;
   transition: opacity ease-out 200ms;
-  user-select: none;
   width: 100%;
 }
 
@@ -91,7 +97,7 @@ button:disabled {
 .option-button {
   background: hsl(0, 100%, 30%);
   grid-column: 1 / 2;
-  grid-row: 2 / 3;
+  grid-row: 3 / 4;
 }
 
 .option-button:hover {
@@ -105,7 +111,7 @@ button:disabled {
 .undo-button {
   background: hsl(0, 0%, 30%);
   grid-column: 2 / 3;
-  grid-row: 2 / 3;
+  grid-row: 3 / 4;
 }
 
 .undo-button:hover {
@@ -114,4 +120,51 @@ button:disabled {
 
 .undo-button:active {
   background: hsl(0, 0%, 40%);
+}
+
+.toggle-container {
+  border: 1px hsl(0, 100%, 30%) solid;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: grid;
+  font-size: calc(40px / 3);
+  gap: 1rem;
+  grid-auto-flow: column;
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
+  padding: 1rem;
+}
+
+.toggle-container[data-checked="false"] {
+  background: hsl(0, 0%, 100%, 0.1);
+  color: hsl(0, 100%, 30%);
+}
+
+.toggle-container[data-checked="false"]:hover {
+  background: hsl(0, 0%, 100%, 0.15);
+}
+
+.toggle-container[data-checked="false"]:active {
+  background: hsl(0, 0%, 100%, 0.2);
+}
+
+.toggle-container[data-checked="true"] {
+  background: hsl(0, 100%, 30%, 1);
+  color: hsl(0, 0%, 100%);
+}
+
+.toggle-container[data-checked="true"]:hover {
+  background: hsl(0, 100%, 30%, 0.85);
+}
+
+.toggle-container[data-checked="true"]:active {
+  background: hsl(0, 100%, 30%, 0.8);
+}
+
+input[type="checkbox"] {
+  margin: 0;
+}
+
+.display-none {
+  display: none;
 }
