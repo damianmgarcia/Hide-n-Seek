@@ -66,8 +66,9 @@ Note that the above permissions are written exactly as Chrome displays them to t
       - The Hide n' Seek browser button popup includes a new toggle button, "Do not display hidden jobs", that lets you remove hidden jobs from view, rather than hide them behind overlays.
     - Hidden jobs tally
       - Hide n' Seek now keeps a tally of what has been hidden next to the Hide n' Seek browser button. The tally increases or decreases by 1 each time a company is hidden or unhidden, respectively. It also increases or decreases by 1 if promoted or sponsored jobs are hidden or unhidden, respectively. A simple breakdown of the tally is displayed when your cursor hovers over the Hide n' Seek browser button.
+  - Improvements
     - No more delay when unhiding all jobs
-      - Clicking the "Unhide all jobs" button (or its "Undo" button) now produces instantaneous results. Previously, there was a short delay.
+      - Clicking the "Unhide all jobs" button (or its "Undo" button) now produces instantaneous results across all active tabs and windows. Previously, there was a short delay.
   - Bug fixes
     - Multiple content-script and CSS injections
       - A new script-check mechanism prevents multiple injections of content-scripts and stylesheets, which would occasionally lead to a "doubling" effect of the UI.
