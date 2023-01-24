@@ -57,8 +57,13 @@ Note that the above permissions are written exactly as Chrome displays them to t
 
 ### Chrome / Edge
 
+- 2.0.1
+  - Release date
+    - 2023-01-23
+  - Bug fixes
+    - Hide n' Seek UI not showing on LinkedIn
+      - A MutationObserver was called to observe for mutations on an element that, sometimes, did not yet exist in the DOM. This was fixed with the help of a function that waits for the necessary element to populate the DOM before observing it.
 - 2.0.0
-
   - Release date
     - 2023-01-21
   - New features
@@ -72,7 +77,6 @@ Note that the above permissions are written exactly as Chrome displays them to t
   - Bug fixes
     - Multiple content-script and CSS injections
       - A new script-check mechanism prevents multiple injections of content-scripts and stylesheets, which would occasionally lead to a "doubling" effect of the UI.
-
 - 1.0.0
   - Release date
     - 2023-01-02
