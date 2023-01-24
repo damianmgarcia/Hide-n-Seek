@@ -1,5 +1,27 @@
 (async () => {
   class Utilities {
+    static awaitElement({ selector = "" } = {}) {
+      return new Promise((resolve) => {
+        if (document.querySelector(selector)) return resolve(selector);
+
+        const documentMutationObserver = new MutationObserver((records) => {
+          const elementFound = records.find((record) =>
+            record.target.matches(selector)
+          );
+
+          if (elementFound) {
+            documentMutationObserver.disconnect();
+            return resolve(selector);
+          }
+        });
+
+        documentMutationObserver.observe(document, {
+          childList: true,
+          subtree: true,
+        });
+      });
+    }
+
     static getStorageKeyName(jobBlockComponent, jobBoard, ...otherIdentifiers) {
       return [jobBlockComponent, jobBoard, ...otherIdentifiers].join(".");
     }
@@ -62,7 +84,11 @@
       jobElements.forEach((jobElement) => this.#registerJob(jobElement));
     });
 
-    startRegisteringJobs() {
+    async startRegisteringJobs() {
+      await Utilities.awaitElement({
+        selector: this.#selectors.jobElementsContainer,
+      });
+
       document
         .querySelectorAll(this.#selectors.jobElement)
         .forEach((jobElement) => this.#registerJob(jobElement));
