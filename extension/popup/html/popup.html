@@ -20,7 +20,7 @@
   </head>
   <body>
     <main>
-      <div class="logo-container">
+      <div class="branding-container">
         <img
           alt="A simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. This is the logo for the Hide n' Seek browser extension."
           src="/images/hide-n-seek-icon.svg"
@@ -29,8 +29,33 @@
       </div>
       <div class="options-container display-none">
         <img class="job-board-name" />
-        <button disabled class="option-button">Unhide all jobs</button>
-        <button disabled class="undo-button">Undo</button>
+        <div class="hidden-jobs-container">
+          <div class="hidden-jobs-list-container">
+            <div class="nothing-hidden-message">No hidden jobs</div>
+            <div class="collapse-expand-button" data-scrollable="false">
+              <svg
+                viewBox="7.95 3.525 8.113 17.05"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g class="top-half">
+                  <path
+                    d="M 8.225 8.325 C 8.042 8.142 7.95 7.9 7.95 7.6 C 7.95 7.3 8.042 7.058 8.225 6.875 L 11.3 3.8 C 11.4 3.7 11.508 3.629 11.625 3.587 C 11.742 3.546 11.867 3.525 12 3.525 C 12.133 3.525 12.263 3.546 12.388 3.587 C 12.513 3.629 12.617 3.7 12.7 3.8 L 15.8 6.9 C 15.983 7.083 16.071 7.321 16.062 7.612 C 16.054 7.904 15.958 8.142 15.775 8.325 C 15.592 8.508 15.35 8.6 15.05 8.6 C 14.75 8.6 14.508 8.508 14.325 8.325 L 12 6 L 9.65 8.35 C 9.467 8.533 9.229 8.621 8.938 8.613 C 8.646 8.604 8.408 8.508 8.225 8.325 L 8.225 8.325 Z"
+                  />
+                </g>
+                <g class="bottom-half">
+                  <path
+                    d="M 12 20.575 C 11.867 20.575 11.742 20.55 11.625 20.5 C 11.508 20.45 11.4 20.383 11.3 20.3 L 8.225 17.225 C 8.042 17.042 7.95 16.8 7.95 16.5 C 7.95 16.2 8.042 15.958 8.225 15.775 C 8.408 15.592 8.65 15.5 8.95 15.5 C 9.25 15.5 9.492 15.592 9.675 15.775 L 12 18.1 L 14.35 15.75 C 14.533 15.567 14.771 15.479 15.062 15.488 C 15.354 15.496 15.592 15.592 15.775 15.775 C 15.958 15.958 16.05 16.2 16.05 16.5 C 16.05 16.8 15.958 17.042 15.775 17.225 L 12.7 20.3 C 12.617 20.383 12.513 20.45 12.388 20.5 C 12.263 20.55 12.133 20.575 12 20.575 Z"
+                  />
+                </g>
+              </svg>
+            </div>
+            <div class="hidden-jobs-list"></div>
+          </div>
+          <div class="unhide-all-and-undo-buttons">
+            <button disabled class="option-button">Unhide all jobs</button>
+            <button disabled class="undo-button">Undo</button>
+          </div>
+        </div>
         <label class="toggle-container">
           Do not display hidden jobs
           <input type="checkbox" name="remove-hidden-jobs" />
