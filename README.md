@@ -18,11 +18,12 @@ It also lets users hide _sponsored jobs_.
 
 <img src="/images/usage-unhide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of unhiding a job' /><br><br>
 
-- Click the Hide n' Seek browser button for some additional options:
-  - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays.
+- Click the Hide n' Seek browser button for additional options:
+  - Scroll through your list of hidden jobs and click a hidden job's name to remove it.
   - Click the "Unhide all jobs" button to reset your hidden jobs list. This action can be undone by clicking the "Undo" button.
+  - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays.
 
-<img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of Hide n' Seeks browser button, along with its popup, shows several buttons: &quot;Do not display hidden jobs&quot;, as well as a set of buttons below for unhiding all jobs, &quot;Unhide all jobs&quot;, and its undo button, &quot;Undo&quot;" /><br><br>
+<img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of Hide n' Seeks browser button, along with its popup, shows a list of hidden jobs and controls for managing the list." /><br><br>
 
 ## **Supported Job Boards**
 
@@ -57,6 +58,12 @@ Note that the above permissions are written exactly as Chrome displays them to t
 
 ### Chrome / Edge
 
+- 3.0.0
+  - Release date
+    - 2023-02-01
+  - New features
+    - View and manage hidden jobs from popup
+      - The Hide n' Seek browser button popup includes a new list of hidden jobs. It allows you to easily see and remove jobs that you have hidden.
 - 2.0.1
   - Release date
     - 2023-01-23
