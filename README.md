@@ -64,6 +64,9 @@ Note that the above permissions are written exactly as Chrome displays them to t
   - New features
     - View and manage hidden jobs from popup
       - The Hide n' Seek browser button popup includes a new list of hidden jobs. It allows you to easily see and remove jobs that you have hidden.
+  - Improvements
+    - Refined user interface and user experience
+      - The behaviors, colors, and animations of user interface elements have been updated.
 - 2.0.1
   - Release date
     - 2023-01-23
