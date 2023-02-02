@@ -27,7 +27,7 @@
     }
   }
 
-  class JobBoardData {
+  class JobBoards {
     static #jobBoards = [
       {
         hostname: "www.linkedin.com",
@@ -38,6 +38,7 @@
         jobBoardId: "indeed",
       },
     ];
+
     static getJobBoardIdByHostname(hostname = location.hostname) {
       return this.#jobBoards.find((jobBoard) => jobBoard.hostname === hostname)
         ?.jobBoardId;
@@ -138,6 +139,7 @@
 
     start() {
       this.#startStorageListener();
+      return this;
     }
 
     #startStorageListener() {
@@ -453,6 +455,9 @@
             toggleButtonText
           );
 
+        jobAttributeToggleButtonElement.dataset.jobAttribute =
+          this.#jobAttribute;
+
         const jobAttributeValueIsBlocked =
           this.#getThisJobAttributeValueIsBlocked(jobAttributeValue);
 
@@ -511,15 +516,15 @@
     }
 
     #startStorageListener() {
-      chrome.storage.local.onChanged.addListener((changes) => {
+      chrome.storage.local.onChanged.addListener((storageChanges) => {
         const containsChangesToThisJobAttribute = Object.hasOwn(
-          changes,
+          storageChanges,
           this.#blockedJobAttributeValuesStorageKey
         );
         if (!containsChangesToThisJobAttribute) return;
 
         const blockedJobAttributeValuesFromStorage = new Set(
-          changes[this.#blockedJobAttributeValuesStorageKey].newValue
+          storageChanges[this.#blockedJobAttributeValuesStorageKey].newValue
         );
 
         const mergedjobAttributeValueChanges = new Map([
@@ -640,7 +645,7 @@
 
   window.jobBlockContentScriptHasBeenInjected = true;
 
-  const jobBoardId = JobBoardData.getJobBoardIdByHostname();
+  const jobBoardId = JobBoards.getJobBoardIdByHostname();
 
   if (!jobBoardId) return;
 
@@ -650,8 +655,10 @@
   const jobRegistrar = new JobRegistrar(jobBoardId);
   const jobBlockElementSupplier = new JobBlockElementSupplier();
   const jobBlockElementInserter = new JobBlockElementInserter(jobBoardId);
-  const jobDisplayManager = new JobDisplayManager(jobBoardId, initialStorage);
-  jobDisplayManager.start();
+  const jobDisplayManager = new JobDisplayManager(
+    jobBoardId,
+    initialStorage
+  ).start();
   const jobAttributeManagers = JobAttributeManager.getJobAttributes(
     jobBoardId
   ).map(

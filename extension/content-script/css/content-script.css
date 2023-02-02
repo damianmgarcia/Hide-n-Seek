@@ -37,7 +37,7 @@
   .job-block-blocked-job-overlay {
   opacity: 1;
   pointer-events: auto;
-  transition: opacity 200ms;
+  transition: opacity 200ms ease-out;
   user-select: none;
   z-index: 2;
 }
@@ -46,7 +46,7 @@
   .job-block-blocked-job-overlay {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 200ms 200ms;
+  transition: opacity 200ms ease-out 200ms;
   z-index: 1;
 }
 
@@ -60,7 +60,7 @@
   .job-block-unblocked-job-overlay {
   opacity: 0;
   pointer-events: auto;
-  transition: opacity 200ms;
+  transition: opacity 200ms ease-out;
   z-index: 1;
 }
 
@@ -68,7 +68,7 @@
   .job-block-unblocked-job-overlay {
   opacity: 1;
   pointer-events: none;
-  transition: opacity 200ms 200ms;
+  transition: opacity 200ms ease-out 200ms;
   z-index: 2;
 }
 
@@ -81,15 +81,16 @@
   margin: 10px;
   padding: 15px;
   pointer-events: auto;
+  transition: background-color 200ms ease-out;
   width: 18px;
 }
 
 .job-block-block-button:hover {
-  background: hsl(0, 0%, 50%, 0.3);
+  background: hsl(0, 0%, 50%, 0.45);
 }
 
 .job-block-block-button:active {
-  background: hsl(0, 0%, 50%, 0.35);
+  background: hsl(0, 0%, 50%, 0.55);
 }
 
 .job-block-block-button-icon {
@@ -104,6 +105,7 @@
   margin: 10px;
   min-width: 4em;
   padding: 20px;
+  transition: background-color 200ms ease-out;
   width: max-content;
   user-select: none;
 }
@@ -114,11 +116,11 @@
 }
 
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="false"]:hover {
-  background: hsl(0, 0%, 100%, 0.05);
+  background: hsl(0, 0%, 100%, 0.2);
 }
 
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="false"]:active {
-  background: hsl(0, 0%, 100%, 0.1);
+  background: hsl(0, 0%, 100%, 0.3);
 }
 
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"] {
@@ -127,11 +129,41 @@
 }
 
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"]:hover {
-  background: hsl(0, 0%, 100%, 0.95);
+  background: hsl(0, 0%, 100%, 0.8);
 }
 
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"]:active {
-  background: hsl(0, 0%, 100%, 0.9);
+  background: hsl(0, 0%, 100%, 0.7);
+}
+
+.job-block-attribute-toggle-button[data-job-attribute="promotionalStatus"] {
+  border: 1px hsl(60, 50%, 80%, 1) solid;
+}
+
+.job-block-attribute-toggle-button[data-job-attribute-value-blocked="false"][data-job-attribute="promotionalStatus"] {
+  background: hsl(60, 50%, 80%, 0);
+  color: hsl(60, 50%, 80%, 1);
+}
+
+.job-block-attribute-toggle-button[data-job-attribute-value-blocked="false"][data-job-attribute="promotionalStatus"]:hover {
+  background: hsl(60, 50%, 80%, 0.2);
+}
+
+.job-block-attribute-toggle-button[data-job-attribute-value-blocked="false"][data-job-attribute="promotionalStatus"]:active {
+  background: hsl(60, 50%, 80%, 0.3);
+}
+
+.job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"][data-job-attribute="promotionalStatus"] {
+  background: hsl(60, 50%, 80%, 1);
+  color: hsl(0, 0%, 0%);
+}
+
+.job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"][data-job-attribute="promotionalStatus"]:hover {
+  background: hsl(60, 50%, 80%, 0.8);
+}
+
+.job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"][data-job-attribute="promotionalStatus"]:active {
+  background: hsl(60, 50%, 80%, 0.7);
 }
 
 .job-block-attribute-toggle-button-text {
@@ -140,7 +172,7 @@
   position: relative;
   text-align: center;
   text-overflow: ellipsis;
-  transition: transform 200ms;
+  transition: transform 200ms ease-out;
   white-space: nowrap;
 }
 
@@ -173,11 +205,11 @@
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="false"]
   .job-block-attribute-toggle-button-text::after {
   opacity: 0;
-  transition: opacity 200ms;
+  transition: opacity 200ms ease-out;
 }
 
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"]
   .job-block-attribute-toggle-button-text::after {
   opacity: 1;
-  transition: opacity 200ms 100ms;
+  transition: opacity 200ms 100ms ease-out;
 }

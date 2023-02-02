@@ -26,23 +26,35 @@
   user-select: none;
 }
 
+html {
+  --document-width: 21rem;
+  --scrollbar-width: 10px;
+  height: 37.5rem;
+  width: var(--document-width);
+}
+
 body {
+  --body-margin: 0.5rem;
   background: hsl(0, 0%, 0%);
   color: hsl(0, 0%, 0%);
   font-family: "Open Sans", sans-serif;
   font-size: 100%;
   font-synthesis: none;
+  height: calc(100% - 1rem);
   line-height: 1.4;
+  margin: var(--body-margin);
 }
 
 main {
+  --main-padding: 1rem;
   align-items: center;
   background: hsl(39, 77%, 83%);
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem;
+  height: calc(100% - 2rem);
+  padding: var(--main-padding);
 }
 
 .hide-n-seek-title {
@@ -53,27 +65,339 @@ main {
   text-align: center;
 }
 
-.logo-container {
-  height: auto;
+.branding-container {
+  height: 155.188px;
   margin: 1rem;
+  transition: height 400ms ease;
+}
+
+main.expanded-list .branding-container {
+  height: 16px;
+  transition: height 400ms ease 200ms;
+}
+
+.branding-container > img {
+  left: 0;
+  position: absolute;
+  scale: 1;
+  top: 0;
+  transform: translate3d(
+    calc((var(--document-width) * 0.5) - 50%),
+    calc(var(--body-margin) + var(--main-padding)),
+    0
+  );
+  transform-origin: top left;
+  transition: 400ms ease 200ms;
+  transition-property: scale, transform;
   width: 9rem;
 }
 
+main.expanded-list .branding-container > img {
+  --scale: calc(1 / 3);
+  --inverse-scale: calc(1 / var(--scale));
+  scale: var(--scale);
+  transform: translate3d(
+    calc(
+      (var(--document-width) * 0.5) * var(--inverse-scale) - 100% -
+        var(--body-margin) * var(--inverse-scale) - 35.550749999999994px *
+        var(--inverse-scale)
+    ),
+    calc(
+      var(--body-margin) * var(--inverse-scale) + var(--main-padding) *
+        var(--inverse-scale)
+    ),
+    0
+  );
+  transition: 400ms ease;
+}
+
+.branding-container > h1 {
+  left: 0;
+  line-height: 1;
+  position: absolute;
+  top: 0;
+  transform: translate3d(
+    calc((var(--document-width) * 0.5) - 50%),
+    calc(4px + 16px + 144px + 100%),
+    0
+  );
+  transition: transform 400ms ease;
+}
+
+main.expanded-list .branding-container > h1 {
+  transform: translate3d(
+    calc((var(--document-width) * 0.5) + 8px - 35.550749999999994px),
+    calc(2px + 8px + 16px + 24px - 10px),
+    0
+  );
+  transition: transform 400ms ease 200ms;
+}
+
 .options-container {
+  align-items: center;
   background: hsl(30, 56.6%, 65.7%);
   border-radius: 1rem;
-  display: grid;
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
   gap: 1rem;
-  grid-template-columns: 2fr 1fr;
   justify-items: center;
   padding: 1rem;
-  width: 16rem;
+  width: calc(100% - 2rem);
 }
 
 .job-board-name {
+  width: 50%;
+}
+
+.hidden-jobs-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 1rem;
+  width: 100%;
+}
+
+.hidden-jobs-list-container {
+  align-content: center;
+  background: hsl(0, 0%, 100%, 0.1);
+  border-radius: 1rem;
+  display: grid;
+  flex: 1 0 121px;
+  overflow: hidden;
+  position: relative;
+  transition: background-color 200ms ease-out;
+}
+
+.hidden-jobs-list-container:hover {
+  background: hsl(0, 0%, 100%, 0.15);
+}
+
+.nothing-hidden-message {
+  --height: 1rem;
+  --padding: 0.5rem;
+  --width: 111px;
+  align-items: center;
+  background: hsl(0, 0%, 100%, 0.3);
+  border-radius: 0.5rem;
+  display: grid;
+  font-size: calc(40px / 3);
+  height: var(--height);
+  left: calc(50% - var(--width) * 0.5 - var(--padding));
+  line-height: 1;
+  padding: var(--padding);
+  position: absolute;
+  text-align: center;
+  top: calc(50% - var(--height) * 0.5 - var(--padding));
+  width: var(--width);
+}
+
+.nothing-hidden-message[data-list-is-empty="true"] {
+  opacity: 1;
+  transition: opacity 200ms ease;
+}
+
+.nothing-hidden-message[data-list-is-empty="false"] {
+  opacity: 0;
+}
+
+.collapse-expand-button {
+  --height: 16.8125px;
+  --padding: 0.25rem;
+  --width: 0.5rem;
+  background: hsl(0, 0%, 0%, 0.2);
+  border-radius: 1rem;
+  display: grid;
+  height: var(--height);
+  left: calc(
+    (var(--scrollbar-width) + 1.5rem) * 0.5 -
+      (var(--width) + var(--padding) * 2) * 0.5
+  );
+  padding: var(--padding);
+  position: absolute;
+  top: calc(50% - ((var(--height) + var(--padding)) * 0.5));
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
+  width: var(--width);
+  z-index: 1;
+}
+
+.collapse-expand-button[data-list-is-scrollable="true"] {
+  opacity: 1;
+  pointer-events: all;
+}
+
+main:not(.expanded-list)
+  .collapse-expand-button[data-list-is-scrollable="false"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bottom-half,
+.top-half {
+  transition: transform 200ms ease 600ms;
+}
+
+main.expanded-list .bottom-half,
+main.expanded-list .top-half {
+  transition: transform 400ms ease 600ms;
+}
+
+main.expanded-list .collapse-expand-button .bottom-half {
+  transform: matrix(1, 0, 0, -1, 0, 34.062374);
+}
+
+main.expanded-list .collapse-expand-button .top-half {
+  transform: matrix(1, 0, 0, -1, 0, 14.1385);
+}
+
+.collapse-expand-button:hover {
+  background: hsl(0, 0%, 0%, 0.25);
+}
+
+.collapse-expand-button:active {
+  background: hsl(0, 0%, 0%, 0.3);
+}
+
+.collapse-expand-button .bottom-half,
+.collapse-expand-button .top-half {
+  fill: hsl(0, 0%, 0%, 0.5);
+}
+
+.collapse-expand-button:hover .bottom-half,
+.collapse-expand-button:hover .top-half {
+  fill: hsl(0, 0%, 0%, 0.9);
+}
+
+.collapse-expand-button:active .bottom-half,
+.collapse-expand-button:active .top-half {
+  fill: hsl(0, 0%, 0%, 1);
+}
+
+.hidden-jobs-list {
+  display: grid;
+  gap: 0.5rem;
+  grid-auto-flow: row;
+  justify-items: center;
+  min-height: 121px;
+  overflow-y: auto;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  scrollbar-gutter: stable both-edges;
+}
+
+.hidden-job-container {
+  background: hsl(0, 0%, 100%, 0.3);
+  border-radius: 1rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: grid;
+  font-family: "Open Sans", sans-serif;
+  font-size: calc(40px / 3);
+  font-weight: 400;
+  grid-template-columns: 1fr auto;
+  height: 35px;
+  justify-items: center;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  overflow: hidden;
+  padding: 0.5rem;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
+  width: calc(100% - (1rem + 2rem));
+}
+
+.hidden-job-container:hover {
+  background: hsl(0, 0%, 100%, 0.5);
+}
+
+.hidden-job-container:active {
+  background: hsl(0, 0%, 100%, 0.6);
+}
+
+.hidden-job-container[data-job-attribute="promotionalStatus"] {
+  background: hsl(60, 100%, 50%, 0.3);
+}
+
+.hidden-job-container[data-job-attribute="promotionalStatus"]:hover {
+  background: hsl(60, 100%, 50%, 0.5);
+}
+
+.hidden-job-container[data-job-attribute="promotionalStatus"]:active {
+  background: hsl(60, 100%, 50%, 0.6);
+}
+
+.hidden-job-container:first-child {
+  align-self: end;
+}
+
+.hidden-job-container:last-child {
+  align-self: start;
+}
+
+.hidden-job-container:only-child {
+  align-self: center;
+}
+
+.hidden-job-container.remove {
+  height: 0;
+  margin-bottom: 0;
+  margin-top: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.hidden-job-name {
   grid-column: 1 / 3;
   grid-row: 1 / 2;
-  width: 50%;
+  max-width: 15ch;
+  overflow: clip visible;
+  position: relative;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hidden-job-container img {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  height: 100%;
+  max-width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(0, 0%, 0%, 0.2);
+  border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-track:hover {
+  background: hsl(0, 0%, 0%, 0.25);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(0, 0%, 0%, 0.5);
+  border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(0, 0%, 0%, 1);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.unhide-all-and-undo-buttons {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: row;
+  grid-template-columns: 2fr 1fr;
 }
 
 button {
@@ -84,8 +408,10 @@ button {
   font-family: "Open Sans", sans-serif;
   font-size: calc(40px / 3);
   font-weight: 400;
+  height: 50px;
   padding: 1rem;
-  transition: opacity ease-out 200ms;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
   width: 100%;
 }
 
@@ -96,73 +422,73 @@ button:disabled {
 
 .option-button {
   background: hsl(0, 100%, 30%);
-  grid-column: 1 / 2;
-  grid-row: 3 / 4;
 }
 
 .option-button:hover {
-  background: hsl(0, 100%, 35%);
+  background: hsl(0, 100%, 40%);
 }
 
 .option-button:active {
-  background: hsl(0, 100%, 40%);
+  background: hsl(0, 100%, 45%);
 }
 
 .undo-button {
   background: hsl(0, 0%, 30%);
-  grid-column: 2 / 3;
-  grid-row: 3 / 4;
 }
 
 .undo-button:hover {
-  background: hsl(0, 0%, 35%);
-}
-
-.undo-button:active {
   background: hsl(0, 0%, 40%);
 }
 
+.undo-button:active {
+  background: hsl(0, 0%, 45%);
+}
+
 .toggle-container {
-  border: 1px hsl(0, 100%, 30%) solid;
+  align-items: center;
   border-radius: 0.5rem;
   cursor: pointer;
   display: grid;
   font-size: calc(40px / 3);
   gap: 1rem;
   grid-auto-flow: column;
-  grid-column: 1 / 3;
-  grid-row: 2 / 3;
-  padding: 1rem;
+  height: 50px;
+  justify-content: center;
+  transition: 200ms ease-out;
+  transition-property: background-color, color;
+  width: 100%;
 }
 
 .toggle-container[data-checked="false"] {
   background: hsl(0, 0%, 100%, 0.1);
-  color: hsl(0, 100%, 30%);
+  color: hsl(0, 0%, 0%);
 }
 
 .toggle-container[data-checked="false"]:hover {
-  background: hsl(0, 0%, 100%, 0.15);
+  background: hsl(0, 0%, 100%, 0.3);
 }
 
 .toggle-container[data-checked="false"]:active {
-  background: hsl(0, 0%, 100%, 0.2);
+  background: hsl(0, 0%, 100%, 0.4);
 }
 
 .toggle-container[data-checked="true"] {
-  background: hsl(0, 100%, 30%, 1);
+  background: hsl(0, 100%, 30%);
   color: hsl(0, 0%, 100%);
 }
 
 .toggle-container[data-checked="true"]:hover {
-  background: hsl(0, 100%, 30%, 0.85);
+  background: hsl(0, 100%, 40%);
 }
 
 .toggle-container[data-checked="true"]:active {
-  background: hsl(0, 100%, 30%, 0.8);
+  background: hsl(0, 100%, 45%);
 }
 
 input[type="checkbox"] {
+  height: 12px;
   margin: 0;
+  width: 12px;
 }
 
 .display-none {
