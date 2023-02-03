@@ -187,6 +187,7 @@
 
       const jobBlockElement = document.createElement("div");
       jobBlockElement.classList.add("job-block-element");
+      jobBlockElement.style.setProperty("display", "none");
 
       const jobBlockOverlayBlockedJob = document.createElement("div");
       jobBlockOverlayBlockedJob.classList.add("job-block-blocked-job-overlay");

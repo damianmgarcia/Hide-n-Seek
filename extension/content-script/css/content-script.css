@@ -1,5 +1,6 @@
 .job-block-element {
   all: initial;
+  display: block !important;
   font-family: revert;
   height: 100%;
   left: 0;
