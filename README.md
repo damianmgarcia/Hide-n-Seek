@@ -62,7 +62,7 @@ To grant the permissions that Hide n' Seek needs, Firefox users must perform the
 1. Click the menu button
 2. Click "Add-ons and themes"
 
-<img src="/images/firefox-permissions-setup-1-normalized.svg" width="100%" alt="A screenshot of Firefox that corresponds with step 1 and step 2" /><br><br>
+<img src="/images/firefox-permissions-setup-1-normalized.svg" width="28.188585607940446650124069478908%" alt="A screenshot of Firefox that corresponds with step 1 and step 2" /><br><br>
 
 3. Click "Extensions"
 4. Click the "..." button
@@ -73,7 +73,7 @@ To grant the permissions that Hide n' Seek needs, Firefox users must perform the
 6. Click "Permissions"
 7. Turn on "Access your data for sites in the [Job Board URL] domain" for the job boards that you want Hide n' Seek to work on
 
-<img src="/images/firefox-permissions-setup-3-normalized.svg" width="100%" alt="A screenshot of Firefox that corresponds with step 6 and step 7" /><br><br>
+<img src="/images/firefox-permissions-setup-3-normalized.svg" width="67.344913151364764267990074441687%" alt="A screenshot of Firefox that corresponds with step 6 and step 7" /><br><br>
 
 Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see the Hide n' Seek "hide" buttons on your job search list, reload the page by clicking Firefox's reload button._**
 
