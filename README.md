@@ -75,6 +75,8 @@ To grant the permissions that Hide n' Seek needs, Firefox users must perform the
 
 <img src="/images/firefox-permissions-setup-3-normalized.svg" width="100%" alt="A screenshot of Firefox that corresponds with step 6 and step 7" /><br><br>
 
+Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see the Hide n' Seek "hide" buttons on your job search list, reload the page by clicking Firefox's reload button._**
+
 ## **Releases**
 
 - [Chrome](https://chrome.google.com/webstore/detail/hide-n-seek/agghbaheofcoecndkbflbnggdjcmiaml)
