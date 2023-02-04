@@ -81,7 +81,6 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
 
 - [Chrome](https://chrome.google.com/webstore/detail/hide-n-seek/agghbaheofcoecndkbflbnggdjcmiaml)
 - [Edge](https://microsoftedge.microsoft.com/addons/detail/hide-n-seek/lnfbapfcdippajlhlmefaabhkdbmgiog)
-- Firefox (pending publication)
 
 ## **Release Notes**
 
@@ -90,7 +89,8 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
     - 2023-02-03
   - Improvements
     - Added Firefox support
-      - Firefox 109, released 2023-01-17, added support for Manifest Version 3 (MV3) extensions, such as Hide n' Seek. Although Hide n' Seek now works on Firefox, [additional steps are required](#firefox-permissions) to grant the permissions that Hide n' Seek needs.
+      - Firefox 109, released 2023-01-17, added support for Manifest Version 3 (MV3) extensions, such as Hide n' Seek.
+      - [Firefox's handling of permissions for MV3 extensions, such as Hide n' Seek, is broken](https://github.com/w3c/webextensions/issues/119#issuecomment-965799707). Unlike other browsers, Firefox does not ask users to grant the permissions that Hide n' Seek needs during installation, nor does it make it obvious enough to users that permissions are needed even when they search for jobs on a supported job board. [Instead, users must take additional steps after installation of Hide n' Seek to grant the permissions that Hide n' Seek needs](#firefox-permissions). This is an unfortunate user experience. Therefore, the publication of Hide n' Seek to Firefox Add-ons has been suspended until Firefox resolves this issue.
 - 3.0.0
   - Release date
     - 2023-02-01
