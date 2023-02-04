@@ -49,15 +49,46 @@ Hide n' Seek needs the following permissions to work:
 
 Note that the above permissions are written exactly as Chrome displays them to the user during installation of Hide n' Seek. Other browsers will ask for the same permissions, but the wording may vary.
 
+### **Firefox Permissions**
+
+Unlike Chrome and Edge, Firefox does not ask for the permissions that Hide n' Seek needs during installation.
+
+Firefox incorrectly labels the permissions that Hide n' Seek needs as "Optional permissions for added functionality."
+
+**_However, these permissions must be granted or Hide n' Seek will not work._**
+
+To grant the permissions that Hide n' Seek needs, Firefox users must perform the following steps:
+
+1. Click the menu button
+2. Click "Add-ons and themes"
+
+<img src="/images/firefox-permissions-setup-1-normalized.svg" width="100%" alt="A screenshot of Firefox that corresponds with step 1 and step 2" /><br><br>
+
+3. Click "Extensions"
+4. Click the "..." button
+5. Click "Manage"
+
+<img src="/images/firefox-permissions-setup-2-normalized.svg" width="100%" alt="A screenshot of Firefox that corresponds with step 3, step 4, and step 5" /><br><br>
+
+6. Click "Permissions"
+7. Turn on "Access your data for sites in the [Job Board URL] domain" for the job boards that you want Hide n' Seek to work on
+
+<img src="/images/firefox-permissions-setup-3-normalized.svg" width="100%" alt="A screenshot of Firefox that corresponds with step 6 and step 7" /><br><br>
+
 ## **Releases**
 
 - [Chrome](https://chrome.google.com/webstore/detail/hide-n-seek/agghbaheofcoecndkbflbnggdjcmiaml)
 - [Edge](https://microsoftedge.microsoft.com/addons/detail/hide-n-seek/lnfbapfcdippajlhlmefaabhkdbmgiog)
+- Firefox (pending publication)
 
 ## **Release Notes**
 
-### Chrome / Edge
-
+- 3.1.0
+  - Release date
+    - 2023-02-03
+  - Improvements
+    - Added Firefox support
+      - Firefox 109, released 2023-01-17, added support for Manifest Version 3 (MV3) extensions, such as Hide n' Seek. Although Hide n' Seek now works on Firefox, [additional steps are required](#firefox-permissions) to grant the permissions that Hide n' Seek needs.
 - 3.0.0
   - Release date
     - 2023-02-01
