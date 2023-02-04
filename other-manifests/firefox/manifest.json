@@ -22,12 +22,17 @@
     }
   },
   "background": {
-    "service_worker": "/background/js/background.js"
+    "scripts": ["/background/js/background.js"]
   },
   "web_accessible_resources": [
     {
       "resources": ["/images/hide-button-icon.svg"],
       "matches": ["https://*.linkedin.com/*", "https://*.indeed.com/*"]
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "damian@outlook.com"
+    }
+  }
 }

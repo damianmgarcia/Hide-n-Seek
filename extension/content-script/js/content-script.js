@@ -187,6 +187,7 @@
 
       const jobBlockElement = document.createElement("div");
       jobBlockElement.classList.add("job-block-element");
+      jobBlockElement.style.setProperty("display", "none");
 
       const jobBlockOverlayBlockedJob = document.createElement("div");
       jobBlockOverlayBlockedJob.classList.add("job-block-blocked-job-overlay");
@@ -240,10 +241,26 @@
         "job-block-attribute-toggle-button-text"
       );
       jobAttributeToggleButtonTextElement.textContent = toggleButtonText;
+      jobAttributeToggleButtonTextElement.setAttribute(
+        "title",
+        toggleButtonText
+      );
+
+      const jobAttributeToggleButtonHiddenIndicator =
+        document.createElement("div");
+      jobAttributeToggleButtonHiddenIndicator.classList.add(
+        "job-block-attribute-toggle-button-hidden-indicator"
+      );
+      jobAttributeToggleButtonHiddenIndicator.textContent = "Hidden";
 
       jobAttributeToggleButtonElement.insertAdjacentElement(
-        "afterbegin",
+        "beforeend",
         jobAttributeToggleButtonTextElement
+      );
+
+      jobAttributeToggleButtonElement.insertAdjacentElement(
+        "beforeend",
+        jobAttributeToggleButtonHiddenIndicator
       );
 
       return jobAttributeToggleButtonElement;

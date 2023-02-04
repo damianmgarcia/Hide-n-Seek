@@ -1,5 +1,6 @@
 .job-block-element {
   all: initial;
+  display: block !important;
   font-family: revert;
   height: 100%;
   left: 0;
@@ -28,8 +29,8 @@
 }
 
 .job-block-blocked-job-overlay {
-  background: hsl(0, 0%, 50%, 0.75);
   backdrop-filter: blur(10px);
+  background: hsl(0, 0%, 50%, 0.75);
   justify-content: center;
 }
 
@@ -51,8 +52,8 @@
 }
 
 .job-block-unblocked-job-overlay {
-  background: hsl(0, 0%, 50%, 0);
   backdrop-filter: blur(0);
+  background: hsl(0, 0%, 50%, 0);
   justify-content: end;
 }
 
@@ -99,13 +100,21 @@
 }
 
 .job-block-attribute-toggle-button {
+  --hidden-indicator-gap: 0.2em;
+  --hidden-indicator-height: 18px;
+  --hidden-indicator-padding: 0.1em;
+  align-items: center;
   border: 1px hsl(0, 0%, 100%) solid;
   border-radius: 10px;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 67px;
+  justify-content: center;
   margin: 10px;
   min-width: 4em;
-  padding: 20px;
-  transition: background-color 200ms ease-out;
+  padding: 0 20px;
+  transition: background-color 200ms ease-out, color 100ms ease-out;
   width: max-content;
   user-select: none;
 }
@@ -168,7 +177,7 @@
 
 .job-block-attribute-toggle-button-text {
   max-width: 25ch;
-  overflow: clip visible;
+  overflow: hidden;
   position: relative;
   text-align: center;
   text-overflow: ellipsis;
@@ -176,40 +185,47 @@
   white-space: nowrap;
 }
 
-.job-block-attribute-toggle-button[data-job-attribute-value-blocked="false"]
-  .job-block-attribute-toggle-button-text {
-  transform: translate3d(0, 0, 0);
-}
-
-.job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"]
-  .job-block-attribute-toggle-button-text {
-  transform: translate3d(0, -10px, 0);
-}
-
-.job-block-attribute-toggle-button-text::after {
+.job-block-attribute-toggle-button-hidden-indicator {
   --width: 4.25em;
+  align-items: center;
   background: hsl(0, 0%, 50%);
   border-radius: 0.75em;
   color: hsl(0, 0%, 100%);
-  content: "Hidden";
-  display: block;
+  display: grid;
   font-size: 0.75em;
-  left: calc(50% - (0.5 * var(--width)));
-  padding: 0.1em;
+  height: var(--hidden-indicator-height);
+  overflow: hidden;
+  padding: var(--hidden-indicator-padding);
   position: absolute;
   text-align: center;
-  top: calc(100%);
+  top: calc(
+    50% + (var(--hidden-indicator-height) * 0.5) + var(--hidden-indicator-gap)
+  );
   width: var(--width);
 }
 
+.job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"]
+  .job-block-attribute-toggle-button-hidden-indicator {
+  opacity: 1;
+  transition: opacity 200ms ease-out 100ms, transform 200ms ease-out;
+}
+
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="false"]
-  .job-block-attribute-toggle-button-text::after {
+  .job-block-attribute-toggle-button-hidden-indicator {
   opacity: 0;
-  transition: opacity 200ms ease-out;
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
 }
 
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"]
-  .job-block-attribute-toggle-button-text::after {
-  opacity: 1;
-  transition: opacity 200ms 100ms ease-out;
+  .job-block-attribute-toggle-button-text,
+.job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"]
+  .job-block-attribute-toggle-button-hidden-indicator {
+  transform: translateY(
+    calc(
+      (
+          var(--hidden-indicator-height) + var(--hidden-indicator-padding) * 2 +
+            var(--hidden-indicator-gap)
+        ) * -0.5
+    )
+  );
 }
