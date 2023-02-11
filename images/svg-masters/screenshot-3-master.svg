@@ -554,7 +554,7 @@
           </g>
           <g style="" transform="matrix(1, 0, 0, 1, 58.202988, 230.649475)">
             <title>Remove Hidden Jobs Button</title>
-            <rect style="fill: rgba(255, 255, 255, 0.4);" x="196.339" y="654.275" width="298.753" height="58.827" rx="10" ry="10">
+            <rect style="fill: rgba(255, 255, 255, 0.6);" x="196.339" y="654.275" width="298.753" height="58.827" rx="10" ry="10">
               <title>Container</title>
             </rect>
             <text style="font-family: &quot;Open Sans&quot;; font-size: 16px; white-space: pre;" x="230.759" y="689.887">Do not display hidden jobs</text>
