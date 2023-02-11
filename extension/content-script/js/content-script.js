@@ -1,27 +1,5 @@
 (async () => {
   class Utilities {
-    static awaitElement({ selector = "" } = {}) {
-      return new Promise((resolve) => {
-        if (document.querySelector(selector)) return resolve(selector);
-
-        const documentMutationObserver = new MutationObserver((records) => {
-          const elementFound = records.find((record) =>
-            record.target.matches(selector)
-          );
-
-          if (elementFound) {
-            documentMutationObserver.disconnect();
-            return resolve(selector);
-          }
-        });
-
-        documentMutationObserver.observe(document, {
-          childList: true,
-          subtree: true,
-        });
-      });
-    }
-
     static getStorageKeyName(jobBlockComponent, jobBoard, ...otherIdentifiers) {
       return [jobBlockComponent, jobBoard, ...otherIdentifiers].join(".");
     }
@@ -46,16 +24,17 @@
   }
 
   class JobRegistrar {
+    #jobBoardId;
     #selectors;
     constructor(jobBoardId) {
+      this.#jobBoardId = jobBoardId;
       const selectors = {
         linkedIn: {
-          jobElement: ".job-card-container",
-          jobElementsContainer: ".jobs-search-results-list",
+          jobElement:
+            ".jobs-search-results-list .job-card-container, .jobs-search__results-list .base-card",
         },
         indeed: {
           jobElement: ".jobsearch-ResultsList .result",
-          jobElementsContainer: ".jobsearch-ResultsList",
         },
       };
       this.#selectors = selectors[jobBoardId];
@@ -72,35 +51,66 @@
       );
     }
 
-    #jobRegister = new WeakSet();
+    #jobHasBeenRegistered = false;
+    #startJobRegisteredBeacon() {
+      this.#jobHasBeenRegistered = true;
+
+      chrome.runtime.sendMessage({
+        text: "content script started",
+        jobBoardId: this.#jobBoardId,
+      });
+
+      chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        if (message.text === "send jobBoardId") sendResponse(this.#jobBoardId);
+      });
+    }
+
     #registerJob(job) {
-      this.#jobRegister.add(job);
+      if (!this.#jobHasBeenRegistered) this.#startJobRegisteredBeacon();
       this.#sendNewJobToSubscribers(job);
     }
 
     #jobRegistrar = new MutationObserver((records) => {
-      const jobElements = records
-        .filter((record) => record.target.matches(this.#selectors.jobElement))
-        .map((record) => record.target);
+      const jobElements = records.reduce((jobElements, record) => {
+        const targetIsJobElement = record.target.matches(
+          this.#selectors.jobElement
+        );
+
+        if (targetIsJobElement) return [...jobElements, record.target];
+
+        const jobElementsFromAddedNodes = Array.from(record.addedNodes).reduce(
+          (jobElements, addedNode) => {
+            if (!(addedNode instanceof Element)) return jobElements;
+
+            const jobElement = addedNode.querySelector(
+              this.#selectors.jobElement
+            );
+
+            if (jobElement) return [...jobElements, jobElement];
+
+            return jobElements;
+          },
+          []
+        );
+
+        if (jobElementsFromAddedNodes.length)
+          return [...jobElements, ...jobElementsFromAddedNodes];
+
+        return jobElements;
+      }, []);
+
       jobElements.forEach((jobElement) => this.#registerJob(jobElement));
     });
 
     async startRegisteringJobs() {
-      await Utilities.awaitElement({
-        selector: this.#selectors.jobElementsContainer,
-      });
-
       document
         .querySelectorAll(this.#selectors.jobElement)
         .forEach((jobElement) => this.#registerJob(jobElement));
 
-      this.#jobRegistrar.observe(
-        document.querySelector(this.#selectors.jobElementsContainer),
-        {
-          subtree: true,
-          childList: true,
-        }
-      );
+      this.#jobRegistrar.observe(document.documentElement, {
+        subtree: true,
+        childList: true,
+      });
     }
   }
 
@@ -206,6 +216,8 @@
         "src",
         `${chrome.runtime.getURL("images/hide-button-icon.svg")}`
       );
+      jobBlockBlockButtonIcon.ondragstart = (dragEvent) =>
+        dragEvent.preventDefault();
 
       jobBlockBlockButton.insertAdjacentElement(
         "afterbegin",
@@ -287,7 +299,9 @@
         linkedIn: {
           companyName: (jobElement) => {
             const jobAttributeValue = jobElement
-              .querySelector(".job-card-container__company-name")
+              .querySelector(
+                ".job-card-container__company-name, .base-search-card__subtitle, .job-card-container__primary-description"
+              )
               ?.textContent.replaceAll("\n", "")
               .trim();
             return {
@@ -457,6 +471,7 @@
 
       const jobBlockElement =
         this.#jobBlockElementSupplier.getJobBlockElement(jobElement);
+      jobBlockElement.dataset.jobBoardId = this.#jobBoardId;
       jobBlockElements.jobBlockElement = jobBlockElement;
 
       if (this.#jobAttribute === "companyName")
