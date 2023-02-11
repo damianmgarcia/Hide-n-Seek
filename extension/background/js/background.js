@@ -87,13 +87,13 @@ class Utilities {
 class JobBoards {
   static #jobBoards = [
     {
-      jobBoardUrlMatchPattern: "www.linkedin.com/jobs/search",
+      jobBoardUrlMatchPattern: "www.linkedin.com",
       jobBoardId: "linkedIn",
       jobBoardName: "LinkedIn",
       jobBoardPromotionalStatusValue: "Promoted",
     },
     {
-      jobBoardUrlMatchPattern: "www.indeed.com/jobs?",
+      jobBoardUrlMatchPattern: "www.indeed.com",
       jobBoardId: "indeed",
       jobBoardName: "Indeed",
       jobBoardPromotionalStatusValue: "Sponsored",
@@ -115,6 +115,15 @@ class JobBoards {
       (jobBoard) => jobBoard.jobBoardId === jobBoardId
     );
   }
+
+  static async getTabsWithJobBoardId(jobBoardId = "") {
+    const tabs = await chrome.tabs.query({});
+    return tabs.filter((tab) =>
+      jobBoardId
+        ? JobBoards.getJobBoardIdByUrl(tab.url) === jobBoardId
+        : JobBoards.getJobBoardIdByUrl(tab.url)
+    );
+  }
 }
 
 const updateActions = async () => {
@@ -134,10 +143,7 @@ const updateActions = async () => {
     activeTabInCurentWindow.url
   );
 
-  if (!jobBoardIdOfActiveTabInCurrentWindow)
-    return chrome.action.disable(activeTabInCurentWindow.id);
-
-  chrome.action.enable(activeTabInCurentWindow.id);
+  if (!jobBoardIdOfActiveTabInCurrentWindow) return;
 
   const activeTabsWithMatchingJobBoardId = activeTabs.filter(
     (activeTab) =>
@@ -198,7 +204,7 @@ ${jobBoardName}:
         numberOfBlockedCompaniesForJobBoardId === 1 ? "company" : "companies"
       } hidden${
         promotedJobsAreBlockedForJobBoardId
-          ? `\n• All ${jobBoardPromotionalStatusValue.toLowerCase()} jobs hidden`
+          ? `\n• ${jobBoardPromotionalStatusValue} jobs hidden`
           : ""
       }
 `,
@@ -218,18 +224,14 @@ ${jobBoardName}:
 
 chrome.runtime.onInstalled.addListener(async () => {
   const syncStorage = await chrome.storage.sync.get();
-  if (Object.keys(syncStorage).length) chrome.storage.local.set(syncStorage);
-});
+  if (Object.keys(syncStorage).length)
+    await chrome.storage.local.set(syncStorage);
 
-chrome.storage.local.onChanged.addListener((storageChanges) => {
-  const changesIncludesBlockedJobAttributeValues = Object.keys(
-    storageChanges
-  ).some(
-    (key) =>
-      key.includes("blockedJobAttributeValues") && !key.endsWith(".backup")
+  const tabsWithJobBoardId = await JobBoards.getTabsWithJobBoardId();
+
+  tabsWithJobBoardId.forEach((tabWithJobBoardId) =>
+    chrome.tabs.reload(tabWithJobBoardId.id, { bypassCache: true })
   );
-
-  if (changesIncludesBlockedJobAttributeValues) updateActions();
 });
 
 [
@@ -255,6 +257,17 @@ chrome.tabs.onUpdated.addListener(async (tabId, tabChanges, tab) => {
   });
 });
 
+chrome.storage.local.onChanged.addListener((storageChanges) => {
+  const changesIncludesBlockedJobAttributeValues = Object.keys(
+    storageChanges
+  ).some(
+    (key) =>
+      key.includes("blockedJobAttributeValues") && !key.endsWith(".backup")
+  );
+
+  if (changesIncludesBlockedJobAttributeValues) updateActions();
+});
+
 chrome.runtime.onMessage.addListener(async (message, sender) => {
   if (message.text === "inject css") {
     chrome.scripting.insertCSS({
@@ -263,9 +276,8 @@ chrome.runtime.onMessage.addListener(async (message, sender) => {
     });
   } else if (message.text === "update badge") {
     const { jobBoardId } = message;
-    const tabs = await chrome.tabs.query({});
-    const tabsWithJobBoardId = tabs.filter(
-      (tab) => JobBoards.getJobBoardIdByUrl(tab.url) === jobBoardId
+    const tabsWithJobBoardId = await JobBoards.getTabsWithJobBoardId(
+      jobBoardId
     );
     updateBadgeTextAndTitle(tabsWithJobBoardId, jobBoardId);
   }
