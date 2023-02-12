@@ -655,6 +655,12 @@
   }
 
   class InapplicableTabPopup {
+    #activeTabInCurrentWindow;
+
+    constructor(activeTabInCurrentWindow) {
+      this.#activeTabInCurrentWindow = activeTabInCurrentWindow;
+    }
+
     #jobBoardSelectorElements = [
       {
         label: document.querySelector(
@@ -724,10 +730,12 @@
         [jobNameKey]: jobNameValue,
       });
       const url = `${queryUrl}?${queryString}`;
-      chrome.tabs.create({ url });
+      this.#activeTabInCurrentWindow.title.toLowerCase().includes("new tab")
+        ? chrome.tabs.update(this.#activeTabInCurrentWindow.id, { url })
+        : chrome.tabs.create({ url });
     }
 
-    start(initialStorage, activeTabInCurrentWindow) {
+    start(initialStorage) {
       htmlDataset.applicableTab = "false";
       this.#jobNameSearchContainerInput.focus();
 
@@ -771,17 +779,20 @@
       );
 
       chrome.runtime.onMessage.addListener((message, sender) => {
+        if (message.text !== "content script started") return;
+
+        chrome.runtime.sendMessage({
+          text: "update badge",
+          jobBoardId: message.jobBoardId,
+        });
+
         const applicableTabPopupIsNotActive =
           htmlDataset.applicableTab === "false";
-        const activeTabInCurrentWindowStartedContentScript =
-          message.text === "content script started" &&
-          sender.tab.id === activeTabInCurrentWindow.id &&
-          sender.tab.windowId === activeTabInCurrentWindow.windowId;
+        const messageFromCurrentWindowActiveTab =
+          sender.tab.id === this.#activeTabInCurrentWindow.id &&
+          sender.tab.windowId === this.#activeTabInCurrentWindow.windowId;
 
-        if (
-          applicableTabPopupIsNotActive &&
-          activeTabInCurrentWindowStartedContentScript
-        )
+        if (applicableTabPopupIsNotActive && messageFromCurrentWindowActiveTab)
           new ApplicableTabPopup().start(message.jobBoardId, initialStorage);
       });
     }
@@ -806,7 +817,7 @@
   const initialStorage = await chrome.storage.local.get();
 
   if (!activeTabInCurrentWindow)
-    return new InapplicableTabPopup().start(
+    return new InapplicableTabPopup(activeTabInCurrentWindow).start(
       initialStorage,
       activeTabInCurrentWindow
     );
@@ -816,7 +827,7 @@
   );
 
   if (!jobBoardId)
-    return new InapplicableTabPopup().start(
+    return new InapplicableTabPopup(activeTabInCurrentWindow).start(
       initialStorage,
       activeTabInCurrentWindow
     );
