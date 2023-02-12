@@ -730,7 +730,21 @@
         [jobNameKey]: jobNameValue,
       });
       const url = `${queryUrl}?${queryString}`;
-      this.#activeTabInCurrentWindow.title.toLowerCase().includes("new tab")
+
+      const browserNewTabUrls = {
+        chrome: "chrome://newtab/",
+        edge: "edge://newtab/",
+        firefox: "about:newtab",
+      };
+
+      const activeTabInCurrentWindowIsNewTabPage = Object.values(
+        browserNewTabUrls
+      ).some(
+        (browserNewTabUrl) =>
+          this.#activeTabInCurrentWindow.url === browserNewTabUrl
+      );
+
+      activeTabInCurrentWindowIsNewTabPage
         ? chrome.tabs.update(this.#activeTabInCurrentWindow.id, { url })
         : chrome.tabs.create({ url });
     }
