@@ -10,7 +10,7 @@ It also lets users hide _sponsored jobs_.
 
 ## **Usage**
 
-- Get started by clicking the Hide n' Seek browser button to open the popup. Select a job board, enter a job name, and then click the search button or press Enter to open a new tab with your job search results.
+- Get started by clicking the Hide n' Seek browser button to open the popup. Select a job board, enter a job name, and then click the search button to open a new tab with your job search results. If you prefer, you may also go directly to a supported job board's website to perform your search. Hide n' Seek will work either way.
 
 <img src="/images/usage-job-search-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram that shows a job search in the Hide n' Seek popup" /><br><br>
 
@@ -93,12 +93,12 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
     - 2023-02-11
   - New features
     - Start a job search from the popup
-      - If not already searching for jobs, the Hide n' Seek browser button popup now shows a search box that you can use to search for jobs on supported job boards.
+      - If you are not already searching for jobs, the Hide n' Seek browser button popup now displays a search box that lets you start a job search.
   - Improvements
     - Support for LinkedIn job collections and Indeed job feed
-      - Hide n' Seek can now detect and add "hide" buttons to jobs within LinkedIn job collections and Indeed job feeds.
+      - Hide n' Seek now detects and adds "hide" buttons to jobs in LinkedIn job collections and Indeed job feeds.
     - Popup keyboard accessibility
-      - Tabbing through popup elements now provides a consistent and reliable experience for keyboard users.
+      - Tabbing through the popup is now a consistent and reliable experience for keyboard users.
   - Bug fixes
     - Hide n' Seek UI not showing on LinkedIn after clicking browser's back or forward buttons
       - A MutationObserver for detecting jobs would sometimes stop working during back/forward web navigation on LinkedIn because LinkedIn would remove the element that the observer was observing. This issue has been resolved.
