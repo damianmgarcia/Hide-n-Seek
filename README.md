@@ -90,7 +90,7 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
 
 - 4.0.0
   - Release date
-    - 2023-02-12
+    - 2023-02-14
   - New features
     - Start a job search from the popup
       - If you are not already searching for jobs, the Hide n' Seek browser button popup now displays a search box that lets you start a job search.
