@@ -45,67 +45,51 @@
       this.#subscriberCallbacks.push(callback);
     }
 
-    #sendNewJobToSubscribers(job) {
+    #sendJobToSubscribers(job) {
       this.#subscriberCallbacks.forEach((subscriberCallback) =>
         subscriberCallback(job)
       );
     }
 
-    #jobHasBeenRegistered = false;
-    #startJobRegisteredBeacon() {
-      this.#jobHasBeenRegistered = true;
+    #hasHideNSeekUI;
+    #registerJobs() {
+      const jobElements = document.querySelectorAll(this.#selectors.jobElement);
+
+      jobElements.forEach((jobElement) =>
+        this.#sendJobToSubscribers(jobElement)
+      );
+
+      const hasHideNSeekUI = !!document.querySelector(".job-block-element");
+
+      const hasHideNSeekUIChanged = hasHideNSeekUI !== this.#hasHideNSeekUI;
+
+      if (!hasHideNSeekUIChanged) return;
 
       chrome.runtime.sendMessage({
-        text: "content script started",
+        from: "content script",
+        to: ["background script", "popup script"],
+        body: "hasHideNSeekUI changed",
         jobBoardId: this.#jobBoardId,
+        hasHideNSeekUI: hasHideNSeekUI,
       });
 
-      chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        if (message.text === "send jobBoardId") sendResponse(this.#jobBoardId);
-      });
+      this.#hasHideNSeekUI = hasHideNSeekUI;
     }
 
-    #registerJob(job) {
-      if (!this.#jobHasBeenRegistered) this.#startJobRegisteredBeacon();
-      this.#sendNewJobToSubscribers(job);
-    }
-
-    #jobRegistrar = new MutationObserver((records) => {
-      const jobElements = records.reduce((jobElements, record) => {
-        const targetIsJobElement = record.target.matches(
-          this.#selectors.jobElement
-        );
-
-        if (targetIsJobElement) return [...jobElements, record.target];
-
-        const jobElementsFromAddedNodes = Array.from(record.addedNodes).reduce(
-          (jobElements, addedNode) => {
-            if (!(addedNode instanceof Element)) return jobElements;
-
-            const jobElement = addedNode.querySelector(
-              this.#selectors.jobElement
-            );
-
-            if (jobElement) return [...jobElements, jobElement];
-
-            return jobElements;
-          },
-          []
-        );
-
-        if (jobElementsFromAddedNodes.length)
-          return [...jobElements, ...jobElementsFromAddedNodes];
-
-        return jobElements;
-      }, []);
-
-      jobElements.forEach((jobElement) => this.#registerJob(jobElement));
-    });
-
+    #jobRegistrar = new MutationObserver(() => this.#registerJobs());
     async startRegisteringJobs() {
-      document
-        .querySelectorAll(this.#selectors.jobElement)
-        .forEach((jobElement) => this.#registerJob(jobElement));
+      chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        if (!message.to.includes("content script")) return;
+
+        if (message.body === "send status")
+          sendResponse({
+            hasContentScript: true,
+            hasHideNSeekUI: this.#hasHideNSeekUI,
+            jobBoardId: this.#jobBoardId,
+          });
+      });
+
+      this.#registerJobs();
 
       this.#jobRegistrar.observe(document.documentElement, {
         subtree: true,
@@ -681,7 +665,11 @@
 
   if (!jobBoardId) return;
 
-  await chrome.runtime.sendMessage({ text: "inject css" });
+  await chrome.runtime.sendMessage({
+    from: "content script",
+    to: ["background script"],
+    body: "inject css",
+  });
 
   const initialStorage = await chrome.storage.local.get();
   const jobRegistrar = new JobRegistrar(jobBoardId);
