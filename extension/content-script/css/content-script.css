@@ -117,6 +117,7 @@
   margin: 10px;
   min-width: 64px;
   padding: 0 20px;
+  position: relative;
   transition: background-color 200ms ease-out, color 100ms ease-out;
   user-select: none;
   width: max-content;
@@ -181,7 +182,6 @@
 .job-block-attribute-toggle-button-text {
   max-width: 25ch;
   overflow: hidden;
-  position: relative;
   text-align: center;
   text-overflow: ellipsis;
   transition: transform 200ms ease-out;
