@@ -10,6 +10,10 @@ It also lets users hide _sponsored jobs_.
 
 ## **Usage**
 
+- Get started by clicking the Hide n' Seek browser button to open the popup. Select a job board, enter a job name, and then click the search button to open a new tab with your job search results. If you prefer, you may also go directly to a supported job board's website to perform your search. Hide n' Seek will work either way.
+
+<img src="/images/usage-job-search-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram that shows a job search in the Hide n' Seek popup" /><br><br>
+
 - Click a job's "hide" button and all jobs by that company will be hidden behind an overlay.
 
 <img src="/images/usage-hide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of hiding a job' /><br><br>
@@ -23,7 +27,7 @@ It also lets users hide _sponsored jobs_.
   - Click the "Unhide all jobs" button to reset your hidden jobs list. This action can be undone by clicking the "Undo" button.
   - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays.
 
-<img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of Hide n' Seeks browser button, along with its popup, shows a list of hidden jobs and controls for managing the list." /><br><br>
+<img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of Hide n' Seek's browser button, along with its popup, shows a list of hidden jobs and controls for managing the list." /><br><br>
 
 ## **Supported Job Boards**
 
@@ -84,6 +88,20 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
 
 ## **Release Notes**
 
+- 4.0.0
+  - Release date
+    - 2023-02-14
+  - New features
+    - Start a job search from the popup
+      - If you are not already searching for jobs, the Hide n' Seek browser button popup now displays a search box that lets you start a job search.
+  - Improvements
+    - Support for LinkedIn job collections and Indeed job feed
+      - Hide n' Seek now detects and adds "hide" buttons to jobs in LinkedIn job collections and Indeed job feeds.
+    - Popup keyboard accessibility
+      - Tabbing through the popup is now a consistent and reliable experience for keyboard users.
+  - Bug fixes
+    - Hide n' Seek UI not showing on LinkedIn after clicking browser's back or forward buttons
+      - A MutationObserver for detecting jobs would sometimes stop working during back/forward web navigation on LinkedIn because LinkedIn would remove the element that the observer was observing. This issue has been resolved.
 - 3.1.0
   - Release date
     - 2023-02-03

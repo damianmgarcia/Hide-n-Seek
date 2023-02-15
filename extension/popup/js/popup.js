@@ -2,14 +2,12 @@
   class JobBoards {
     static #jobBoards = [
       {
-        hostname: "www.linkedin.com",
         jobBoardId: "linkedIn",
         jobAttributes: ["companyName", "promotionalStatus"],
         logoSrc: "/images/linkedin-logo.svg",
         logoAlt: "The logo for LinkedIn.com",
       },
       {
-        hostname: "www.indeed.com",
         jobBoardId: "indeed",
         jobAttributes: ["companyName", "promotionalStatus"],
         logoSrc: "/images/indeed-logo.svg",
@@ -17,15 +15,26 @@
       },
     ];
 
-    static getJobBoardIdByHostname(hostname) {
-      return this.#jobBoards.find((jobBoard) => jobBoard.hostname === hostname)
-        ?.jobBoardId;
-    }
-
     static getJobBoardDataByJobBoardId(jobBoardId) {
       return this.#jobBoards.find(
         (jobBoard) => jobBoard.jobBoardId === jobBoardId
       );
+    }
+
+    static async getContentScriptStatusOfTab(tabId) {
+      try {
+        return await chrome.tabs.sendMessage(tabId, {
+          from: "popup script",
+          to: ["content script"],
+          body: "send status",
+        });
+      } catch {
+        return {
+          hasContentScript: false,
+          hasHideNSeekUI: false,
+          jobBoardId: "",
+        };
+      }
     }
   }
 
@@ -43,12 +52,13 @@
       this.#logoAlt = logoAlt;
     }
 
-    #jobBoardName = document.querySelector(".job-board-name");
+    #jobBoardName = document.querySelector(
+      ".options-for-applicable-tabs .job-board-name"
+    );
     #optionButton = document.querySelector(".option-button");
     #undoButton = document.querySelector(".undo-button");
 
-    start(initialStorage) {
-      this.#updateElementsBasedOnStorage(initialStorage);
+    start(storage) {
       chrome.storage.local.onChanged.addListener((storageChanges) => {
         const syncIdIsTheOnlyChange =
           Object.hasOwn(storageChanges, "syncId") &&
@@ -56,14 +66,15 @@
         if (syncIdIsTheOnlyChange) return;
         this.#updateElementsBasedOnStorage();
       });
-      this.#jobBoardName.setAttribute("src", this.#logoSrc);
-      this.#jobBoardName.setAttribute("alt", this.#logoAlt);
       this.#optionButton.addEventListener("click", () => this.#unblock());
       this.#undoButton.addEventListener("click", () => this.#undoUnblock());
+      this.#updateElementsBasedOnStorage(storage);
+      this.#jobBoardName.setAttribute("src", this.#logoSrc);
+      this.#jobBoardName.setAttribute("alt", this.#logoAlt);
     }
 
-    async #updateElementsBasedOnStorage(initialStorage) {
-      const storage = initialStorage || (await chrome.storage.local.get());
+    async #updateElementsBasedOnStorage(providedStorage) {
+      const storage = providedStorage || (await chrome.storage.local.get());
       const [
         blockedJobAttributeValuesFromStorage,
         blockedJobAttributeValuesBackupFromStorage,
@@ -117,12 +128,7 @@
         ...entries.map(([key, value]) => [`${key}.backup`, value]),
       ]);
 
-      await chrome.storage.local.set(storageChangesToSet);
-
-      chrome.runtime.sendMessage({
-        text: "update badge",
-        jobBoardId: this.#jobBoardId,
-      });
+      chrome.storage.local.set(storageChangesToSet);
     }
 
     async #undoUnblock() {
@@ -142,12 +148,7 @@
         ...entries.map(([key, value]) => [key.replace(".backup", ""), value]),
       ]);
 
-      await chrome.storage.local.set(storageChangesToSet);
-
-      chrome.runtime.sendMessage({
-        text: "update badge",
-        jobBoardId: this.#jobBoardId,
-      });
+      chrome.storage.local.set(storageChangesToSet);
     }
 
     async #getBlockedJobAttributeValuesFromStorage(storage) {
@@ -182,31 +183,7 @@
     #checkboxInput = document.querySelector("input[name='remove-hidden-jobs']");
     #checkboxLabel = this.#checkboxInput.closest("label");
 
-    async start(initialStorage) {
-      const removeHiddenJobsStorageKeyFound = Object.hasOwn(
-        initialStorage,
-        this.#removeHiddenJobsStorageKey
-      );
-
-      const initialRemoveHiddenJobsValue = removeHiddenJobsStorageKeyFound
-        ? initialStorage[this.#removeHiddenJobsStorageKey]
-        : false;
-
-      if (!removeHiddenJobsStorageKeyFound)
-        chrome.storage.local.set({
-          [this.#removeHiddenJobsStorageKey]: false,
-        });
-
-      this.#checkboxInput.checked = initialRemoveHiddenJobsValue;
-      this.#checkboxLabel.dataset.checked = this.#checkboxInput.checked;
-
-      this.#checkboxInput.addEventListener("input", () => {
-        this.#checkboxLabel.dataset.checked = this.#checkboxInput.checked;
-        chrome.storage.local.set({
-          [this.#removeHiddenJobsStorageKey]: this.#checkboxInput.checked,
-        });
-      });
-
+    async start(storage) {
       chrome.storage.local.onChanged.addListener((storageChanges) => {
         const containsChangesToRemoveHiddenJobs = Object.hasOwn(
           storageChanges,
@@ -219,6 +196,35 @@
           storageChanges[this.#removeHiddenJobsStorageKey].newValue;
         this.#checkboxLabel.dataset.checked = this.#checkboxInput.checked;
       });
+
+      this.#checkboxInput.addEventListener("input", () => {
+        this.#checkboxLabel.dataset.checked = this.#checkboxInput.checked;
+        chrome.storage.local.set({
+          [this.#removeHiddenJobsStorageKey]: this.#checkboxInput.checked,
+        });
+      });
+
+      this.#checkboxInput.addEventListener("keydown", (keyboardEvent) => {
+        if (keyboardEvent.key !== "Enter") return;
+
+        this.#checkboxInput.checked = this.#checkboxInput.checked
+          ? false
+          : true;
+
+        this.#checkboxInput.dispatchEvent(new Event("input"));
+      });
+
+      const removeHiddenJobsStorageKeyFound = Object.hasOwn(
+        storage,
+        this.#removeHiddenJobsStorageKey
+      );
+
+      const initialRemoveHiddenJobsValue = removeHiddenJobsStorageKeyFound
+        ? storage[this.#removeHiddenJobsStorageKey]
+        : false;
+
+      this.#checkboxInput.checked = initialRemoveHiddenJobsValue;
+      this.#checkboxLabel.dataset.checked = initialRemoveHiddenJobsValue;
     }
   }
 
@@ -247,28 +253,7 @@
     }
 
     #hiddenJobAttributeValuesContainerCollapsedClientHeight;
-    start(initialStorage) {
-      const { minHeight, paddingBottom, paddingTop } = getComputedStyle(
-        this.#hiddenJobAttributeValuesContainer
-      );
-
-      this.#hiddenJobAttributeValuesContainerCollapsedClientHeight =
-        Number.parseFloat(minHeight) +
-        Number.parseFloat(paddingBottom) +
-        Number.parseFloat(paddingTop);
-
-      this.#collapseExpandButtonElement.addEventListener("click", () => {
-        this.#expandedListClassToggleElement.classList.toggle(
-          this.#expandedListClassName
-        );
-
-        const listIsScrollable = this.#getListIsScrollable();
-        this.#collapseExpandButtonElement.dataset.listIsScrollable =
-          listIsScrollable;
-      });
-
-      this.#updateHiddenJobsPopupList(initialStorage);
-
+    start(storage) {
       chrome.storage.local.onChanged.addListener((storageChanges) => {
         const changesIncludesBlockedJobAttributeValues = Object.keys(
           storageChanges
@@ -282,12 +267,32 @@
           this.#updateHiddenJobsPopupList();
       });
 
+      this.#collapseExpandButtonElement.addEventListener("click", () => {
+        this.#expandedListClassToggleElement.classList.toggle(
+          this.#expandedListClassName
+        );
+
+        const listIsNotScrollable = this.#getListIsNotScrollable();
+        this.#collapseExpandButtonElement.disabled = listIsNotScrollable;
+      });
+
+      const { minHeight, paddingBottom, paddingTop } = getComputedStyle(
+        this.#hiddenJobAttributeValuesContainer
+      );
+
+      this.#hiddenJobAttributeValuesContainerCollapsedClientHeight =
+        Number.parseFloat(minHeight) +
+        Number.parseFloat(paddingBottom) +
+        Number.parseFloat(paddingTop);
+
+      this.#updateHiddenJobsPopupList(storage);
+
       return this;
     }
 
-    #getListIsScrollable() {
+    #getListIsNotScrollable() {
       return (
-        this.#hiddenJobAttributeValuesContainer.scrollHeight >
+        this.#hiddenJobAttributeValuesContainer.scrollHeight <=
         this.#hiddenJobAttributeValuesContainerCollapsedClientHeight
       );
     }
@@ -395,13 +400,14 @@
     }
 
     #createElementForHiddenJobAttributeValue(itemName) {
-      const hiddenJobContainer = document.createElement("div");
+      const hiddenJobContainer = document.createElement("button");
       hiddenJobContainer.classList.add("hidden-job-container");
       const hiddenJobName = document.createElement("div");
       hiddenJobName.classList.add("hidden-job-name");
       hiddenJobName.textContent = itemName;
       const removeIcon = document.createElement("img");
       removeIcon.setAttribute("src", "/images/remove-icon.svg");
+      removeIcon.ondragstart = (dragEvent) => dragEvent.preventDefault();
 
       [hiddenJobName, removeIcon].forEach((element) =>
         hiddenJobContainer.insertAdjacentElement("beforeend", element)
@@ -525,12 +531,7 @@
           }),
         ]);
 
-        await chrome.storage.local.set(storageChangesToSet);
-
-        chrome.runtime.sendMessage({
-          text: "update badge",
-          jobBoardId: this.#jobBoardId,
-        });
+        chrome.storage.local.set(storageChangesToSet);
       });
 
       const getInsertionData = () => {
@@ -583,9 +584,8 @@
         ...this.#getPopupListChangeAnimation("add")
       ).finished;
 
-      const listIsScrollable = this.#getListIsScrollable();
-      this.#collapseExpandButtonElement.dataset.listIsScrollable =
-        listIsScrollable;
+      const listIsNotScrollable = this.#getListIsNotScrollable();
+      this.#collapseExpandButtonElement.disabled = listIsNotScrollable;
     }
 
     async #removeHiddenJobAttributeValueFromList(
@@ -624,12 +624,11 @@
 
       hiddenJobAttributeValueElementToRemove.remove();
 
-      const listIsScrollable = this.#getListIsScrollable();
+      const listIsNotScrollable = this.#getListIsNotScrollable();
 
-      this.#collapseExpandButtonElement.dataset.listIsScrollable =
-        listIsScrollable;
+      this.#collapseExpandButtonElement.disabled = listIsNotScrollable;
 
-      if (!listIsScrollable)
+      if (listIsNotScrollable)
         this.#expandedListClassToggleElement.classList.remove(
           this.#expandedListClassName
         );
@@ -643,24 +642,197 @@
     }
   }
 
+  class InapplicableTabPopup {
+    static #jobBoardSelectorElements = [
+      {
+        label: document.querySelector(
+          "label.job-board-search-option-container[data-job-board-id='linkedIn']"
+        ),
+        input: document.querySelector(
+          "label.job-board-search-option-container[data-job-board-id='linkedIn'] > input"
+        ),
+      },
+      {
+        label: document.querySelector(
+          "label.job-board-search-option-container[data-job-board-id='indeed']"
+        ),
+        input: document.querySelector(
+          "label.job-board-search-option-container[data-job-board-id='indeed'] > input"
+        ),
+      },
+    ];
+
+    static #recentSearchQueryJobBoardId = "linkedIn";
+
+    static #jobNameSearchContainerInput = document.querySelector(
+      ".job-name-search-container > input"
+    );
+
+    static #jobNameSearchContainerButton = document.querySelector(
+      ".job-name-search-container > button"
+    );
+
+    static #jobBoardUrlSearchData = {
+      linkedIn: {
+        queryUrl: "https://www.linkedin.com/jobs/search/",
+        jobNameKey: "keywords",
+      },
+      indeed: {
+        queryUrl: "https://www.indeed.com/jobs",
+        jobNameKey: "q",
+      },
+    };
+
+    static #updateSelectedJobBoard() {
+      this.#jobBoardSelectorElements.forEach(({ label, input }) => {
+        label.dataset.checked = input.checked;
+        if (!input.checked) return;
+        this.#jobNameSearchContainerInput.setAttribute(
+          "placeholder",
+          `Search ${label.dataset.jobBoardPlaceholderName}`
+        );
+        this.#jobNameSearchContainerInput.focus();
+        this.#recentSearchQueryJobBoardId = label.dataset.jobBoardId;
+        chrome.storage.local.set({
+          recentSearchQueryJobBoardId: label.dataset.jobBoardId,
+        });
+      });
+    }
+
+    static #updateSearchButton() {
+      this.#jobNameSearchContainerButton.disabled =
+        this.#jobNameSearchContainerInput.value.trim() ? false : true;
+    }
+
+    static #search(activeTabInCurrentWindow) {
+      const { jobNameKey, queryUrl } =
+        this.#jobBoardUrlSearchData[this.#recentSearchQueryJobBoardId];
+      const jobNameValue = this.#jobNameSearchContainerInput.value;
+      const queryString = new URLSearchParams({
+        [jobNameKey]: jobNameValue,
+      });
+      const url = `${queryUrl}?${queryString}`;
+
+      const browserNewTabUrls = {
+        chrome: "chrome://newtab/",
+        edge: "edge://newtab/",
+        firefox: "about:newtab",
+      };
+
+      const activeTabInCurrentWindowIsNewTabPage = Object.values(
+        browserNewTabUrls
+      ).some(
+        (browserNewTabUrl) => activeTabInCurrentWindow.url === browserNewTabUrl
+      );
+
+      activeTabInCurrentWindowIsNewTabPage
+        ? chrome.tabs.update(activeTabInCurrentWindow.id, { url })
+        : chrome.tabs.create({ url });
+    }
+
+    static #started = false;
+    static async start(activeTabInCurrentWindow) {
+      htmlDataset.applicableTab = "false";
+
+      if (this.#started) return;
+      this.#started = true;
+
+      this.#jobBoardSelectorElements.forEach(({ input }) =>
+        input.addEventListener("input", () => this.#updateSelectedJobBoard())
+      );
+
+      this.#jobNameSearchContainerInput.addEventListener("input", () =>
+        this.#updateSearchButton()
+      );
+
+      this.#jobNameSearchContainerInput.addEventListener(
+        "keydown",
+        (keyboardEvent) => {
+          if (
+            keyboardEvent.key === "Enter" &&
+            !this.#jobNameSearchContainerButton.disabled
+          )
+            this.#search(activeTabInCurrentWindow);
+        }
+      );
+
+      this.#jobNameSearchContainerButton.addEventListener("click", () =>
+        this.#search(activeTabInCurrentWindow)
+      );
+
+      this.#jobNameSearchContainerInput.focus();
+
+      const storage = await chrome.storage.local.get();
+
+      const storageIncludesRecentSearchQueryJobBoardId = Object.hasOwn(
+        storage,
+        "recentSearchQueryJobBoardId"
+      );
+
+      if (storageIncludesRecentSearchQueryJobBoardId)
+        this.#recentSearchQueryJobBoardId = storage.recentSearchQueryJobBoardId;
+
+      this.#jobBoardSelectorElements.forEach(({ label, input }) => {
+        if (label.dataset.jobBoardId === this.#recentSearchQueryJobBoardId)
+          input.checked = true;
+      });
+
+      this.#updateSelectedJobBoard();
+    }
+  }
+
+  class ApplicableTabPopup {
+    static #started = false;
+    static async start(jobBoardId) {
+      htmlDataset.applicableTab = "true";
+
+      if (this.#started) return;
+      this.#started = true;
+
+      const storage = await chrome.storage.local.get();
+      new UnblockAllJobsManager(jobBoardId).start(storage);
+      new RemoveHiddenJobsManager(jobBoardId).start(storage);
+      new HiddenJobsListManager(jobBoardId).start(storage);
+    }
+  }
+
+  chrome.runtime.onMessage.addListener(async (message, sender) => {
+    if (!message.to.includes("popup script")) return;
+
+    if (
+      message.from === "content script" &&
+      message.body === "hasHideNSeekUI changed"
+    ) {
+      const messageFromActiveTabInCurrentWindow =
+        sender.tab.id === activeTabInCurrentWindow.id &&
+        sender.tab.windowId === activeTabInCurrentWindow.windowId;
+
+      if (!messageFromActiveTabInCurrentWindow) return;
+
+      const storage = await chrome.storage.local.get();
+      if (message.hasHideNSeekUI === true) {
+        ApplicableTabPopup.start(message.jobBoardId, storage);
+      } else if (message.hasHideNSeekUI === false) {
+        InapplicableTabPopup.start(activeTabInCurrentWindow, storage);
+      }
+    }
+  });
+
+  const htmlDataset = document.documentElement.dataset;
+
   const [activeTabInCurrentWindow] = await chrome.tabs.query({
     active: true,
     currentWindow: true,
   });
 
-  if (!activeTabInCurrentWindow) return;
+  if (!activeTabInCurrentWindow)
+    return InapplicableTabPopup.start(activeTabInCurrentWindow);
 
-  const hostnameOfTabUrl = activeTabInCurrentWindow.url?.match(
-    /https:\/\/(?<hostname>[\w.]*)\//
-  )?.groups?.hostname;
+  const { hasContentScript, hasHideNSeekUI, jobBoardId } =
+    await JobBoards.getContentScriptStatusOfTab(activeTabInCurrentWindow.id);
 
-  const jobBoardId = JobBoards.getJobBoardIdByHostname(hostnameOfTabUrl);
+  if (!hasContentScript || !hasHideNSeekUI)
+    return InapplicableTabPopup.start(activeTabInCurrentWindow);
 
-  if (!jobBoardId) return;
-
-  document.querySelector(".options-container").classList.remove("display-none");
-  const initialStorage = await chrome.storage.local.get();
-  new UnblockAllJobsManager(jobBoardId).start(initialStorage);
-  new RemoveHiddenJobsManager(jobBoardId).start(initialStorage);
-  new HiddenJobsListManager(jobBoardId).start(initialStorage);
+  ApplicableTabPopup.start(jobBoardId);
 })();

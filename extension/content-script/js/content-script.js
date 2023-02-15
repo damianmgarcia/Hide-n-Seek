@@ -1,27 +1,5 @@
 (async () => {
   class Utilities {
-    static awaitElement({ selector = "" } = {}) {
-      return new Promise((resolve) => {
-        if (document.querySelector(selector)) return resolve(selector);
-
-        const documentMutationObserver = new MutationObserver((records) => {
-          const elementFound = records.find((record) =>
-            record.target.matches(selector)
-          );
-
-          if (elementFound) {
-            documentMutationObserver.disconnect();
-            return resolve(selector);
-          }
-        });
-
-        documentMutationObserver.observe(document, {
-          childList: true,
-          subtree: true,
-        });
-      });
-    }
-
     static getStorageKeyName(jobBlockComponent, jobBoard, ...otherIdentifiers) {
       return [jobBlockComponent, jobBoard, ...otherIdentifiers].join(".");
     }
@@ -46,16 +24,17 @@
   }
 
   class JobRegistrar {
+    #jobBoardId;
     #selectors;
     constructor(jobBoardId) {
+      this.#jobBoardId = jobBoardId;
       const selectors = {
         linkedIn: {
-          jobElement: ".job-card-container",
-          jobElementsContainer: ".jobs-search-results-list",
+          jobElement:
+            ".jobs-search-results-list .job-card-container, .jobs-search__results-list .base-card",
         },
         indeed: {
           jobElement: ".jobsearch-ResultsList .result",
-          jobElementsContainer: ".jobsearch-ResultsList",
         },
       };
       this.#selectors = selectors[jobBoardId];
@@ -66,41 +45,56 @@
       this.#subscriberCallbacks.push(callback);
     }
 
-    #sendNewJobToSubscribers(job) {
+    #sendJobToSubscribers(job) {
       this.#subscriberCallbacks.forEach((subscriberCallback) =>
         subscriberCallback(job)
       );
     }
 
-    #jobRegister = new WeakSet();
-    #registerJob(job) {
-      this.#jobRegister.add(job);
-      this.#sendNewJobToSubscribers(job);
-    }
+    #hasHideNSeekUI;
+    #registerJobs() {
+      const jobElements = document.querySelectorAll(this.#selectors.jobElement);
 
-    #jobRegistrar = new MutationObserver((records) => {
-      const jobElements = records
-        .filter((record) => record.target.matches(this.#selectors.jobElement))
-        .map((record) => record.target);
-      jobElements.forEach((jobElement) => this.#registerJob(jobElement));
-    });
+      jobElements.forEach((jobElement) =>
+        this.#sendJobToSubscribers(jobElement)
+      );
 
-    async startRegisteringJobs() {
-      await Utilities.awaitElement({
-        selector: this.#selectors.jobElementsContainer,
+      const hasHideNSeekUI = !!document.querySelector(".job-block-element");
+
+      const hasHideNSeekUIChanged = hasHideNSeekUI !== this.#hasHideNSeekUI;
+
+      if (!hasHideNSeekUIChanged) return;
+
+      chrome.runtime.sendMessage({
+        from: "content script",
+        to: ["background script", "popup script"],
+        body: "hasHideNSeekUI changed",
+        jobBoardId: this.#jobBoardId,
+        hasHideNSeekUI: hasHideNSeekUI,
       });
 
-      document
-        .querySelectorAll(this.#selectors.jobElement)
-        .forEach((jobElement) => this.#registerJob(jobElement));
+      this.#hasHideNSeekUI = hasHideNSeekUI;
+    }
 
-      this.#jobRegistrar.observe(
-        document.querySelector(this.#selectors.jobElementsContainer),
-        {
-          subtree: true,
-          childList: true,
-        }
-      );
+    #jobRegistrar = new MutationObserver(() => this.#registerJobs());
+    async startRegisteringJobs() {
+      chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        if (!message.to.includes("content script")) return;
+
+        if (message.body === "send status")
+          sendResponse({
+            hasContentScript: true,
+            hasHideNSeekUI: this.#hasHideNSeekUI,
+            jobBoardId: this.#jobBoardId,
+          });
+      });
+
+      this.#registerJobs();
+
+      this.#jobRegistrar.observe(document.documentElement, {
+        subtree: true,
+        childList: true,
+      });
     }
   }
 
@@ -206,6 +200,8 @@
         "src",
         `${chrome.runtime.getURL("images/hide-button-icon.svg")}`
       );
+      jobBlockBlockButtonIcon.ondragstart = (dragEvent) =>
+        dragEvent.preventDefault();
 
       jobBlockBlockButton.insertAdjacentElement(
         "afterbegin",
@@ -287,7 +283,9 @@
         linkedIn: {
           companyName: (jobElement) => {
             const jobAttributeValue = jobElement
-              .querySelector(".job-card-container__company-name")
+              .querySelector(
+                ".job-card-container__company-name, .base-search-card__subtitle, .job-card-container__primary-description"
+              )
               ?.textContent.replaceAll("\n", "")
               .trim();
             return {
@@ -457,6 +455,7 @@
 
       const jobBlockElement =
         this.#jobBlockElementSupplier.getJobBlockElement(jobElement);
+      jobBlockElement.dataset.jobBoardId = this.#jobBoardId;
       jobBlockElements.jobBlockElement = jobBlockElement;
 
       if (this.#jobAttribute === "companyName")
@@ -666,7 +665,11 @@
 
   if (!jobBoardId) return;
 
-  await chrome.runtime.sendMessage({ text: "inject css" });
+  await chrome.runtime.sendMessage({
+    from: "content script",
+    to: ["background script"],
+    body: "inject css",
+  });
 
   const initialStorage = await chrome.storage.local.get();
   const jobRegistrar = new JobRegistrar(jobBoardId);

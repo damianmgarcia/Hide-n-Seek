@@ -1,7 +1,7 @@
 .job-block-element {
-  all: initial;
+  all: unset;
   display: block !important;
-  font-family: revert;
+  font-size: 16px;
   height: 100%;
   left: 0;
   line-height: 1.4;
@@ -10,6 +10,10 @@
   top: 0;
   width: 100%;
   z-index: 1;
+}
+
+.job-block-element * {
+  all: unset;
 }
 
 .job-block-blocked-job-overlay,
@@ -100,9 +104,8 @@
 }
 
 .job-block-attribute-toggle-button {
-  --hidden-indicator-gap: 0.2em;
-  --hidden-indicator-height: 18px;
-  --hidden-indicator-padding: 0.1em;
+  --gap: 2.4px;
+  --hidden-indicator-height: 20.4px;
   align-items: center;
   border: 1px hsl(0, 0%, 100%) solid;
   border-radius: 10px;
@@ -112,11 +115,12 @@
   height: 67px;
   justify-content: center;
   margin: 10px;
-  min-width: 4em;
+  min-width: 64px;
   padding: 0 20px;
+  position: relative;
   transition: background-color 200ms ease-out, color 100ms ease-out;
-  width: max-content;
   user-select: none;
+  width: max-content;
 }
 
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="false"] {
@@ -178,7 +182,6 @@
 .job-block-attribute-toggle-button-text {
   max-width: 25ch;
   overflow: hidden;
-  position: relative;
   text-align: center;
   text-overflow: ellipsis;
   transition: transform 200ms ease-out;
@@ -186,22 +189,22 @@
 }
 
 .job-block-attribute-toggle-button-hidden-indicator {
-  --width: 4.25em;
   align-items: center;
   background: hsl(0, 0%, 50%);
-  border-radius: 0.75em;
+  border-radius: 12px;
   color: hsl(0, 0%, 100%);
   display: grid;
-  font-size: 0.75em;
+  font-size: 12px;
   height: var(--hidden-indicator-height);
-  overflow: hidden;
-  padding: var(--hidden-indicator-padding);
   position: absolute;
   text-align: center;
-  top: calc(
-    50% + (var(--hidden-indicator-height) * 0.5) + var(--hidden-indicator-gap)
-  );
-  width: var(--width);
+  top: calc(50% + (var(--hidden-indicator-height) * 0.5) + var(--gap));
+  width: 53.4px;
+}
+
+.job-block-element[data-job-board-id="indeed"]
+  .job-block-attribute-toggle-button-hidden-indicator {
+  line-height: 1;
 }
 
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"]
@@ -221,11 +224,6 @@
 .job-block-attribute-toggle-button[data-job-attribute-value-blocked="true"]
   .job-block-attribute-toggle-button-hidden-indicator {
   transform: translateY(
-    calc(
-      (
-          var(--hidden-indicator-height) + var(--hidden-indicator-padding) * 2 +
-            var(--hidden-indicator-gap)
-        ) * -0.5
-    )
+    calc((var(--hidden-indicator-height) + var(--gap)) * -0.5)
   );
 }
