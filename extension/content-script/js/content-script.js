@@ -213,16 +213,20 @@
       });
     }
 
+    #getBaseElement(jobBlockElement) {
+      return jobBlockElement.closest(this.#selectorOfJobElementBaseElement);
+    }
+
     removeHiddenJob(jobBlockElement) {
-      jobBlockElement
-        .closest(this.#selectorOfJobElementBaseElement)
-        .style.setProperty("display", "none");
+      const jobElementBaseElement = this.#getBaseElement(jobBlockElement);
+      if (!jobElementBaseElement) return;
+      jobElementBaseElement.style.setProperty("display", "none");
     }
 
     unremoveHiddenJob(jobBlockElement) {
-      jobBlockElement
-        .closest(this.#selectorOfJobElementBaseElement)
-        .style.removeProperty("display");
+      const jobElementBaseElement = this.#getBaseElement(jobBlockElement);
+      if (!jobElementBaseElement) return;
+      jobElementBaseElement.style.removeProperty("display");
     }
   }
 
@@ -333,11 +337,13 @@
           useAncestor[jobBoardId] && ancestorSelector
             ? jobElement.closest(ancestorSelector)
             : jobElement;
+        if (!insertionReferenceElement) return false;
         insertionReferenceElement.style.setProperty("position", "relative");
         insertionReferenceElement.insertAdjacentElement(
           position[jobBoardId],
           jobBlockElement
         );
+        return true;
       };
     }
     get insertJobBlockElement() {
@@ -559,10 +565,13 @@
       jobBlockElements.jobAttributeToggleButtonElement =
         jobAttributeToggleButtonElement;
 
-      this.#jobBlockElementInserter.insertJobBlockElement(
-        jobElement,
-        jobBlockElement
-      );
+      const successfullyInserted =
+        this.#jobBlockElementInserter.insertJobBlockElement(
+          jobElement,
+          jobBlockElement
+        );
+
+      if (!successfullyInserted) return;
 
       this.#updateJobBlockElementDataAttribute(jobBlockElement);
 
