@@ -88,6 +88,12 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
 
 ## **Release Notes**
 
+- 4.1.0
+  - Release date
+    - 2023-02-19
+  - Improvements
+    - Added support for the signed-out version of LinkedIn's job search
+      - Hide n' Seek is now compatible with the signed-out version of LinkedIn's job search.
 - 4.0.0
   - Release date
     - 2023-02-14
