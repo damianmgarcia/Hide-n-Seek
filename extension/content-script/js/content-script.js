@@ -23,21 +23,79 @@
     }
   }
 
-  class JobRegistrar {
-    #jobBoardId;
+  class JobBoardSelectors {
     #selectors;
     constructor(jobBoardId) {
-      this.#jobBoardId = jobBoardId;
+      const reduceStringValues = (object) =>
+        [
+          ...new Set(
+            Object.values(object).filter((value) => typeof value === "string")
+          ),
+        ].join(", ");
+
       const selectors = {
         linkedIn: {
-          jobElement:
-            ".jobs-search-results-list .job-card-container, .jobs-search__results-list .base-card",
+          jobElement: {
+            jobCollection: ".jobs-search-results-list li .job-card-container",
+            jobSearchSignedIn:
+              ".jobs-search-results-list li .job-card-container",
+            jobSearchSignedOut: ".jobs-search__results-list li .base-card",
+          },
+          baseElementOfJobElement: {
+            jobCollection: "li",
+            jobSearchSignedIn: "li",
+            jobSearchSignedOut: "li",
+          },
+          companyName: {
+            jobCollection: ".job-card-container__primary-description",
+            jobSearchSignedIn: ".job-card-container__company-name",
+            jobSearchSignedOut: ".base-search-card__subtitle",
+          },
+          promotionalStatus: {
+            jobCollection: "time",
+            jobSearchSignedIn: "time",
+            jobSearchSignedOut: "time",
+          },
         },
         indeed: {
-          jobElement: ".jobsearch-ResultsList .result",
+          jobElement: {
+            jobFeed: ".jobsearch-ResultsList li .result",
+            jobSearch: ".jobsearch-ResultsList li .result",
+          },
+          baseElementOfJobElement: {
+            jobFeed: "li",
+            jobSearch: "li",
+          },
+          companyName: {
+            jobFeed: ".companyName",
+            jobSearch: ".companyName",
+          },
+          promotionalStatus: {
+            jobFeed: ".sponsoredJob",
+            jobSearch: ".sponsoredJob",
+          },
         },
       };
-      this.#selectors = selectors[jobBoardId];
+
+      this.#selectors = Object.fromEntries(
+        Object.entries(selectors[jobBoardId]).map(([key, value]) => [
+          key,
+          reduceStringValues(value),
+        ])
+      );
+    }
+
+    get selectors() {
+      return this.#selectors;
+    }
+  }
+
+  class JobRegistrar {
+    #jobBoardId;
+    #selectorOfJobElement;
+    constructor(jobBoardId, selectorOfJobElement) {
+      this.#jobBoardId = jobBoardId;
+      this.#selectorOfJobElement = selectorOfJobElement;
     }
 
     #subscriberCallbacks = [];
@@ -53,7 +111,7 @@
 
     #hasHideNSeekUI;
     #registerJobs() {
-      const jobElements = document.querySelectorAll(this.#selectors.jobElement);
+      const jobElements = document.querySelectorAll(this.#selectorOfJobElement);
 
       jobElements.forEach((jobElement) =>
         this.#sendJobToSubscribers(jobElement)
@@ -99,17 +157,12 @@
   }
 
   class JobDisplayManager {
-    #jobBlockElementClosestSelector;
+    #selectorOfJobElementBaseElement;
     #removeHiddenJobs;
     #removeHiddenJobsStorageKey;
 
-    constructor(jobBoardId, storage) {
-      const jobBlockElementClosestSelector = {
-        linkedIn: "li",
-        indeed: "li",
-      };
-      this.#jobBlockElementClosestSelector =
-        jobBlockElementClosestSelector[jobBoardId];
+    constructor(jobBoardId, selectorOfJobElementBaseElement, storage) {
+      this.#selectorOfJobElementBaseElement = selectorOfJobElementBaseElement;
 
       this.#removeHiddenJobsStorageKey = Utilities.getStorageKeyName(
         this.constructor.name,
@@ -162,13 +215,13 @@
 
     removeHiddenJob(jobBlockElement) {
       jobBlockElement
-        .closest(this.#jobBlockElementClosestSelector)
+        .closest(this.#selectorOfJobElementBaseElement)
         .style.setProperty("display", "none");
     }
 
     unremoveHiddenJob(jobBlockElement) {
       jobBlockElement
-        .closest(this.#jobBlockElementClosestSelector)
+        .closest(this.#selectorOfJobElementBaseElement)
         .style.removeProperty("display");
     }
   }
@@ -264,72 +317,87 @@
   }
 
   class JobBlockElementInserter {
-    insertJobBlockElement;
-    constructor(jobBoardId) {
-      const jobBlockElementInserters = {
-        linkedIn: (jobElement, jobBlockElement) =>
-          jobElement.insertAdjacentElement("beforebegin", jobBlockElement),
-        indeed: (jobElement, jobBlockElement) =>
-          jobElement.insertAdjacentElement("beforeend", jobBlockElement),
+    #insertJobBlockElement;
+    constructor(jobBoardId, ancestorSelector) {
+      const position = {
+        linkedIn: "beforeend",
+        indeed: "beforeend",
       };
-      this.insertJobBlockElement = jobBlockElementInserters[jobBoardId];
+      const useAncestor = {
+        linkedIn: true,
+        indeed: true,
+      };
+
+      this.#insertJobBlockElement = (jobElement, jobBlockElement) => {
+        const insertionReferenceElement =
+          useAncestor[jobBoardId] && ancestorSelector
+            ? jobElement.closest(ancestorSelector)
+            : jobElement;
+        insertionReferenceElement.style.setProperty("position", "relative");
+        insertionReferenceElement.insertAdjacentElement(
+          position[jobBoardId],
+          jobBlockElement
+        );
+      };
+    }
+    get insertJobBlockElement() {
+      return this.#insertJobBlockElement;
     }
   }
 
-  class JobElementDataGetter {
-    getJobElementData;
-    constructor(jobBoardId, jobAttribute) {
-      const jobElementDataGetters = {
-        linkedIn: {
-          companyName: (jobElement) => {
-            const jobAttributeValue = jobElement
-              .querySelector(
-                ".job-card-container__company-name, .base-search-card__subtitle, .job-card-container__primary-description"
-              )
-              ?.textContent.replaceAll("\n", "")
-              .trim();
-            return {
-              jobAttributeValue,
-              toggleButtonShouldBeAdded: !!jobAttributeValue,
-              toggleButtonText: jobAttributeValue,
-            };
+  class JobAttributeValueGetter {
+    #getJobAttributeValue;
+    constructor(
+      jobBoardId,
+      jobAttribute,
+      selectorOfJobAttributeValue,
+      selectorOfJobElementBaseElement
+    ) {
+      const jobAttributeValue = {
+        companyName: {
+          dataElementFound: {
+            default: (jobAttributeValue) =>
+              jobAttributeValue?.textContent.replaceAll("\n", "").trim() ||
+              "Unknown Company",
           },
-          promotionalStatus: (jobElement) => {
-            const jobAttributeValue = jobElement.querySelector("time")
-              ? "Not Promoted"
-              : "Promoted";
-            return {
-              jobAttributeValue,
-              toggleButtonShouldBeAdded: jobAttributeValue === "Promoted",
-              toggleButtonText: jobAttributeValue,
-            };
+          dataElementNotFound: {
+            default: () => "Unknown Company",
           },
         },
-        indeed: {
-          companyName: (jobElement) => {
-            const jobAttributeValue = jobElement
-              .querySelector(".companyName")
-              ?.textContent.replaceAll("\n", "")
-              .trim();
-            return {
-              jobAttributeValue,
-              toggleButtonShouldBeAdded: !!jobAttributeValue,
-              toggleButtonText: jobAttributeValue,
-            };
+        promotionalStatus: {
+          dataElementFound: {
+            default: () => "",
+            indeed: () => "Sponsored",
           },
-          promotionalStatus: (jobElement) => {
-            const jobAttributeValue = jobElement.matches(".sponsoredJob")
-              ? "Not Sponsored"
-              : "Sponsored";
-            return {
-              jobAttributeValue,
-              toggleButtonShouldBeAdded: jobAttributeValue === "Sponsored",
-              toggleButtonText: jobAttributeValue,
-            };
+          dataElementNotFound: {
+            default: () => "",
+            linkedIn: () => "Promoted",
           },
         },
       };
-      this.getJobElementData = jobElementDataGetters[jobBoardId][jobAttribute];
+
+      const dataElementFound =
+        jobAttributeValue[jobAttribute].dataElementFound[jobBoardId] ||
+        jobAttributeValue[jobAttribute].dataElementFound.default;
+
+      const dataElementNotFound =
+        jobAttributeValue[jobAttribute].dataElementNotFound[jobBoardId] ||
+        jobAttributeValue[jobAttribute].dataElementNotFound.default;
+
+      const jobAttributeValueGetter = (jobElement) => {
+        const dataElement = jobElement
+          .closest(selectorOfJobElementBaseElement)
+          .querySelector(selectorOfJobAttributeValue);
+
+        return dataElement
+          ? dataElementFound(dataElement)
+          : dataElementNotFound(dataElement);
+      };
+
+      this.#getJobAttributeValue = jobAttributeValueGetter;
+    }
+    get getJobAttributeValue() {
+      return this.#getJobAttributeValue;
     }
   }
 
@@ -359,7 +427,7 @@
     #jobRegistrar;
     #jobBlockElementSupplier;
     #jobBlockElementInserter;
-    #jobElementDataGetter;
+    #jobAttributeValueGetter;
     #jobDisplayManager;
     #blockedJobAttributeValuesStorageKey;
     #blockedJobAttributeValues;
@@ -370,7 +438,7 @@
       jobRegistrar,
       jobBlockElementSupplier,
       jobBlockElementInserter,
-      jobElementDataGetter,
+      jobAttributeValueGetter,
       jobDisplayManager,
       storage
     ) {
@@ -379,7 +447,7 @@
       this.#jobRegistrar = jobRegistrar;
       this.#jobBlockElementSupplier = jobBlockElementSupplier;
       this.#jobBlockElementInserter = jobBlockElementInserter;
-      this.#jobElementDataGetter = jobElementDataGetter;
+      this.#jobAttributeValueGetter = jobAttributeValueGetter;
       this.#jobDisplayManager = jobDisplayManager;
 
       this.#blockedJobAttributeValuesStorageKey = Utilities.getStorageKeyName(
@@ -433,8 +501,8 @@
         );
       }
 
-      const { jobAttributeValue, toggleButtonShouldBeAdded, toggleButtonText } =
-        this.#jobElementDataGetter.getJobElementData(jobElement);
+      const jobAttributeValue =
+        this.#jobAttributeValueGetter.getJobAttributeValue(jobElement);
 
       if (!jobAttributeValue) return;
 
@@ -465,34 +533,31 @@
             this.#toggleJobAttributeValue(jobAttributeValue)
           );
 
-      if (toggleButtonShouldBeAdded) {
-        const jobAttributeToggleButtonElement =
-          this.#jobBlockElementSupplier.getJobBlockToggleButtonElement(
-            toggleButtonText
-          );
-
-        jobAttributeToggleButtonElement.dataset.jobAttribute =
-          this.#jobAttribute;
-
-        const jobAttributeValueIsBlocked =
-          this.#getThisJobAttributeValueIsBlocked(jobAttributeValue);
-
-        this.#updateJobAttributeToggleButtonElementDataAttribute(
-          jobAttributeToggleButtonElement,
-          jobAttributeValueIsBlocked
+      const jobAttributeToggleButtonElement =
+        this.#jobBlockElementSupplier.getJobBlockToggleButtonElement(
+          jobAttributeValue
         );
 
-        jobAttributeToggleButtonElement.addEventListener("click", () =>
-          this.#toggleJobAttributeValue(jobAttributeValue)
-        );
+      jobAttributeToggleButtonElement.dataset.jobAttribute = this.#jobAttribute;
 
-        jobBlockElement
-          .querySelector(".job-block-blocked-job-overlay")
-          .insertAdjacentElement("afterbegin", jobAttributeToggleButtonElement);
+      const jobAttributeValueIsBlocked =
+        this.#getThisJobAttributeValueIsBlocked(jobAttributeValue);
 
-        jobBlockElements.jobAttributeToggleButtonElement =
-          jobAttributeToggleButtonElement;
-      }
+      this.#updateJobAttributeToggleButtonElementDataAttribute(
+        jobAttributeToggleButtonElement,
+        jobAttributeValueIsBlocked
+      );
+
+      jobAttributeToggleButtonElement.addEventListener("click", () =>
+        this.#toggleJobAttributeValue(jobAttributeValue)
+      );
+
+      jobBlockElement
+        .querySelector(".job-block-blocked-job-overlay")
+        .insertAdjacentElement("afterbegin", jobAttributeToggleButtonElement);
+
+      jobBlockElements.jobAttributeToggleButtonElement =
+        jobAttributeToggleButtonElement;
 
       this.#jobBlockElementInserter.insertJobBlockElement(
         jobElement,
@@ -672,11 +737,19 @@
   });
 
   const initialStorage = await chrome.storage.local.get();
-  const jobRegistrar = new JobRegistrar(jobBoardId);
+  const jobBoardSelectors = new JobBoardSelectors(jobBoardId);
+  const jobRegistrar = new JobRegistrar(
+    jobBoardId,
+    jobBoardSelectors.selectors.jobElement
+  );
   const jobBlockElementSupplier = new JobBlockElementSupplier();
-  const jobBlockElementInserter = new JobBlockElementInserter(jobBoardId);
+  const jobBlockElementInserter = new JobBlockElementInserter(
+    jobBoardId,
+    jobBoardSelectors.selectors.baseElementOfJobElement
+  );
   const jobDisplayManager = new JobDisplayManager(
     jobBoardId,
+    jobBoardSelectors.selectors.baseElementOfJobElement,
     initialStorage
   ).start();
   const jobAttributeManagers = JobAttributeManager.getJobAttributes(
@@ -689,7 +762,12 @@
         jobRegistrar,
         jobBlockElementSupplier,
         jobBlockElementInserter,
-        new JobElementDataGetter(jobBoardId, jobAttribute),
+        new JobAttributeValueGetter(
+          jobBoardId,
+          jobAttribute,
+          jobBoardSelectors.selectors[jobAttribute],
+          jobBoardSelectors.selectors.baseElementOfJobElement
+        ),
         jobDisplayManager,
         initialStorage
       )
