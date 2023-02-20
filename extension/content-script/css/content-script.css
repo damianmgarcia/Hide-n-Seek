@@ -9,7 +9,14 @@
   position: absolute;
   top: 0;
   width: 100%;
+}
+
+.job-block-element[data-job-board-id="indeed"] {
   z-index: 1;
+}
+
+.job-block-element[data-job-board-id="linkedIn"] {
+  z-index: 3;
 }
 
 .job-block-element * {
