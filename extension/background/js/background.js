@@ -82,6 +82,14 @@ class Utilities {
       )
     ).join("");
   }
+
+  static async safeAwait(functionToAwait, ...args) {
+    try {
+      return await functionToAwait(...args);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 class JobBoards {
@@ -199,18 +207,20 @@ const updateBadgeTextAndTitle = async (jobBoardId) => {
   contentScriptStatusesOfJobBoardIdTabs.forEach(
     ({ tab, contentScriptStatus }) => {
       if (!contentScriptStatus.hasHideNSeekUI) {
-        chrome.action.setTitle({
+        Utilities.safeAwait(chrome.action.setTitle, {
           tabId: tab.id,
           title: "Hide n' Seek",
         });
 
-        return chrome.action.setBadgeText({
+        Utilities.safeAwait(chrome.action.setBadgeText, {
           tabId: tab.id,
           text: "",
         });
+
+        return;
       }
 
-      chrome.action.setTitle({
+      Utilities.safeAwait(chrome.action.setTitle, {
         tabId: tab.id,
         title: `Hide n' Seek
 
@@ -225,12 +235,12 @@ ${jobBoardName}:
 `,
       });
 
-      chrome.action.setBadgeBackgroundColor({
+      Utilities.safeAwait(chrome.action.setBadgeBackgroundColor, {
         tabId: tab.id,
         color: [255, 128, 128, 255],
       });
 
-      chrome.action.setBadgeText({
+      Utilities.safeAwait(chrome.action.setBadgeText, {
         tabId: tab.id,
         text: `${numberOfBlockedJobAttributes}`,
       });
@@ -246,7 +256,9 @@ chrome.runtime.onInstalled.addListener(async () => {
   const tabsWithJobBoardId = await JobBoards.getTabsWithJobBoardId();
 
   tabsWithJobBoardId.forEach((tabWithJobBoardId) =>
-    chrome.tabs.reload(tabWithJobBoardId.id, { bypassCache: true })
+    Utilities.safeAwait(chrome.tabs.reload, tabWithJobBoardId.id, {
+      bypassCache: true,
+    })
   );
 });
 
@@ -266,7 +278,7 @@ chrome.tabs.onUpdated.addListener((tabId, tabChanges, tab) => {
 
   if (!jobBoardId) return;
 
-  chrome.scripting.executeScript({
+  Utilities.safeAwait(chrome.scripting.executeScript, {
     target: { tabId },
     files: ["/content-script/js/content-script.js"],
   });
@@ -288,11 +300,11 @@ chrome.storage.local.onChanged.addListener((storageChanges) => {
   });
 });
 
-chrome.runtime.onMessage.addListener(async (message, sender) => {
+chrome.runtime.onMessage.addListener((message, sender) => {
   if (!message.to.includes("background script")) return;
 
   if (message.from === "content script" && message.body === "inject css") {
-    chrome.scripting.insertCSS({
+    Utilities.safeAwait(chrome.scripting.insertCSS, {
       target: { tabId: sender.tab.id },
       files: ["/content-script/css/content-script.css"],
     });
