@@ -796,7 +796,7 @@
     }
   }
 
-  chrome.runtime.onMessage.addListener(async (message, sender) => {
+  chrome.runtime.onMessage.addListener((message, sender) => {
     if (!message.to.includes("popup script")) return;
 
     if (
@@ -809,11 +809,10 @@
 
       if (!messageFromActiveTabInCurrentWindow) return;
 
-      const storage = await chrome.storage.local.get();
       if (message.hasHideNSeekUI === true) {
-        ApplicableTabPopup.start(message.jobBoardId, storage);
+        ApplicableTabPopup.start(message.jobBoardId);
       } else if (message.hasHideNSeekUI === false) {
-        InapplicableTabPopup.start(activeTabInCurrentWindow, storage);
+        InapplicableTabPopup.start(activeTabInCurrentWindow);
       }
     }
   });
