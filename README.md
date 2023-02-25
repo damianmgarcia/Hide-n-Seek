@@ -88,6 +88,12 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
 
 ## **Release Notes**
 
+- 4.1.1
+  - Release date
+    - 2023-02-24
+  - Bug fixes
+    - Hide n' Seek UI not showing
+      - See details [here](https://github.com/damianmgarcia/Hide-n-Seek/pull/5)
 - 4.1.0
   - Release date
     - 2023-02-19
