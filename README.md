@@ -10,7 +10,7 @@ It also lets users hide _sponsored jobs_.
 
 ## **Usage**
 
-- Get started by clicking the Hide n' Seek browser button to open the popup. Select a job board, enter a job name, and then click the search button to open a new tab with your job search results. If you prefer, you may also go directly to a supported job board's website to perform your search. Hide n' Seek will work either way.
+- Get started by clicking the Hide n' Seek browser button to open the popup. Select a job board, enter a job name, and then click the search button. You may also go directly to a supported job board's website to perform your search if you prefer. Hide n' Seek will work either way.
 
 <img src="/images/usage-job-search-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram that shows a job search in the Hide n' Seek popup" /><br><br>
 
