@@ -8,7 +8,7 @@ Hide n' Seek browser extension lets users hide jobs _by company name_ on job boa
 
 It also lets users hide _sponsored jobs_.
 
-[**Check it out on YouTube**](https://youtu.be/L_lpBHHsF0c)
+[**Check it out on YouTube**](https://youtu.be/zhh7mI7bgRg)
 
 ## **Usage**
 
