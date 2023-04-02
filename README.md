@@ -8,6 +8,8 @@ Hide n' Seek browser extension lets users hide jobs _by company name_ on job boa
 
 It also lets users hide _sponsored jobs_.
 
+[**Check it out on YouTube**](https://youtu.be/L_lpBHHsF0c)
+
 ## **Usage**
 
 - Get started by clicking the Hide n' Seek browser button to open the popup. Select a job board, enter a job name, and then click the search button. You may also go directly to a supported job board's website to perform your search if you prefer. Hide n' Seek will work either way.
