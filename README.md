@@ -1,6 +1,6 @@
 # **Hide n' Seek**
 
-![A promotional marquee for the Hide n' Seek browser extension. The Hide n' Seek logo and name are featured on the left side of the marquee. The logo is a simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. A "before and after" diagram on the right side of the marquee shows how Hide n' Seek hides jobs and is titled "View the jobs you seek. Hide the ones you don't"](/images/promotional-marquee-normalized.svg)
+![A promotional marquee for the Hide n' Seek browser extension. The Hide n' Seek logo and name are featured on the left side of the marquee. The logo is a simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. A "before and after" diagram on the right side of the marquee shows how Hide n' Seek hides jobs and is titled "View the jobs you seek. Hide the ones you don't"](/images/svg-masters/promotional-marquee-2-master.svg)
 
 ## **Description**
 
@@ -10,7 +10,9 @@ It also lets users hide _sponsored jobs_.
 
 [**Check it out on YouTube**](https://youtu.be/zhh7mI7bgRg)
 
-[![Check it out on YouTube](images/svg-masters/hide-n-seek-youtube-thumbnail.svg)](https://youtu.be/zhh7mI7bgRg)
+<a href="https://youtu.be/zhh7mI7bgRg" target="_blank">
+ <img src="images/svg-masters/hide-n-seek-youtube-thumbnail-github-readme.svg" alt="Check it out on YouTube" width="50%" />
+</a>
 
 ## **Usage**
 

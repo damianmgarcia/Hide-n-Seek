@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 1800 720" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <style bx:fonts="Open Sans">@import url(https://fonts.googleapis.com/css2?family=Open+Sans%3Aital%2Cwght%400%2C300%3B0%2C400%3B0%2C500%3B0%2C600%3B0%2C700%3B0%2C800%3B1%2C300%3B1%2C400%3B1%2C500%3B1%2C600%3B1%2C700%3B1%2C800&amp;display=swap);</style>
+    <filter id="drop-shadow-filter-0" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="drop-shadow 1 6 6 0 0.5 rgba(0,0,0,0.3)">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="0"/>
+      <feOffset dx="6" dy="6"/>
+      <feComponentTransfer result="offsetblur">
+        <feFuncA id="spread-ctrl" type="linear" slope="1"/>
+      </feComponentTransfer>
+      <feFlood flood-color="rgba(0,0,0,0.3)"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="drop-shadow-filter-1" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="drop-shadow 1 10 10 0 0.5 rgba(0,0,0,0.3)">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="0"/>
+      <feOffset dx="10" dy="10"/>
+      <feComponentTransfer result="offsetblur">
+        <feFuncA id="spread-ctrl" type="linear" slope="1"/>
+      </feComponentTransfer>
+      <feFlood flood-color="rgba(0,0,0,0.3)"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="drop-shadow-filter-2" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="drop-shadow 1 6 6 0 0.5 rgba(0,0,0,0.3)">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="0"/>
+      <feOffset dx="6" dy="6"/>
+      <feComponentTransfer result="offsetblur">
+        <feFuncA id="spread-ctrl" type="linear" slope="1"/>
+      </feComponentTransfer>
+      <feFlood flood-color="rgba(0,0,0,0.3)"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="outline-filter-1" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="outline 1 0 rgba(255,255,255,1)">
+      <feMorphology in="SourceAlpha" result="dilated" operator="dilate" radius="0"/>
+      <feFlood flood-color="rgba(255,255,255,1)" result="flood"/>
+      <feComposite in="flood" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <mask id="mask-4">
+      <polygon style="fill: rgb(255, 255, 255);" points="91 -41 -44 -41 -44 94">
+        <title>briefcase-2-mask</title>
+      </polygon>
+    </mask>
+    <clipPath id="clip-5">
+      <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
+        <title>Left Eye Clip</title>
+      </path>
+    </clipPath>
+    <clipPath id="clip-6">
+      <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
+        <title>Right Eye Clip</title>
+      </path>
+    </clipPath>
+    <mask id="mask-5">
+      <polygon style="fill: rgb(255, 255, 255);" points="-44 94 91 94 91 -41">
+        <title>briefcase-3-mask</title>
+      </polygon>
+    </mask>
+    <filter id="filter-7" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="saturate 1 0">
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <clipPath id="clip-7">
+      <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
+        <title>Left Eye Clip</title>
+      </path>
+    </clipPath>
+    <clipPath id="clip-8">
+      <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
+        <title>Right Eye Clip</title>
+      </path>
+    </clipPath>
+  </defs>
+  <rect width="1800" height="720" style="fill: rgb(245, 222, 178); pointer-events: none;">
+    <title>Background</title>
+  </rect>
+  <rect x="14.17" y="-125.632" width="352.575" height="1241.462" style="fill: rgb(255, 255, 197);" transform="matrix(0.35094, -0.936398, 0.936398, 0.35094, 622.901001, 267.038147)">
+    <title>Light Yellow Diagonal</title>
+  </rect>
+  <rect x="1352.225" y="218.809" width="1483.486" height="204.516" style="fill: rgb(255, 255, 255); filter: url(#drop-shadow-filter-1);" transform="matrix(0.995504, -0.094723, 0.094723, 0.995504, -1103.339233, -7.037153)">
+    <title>White Diagonal</title>
+  </rect>
+  <g transform="matrix(1.6282, 0, 0, 1.6282, 303.008118, -110.828613)" style="filter: url(#drop-shadow-filter-0);">
+    <title>Before</title>
+    <g transform="matrix(1, 0, 0, 1, 0, -94.01651)" style="">
+      <title>Job Ad</title>
+      <rect x="96.854" y="319.868" width="298.216" height="116.099" style="stroke: rgb(179, 179, 179); fill: rgb(242, 242, 242);">
+        <title>Container</title>
+      </rect>
+      <g transform="matrix(1, 0, 0, 1, 10, 18.941498)">
+        <title>Company Logo</title>
+        <rect x="106.854" y="329.868" width="58.216" height="58.216" style="">
+          <title>Container</title>
+        </rect>
+        <path d="M 135.952 358.981 m -20.55 0 a 20.55 20.55 0 1 0 41.1 0 a 20.55 20.55 0 1 0 -41.1 0 Z M 135.952 358.981 m -10.275 0 a 10.275 10.275 0 0 1 20.55 0 a 10.275 10.275 0 0 1 -20.55 0 Z" style="paint-order: fill; stroke: rgb(255, 255, 0); fill: none; stroke-width: 4px;" bx:shape="ring 135.952 358.981 10.275 10.275 20.55 20.55 1@df57ffaf"/>
+      </g>
+      <text style="fill: rgb(0, 42, 255); font-family: &quot;Open Sans&quot;; font-size: 18px; font-weight: 700; white-space: pre;" transform="matrix(1, 0, 0, 1, 55.55901, 91.018478)"><title>Job Title</title><tspan x="139.511" y="277.334">Web Developer</tspan><tspan x="139.51100158691406" dy="1em">​</tspan></text>
+      <text style="font-family: &quot;Open Sans&quot;; font-size: 18px; white-space: pre;" x="193.564" y="398.353"><title>Company Name</title>WeAreFamily Inc.</text>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 0, 22.082489)">
+      <title>Job Ad</title>
+      <rect x="96.854" y="319.868" width="298.216" height="116.099" style="stroke: rgb(179, 179, 179); fill: rgb(242, 242, 242);">
+        <title>Container</title>
+      </rect>
+      <g transform="matrix(1, 0, 0, 1, 10, 18.941498)" style="">
+        <title>Company Logo</title>
+        <rect x="106.854" y="329.868" width="58.216" height="58.216" style="">
+          <title>Container</title>
+        </rect>
+        <path d="M 136.499 238.69 Q 136.499 238.085 137.05 237.736 Q 137.638 237.364 138.407 237.589 Q 139.261 237.839 139.803 238.69 Q 140.412 239.646 140.314 240.893 Q 140.205 242.286 139.252 243.459 Q 138.197 244.757 136.499 245.298 Q 134.637 245.891 132.644 245.366 Q 130.48 244.797 128.869 243.095 Q 127.133 241.261 126.587 238.69 Q 126.003 235.937 126.961 233.183 Q 127.981 230.252 130.442 228.199 Q 133.048 226.024 136.499 225.474 Q 140.139 224.895 143.657 226.291 Q 147.355 227.758 149.852 230.981 Q 152.467 234.356 153.019 238.69 Q 153.595 243.216 151.759 247.5 Q 149.847 251.963 145.86 254.904 Q 141.717 257.96 136.499 258.513 Q 131.087 259.088 126.037 256.811 Q 120.808 254.455 117.424 249.703 Q 113.927 244.792 113.372 238.69 Q 112.799 232.393 115.516 226.576 Q 118.317 220.581 123.834 216.754 Q 129.513 212.815 136.499 212.259 Q 143.681 211.687 150.265 214.846 Q 157.027 218.09 161.297 224.373 Q 165.677 230.819 166.234 238.69 Q 166.805 246.758 163.204 254.108 Q 159.517 261.636 152.468 266.349 Q 145.255 271.172 136.499 271.729 Q 127.546 272.299 119.429 268.257 Q 111.135 264.126 105.979 256.311 Q 100.714 248.331 100.156 238.69 Q 99.587 228.852 104.071 219.968 Q 108.645 210.907 117.226 205.308 Q 125.973 199.601 136.499 199.043 Q 136.535 199.041 136.499 199.043" style="fill: rgb(223, 32, 32); paint-order: fill; stroke-dasharray: 8px; stroke-linecap: round; stroke-width: 5.05646px; stroke: rgb(85, 218, 85);" transform="matrix(0.621209, 0, 0, 0.565393, 53.207775, 225.862625)" bx:shape="spiral 136.499 238.69 0 39.647 0 1080 1@746db35f">
+          <title>Logo</title>
+        </path>
+      </g>
+      <text style="fill: rgb(0, 42, 255); font-family: &quot;Open Sans&quot;; font-size: 18px; font-weight: 700; white-space: pre;" transform="matrix(1, 0, 0, 1, 55.55901, 91.018478)"><title>Job Title</title><tspan x="139.511" y="277.334">Software Engineer</tspan><tspan x="139.51100158691406" dy="1em">​</tspan></text>
+      <text style="font-family: &quot;Open Sans&quot;; font-size: 18px; white-space: pre;" x="193.564" y="398.353"><title>Company Name</title>PayYouLittle Inc.</text>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 0, 138.181488)" style="">
+      <title>Job Ad</title>
+      <rect x="96.854" y="319.868" width="298.216" height="116.099" style="stroke: rgb(179, 179, 179); fill: rgb(242, 242, 242);">
+        <title>Container</title>
+      </rect>
+      <g transform="matrix(1, 0, 0, 1, 10, 18.941498)">
+        <title>Company Logo</title>
+        <rect x="106.854" y="329.868" width="58.216" height="58.216" style="">
+          <title>Container</title>
+        </rect>
+        <path d="M 135.951 338.419 L 141.031 353.786 L 156.5 354.117 L 144.171 363.946 L 148.651 379.518 L 135.951 370.226 L 123.251 379.518 L 127.731 363.946 L 115.402 354.117 L 130.871 353.786 Z" style="stroke-linejoin: round; fill: rgb(0, 213, 255); stroke-width: 3px;" bx:shape="star 135.951 361.138 21.607 22.719 0.4 5 1@b065aade"/>
+      </g>
+      <text style="fill: rgb(0, 42, 255); font-family: &quot;Open Sans&quot;; font-size: 18px; font-weight: 700; white-space: pre;" transform="matrix(1, 0, 0, 1, 55.55901, 91.018478)"><title>Job Title</title><tspan x="139.511" y="277.334">Software Developer</tspan><tspan x="139.51100158691406" dy="1em">​</tspan></text>
+      <text style="font-family: &quot;Open Sans&quot;; font-size: 18px; white-space: pre;" x="193.564" y="398.353"><title>Company Name</title>Grind-U-Down Inc.</text>
+    </g>
+  </g>
+  <path d="M 955.123 514.452 H 997.289 L 997.289 481.952 L 1067.123 540.452 L 997.289 598.952 L 997.289 566.452 H 955.123 V 514.452 Z" style="fill: rgb(255, 0, 0);" bx:shape="arrow 955.123 481.952 112 117 52 69.834 0 1@055a183c"/>
+  <g transform="matrix(1.6282, 0, 0, 1.6282, 918.246216, -16.312431)" style="filter: url(#drop-shadow-filter-2);">
+    <title>After</title>
+    <g transform="matrix(1, 0, 0, 1, 0, -94.01651)" style="">
+      <title>Job Ad</title>
+      <rect x="96.854" y="319.868" width="298.241" height="116.099" style="stroke: rgb(179, 179, 179); fill: rgb(242, 242, 242);">
+        <title>Container</title>
+      </rect>
+      <g transform="matrix(1, 0, 0, 1, 10, 18.941498)">
+        <title>Company Logo</title>
+        <rect x="106.854" y="329.868" width="58.216" height="58.216" style="">
+          <title>Container</title>
+        </rect>
+        <path d="M 135.952 358.981 m -20.55 0 a 20.55 20.55 0 1 0 41.1 0 a 20.55 20.55 0 1 0 -41.1 0 Z M 135.952 358.981 m -10.275 0 a 10.275 10.275 0 0 1 20.55 0 a 10.275 10.275 0 0 1 -20.55 0 Z" style="paint-order: fill; stroke: rgb(255, 255, 0); fill: none; stroke-width: 4px;" bx:shape="ring 135.952 358.981 10.275 10.275 20.55 20.55 1@df57ffaf"/>
+      </g>
+      <text style="fill: rgb(0, 42, 255); font-family: &quot;Open Sans&quot;; font-size: 18px; font-weight: 700; white-space: pre;" transform="matrix(1, 0, 0, 1, 55.55901, 91.018478)"><title>Job Title</title><tspan x="139.511" y="277.334">Web Developer</tspan><tspan x="139.51100158691406" dy="1em">​</tspan></text>
+      <text style="font-family: &quot;Open Sans&quot;; font-size: 18px; white-space: pre;" x="193.564" y="398.353"><title>Company Name</title>WeAreFamily Inc.</text>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 0, 22.082487)" style="">
+      <title>Job Ad</title>
+      <rect x="96.854" y="319.868" width="298.241" height="116.099" style="stroke: rgb(179, 179, 179); fill: rgb(242, 242, 242);">
+        <title>Container</title>
+      </rect>
+      <g transform="matrix(1, 0, 0, 1, 10, 18.941498)">
+        <title>Company Logo</title>
+        <rect x="106.854" y="329.868" width="58.216" height="58.216" style="">
+          <title>Container</title>
+        </rect>
+        <path d="M 135.951 338.419 L 141.031 353.786 L 156.5 354.117 L 144.171 363.946 L 148.651 379.518 L 135.951 370.226 L 123.251 379.518 L 127.731 363.946 L 115.402 354.117 L 130.871 353.786 Z" style="stroke-linejoin: round; fill: rgb(0, 213, 255); stroke-width: 3px;" bx:shape="star 135.951 361.138 21.607 22.719 0.4 5 1@b065aade"/>
+      </g>
+      <text style="fill: rgb(0, 42, 255); font-family: &quot;Open Sans&quot;; font-size: 18px; font-weight: 700; white-space: pre;" transform="matrix(1, 0, 0, 1, 55.55901, 91.018478)"><title>Job Title</title><tspan x="139.511" y="277.334">Software Developer</tspan><tspan x="139.51100158691406" dy="1em">​</tspan></text>
+      <text style="font-family: &quot;Open Sans&quot;; font-size: 18px; white-space: pre;" x="193.564" y="398.353"><title>Company Name</title>Grind-U-Down Inc.</text>
+    </g>
+  </g>
+  <text style="fill: rgb(255, 0, 0); font-family: &quot;Open Sans&quot;; font-size: 173px; font-weight: 800; letter-spacing: -10.1px; white-space: pre;" transform="matrix(1, 0, 0, 1, 465.166077, 15.326291)"><title>HIDE</title><tspan x="0" y="142.839">HIDE</tspan><tspan x="0" dy="1em">​</tspan></text>
+  <text style="fill: rgb(51, 51, 51); font-family: &quot;Open Sans&quot;; font-size: 71px; white-space: pre;" transform="matrix(1, 0, 0, 1, 368.418732, 32.188625)"><title>COMPANIES &amp; PROMOTED JOBS</title><tspan x="494.111" y="52.54" style="font-weight: 800;">C</tspan><tspan style="fill: rgb(0, 0, 0); font-weight: 800;">OMPANIES</tspan><tspan x="494.111" dy="1.1em">​</tspan><tspan style="fill: rgb(0, 0, 0);">  </tspan><tspan style="fill: rgb(0, 0, 0); font-size: 60px; font-weight: 300;">&amp;</tspan><tspan style="fill: rgb(0, 0, 0);"> </tspan><tspan style="fill: rgb(0, 0, 0); font-weight: 800;">PROMOTED JOBS</tspan></text>
+  <text style="font-family: &quot;Open Sans&quot;; font-size: 67px; text-anchor: middle; white-space: pre;" transform="matrix(1, 0, 0, 1, 661.122864, -21)"><title>on LinkedIn &amp; Indeed</title><tspan style="font-size: 57px; font-weight: 300;" x="632.051" y="269.029">on</tspan><tspan x="632.051" dy="1em">​</tspan><tspan style="fill: rgb(10, 102, 194); font-weight: 800;">LinkedIn</tspan><tspan> </tspan><tspan style="font-size: 57px; font-weight: 300;">&amp;</tspan><tspan> </tspan><tspan style="fill: rgb(0, 56, 153); font-weight: 800;">Indeed</tspan></text>
+  <path d="M 510.232 926.161 L 773.274 926.161 L 773.274 1048.774 L 510.232 1048.774 L 510.232 926.161 Z M 619.703 486.172 C 628.227 483.137 631.527 484.302 636.945 486.172 C 642.752 488.176 649.575 490.225 653.23 498.625 C 659.636 513.349 648.112 577.646 656.104 581.964 C 662.481 585.409 676.073 558.754 688.673 547.479 C 702.529 535.079 721.82 517.784 736.569 511.078 C 748.179 505.799 760.35 503.265 769.138 505.33 C 776.762 507.123 782.428 512.945 787.338 519.699 C 793.059 527.569 790.257 545.609 799.791 551.31 C 812.016 558.621 844.021 552.333 863.014 549.395 C 880.007 546.766 897.796 534.235 908.994 535.984 C 917.372 537.292 925.784 546.324 927.194 550.353 C 928.082 552.889 927.243 554.854 924.32 557.058 C 918.213 561.664 897.581 568.018 880.256 570.469 C 859.233 573.443 822.986 575.476 805.539 570.469 C 793.168 566.919 786.13 559.593 779.675 552.268 C 773.616 545.394 775.492 528.783 767.222 528.32 C 753.439 527.549 709.604 571.706 691.547 588.669 C 678.606 600.826 673.952 617.727 663.767 620.281 C 654.616 622.575 639.765 613.127 634.072 607.828 C 629.923 603.967 629.649 601.91 628.324 594.417 C 625.712 579.652 639.668 520.041 627.366 514.91 C 613.311 509.048 549.372 570.58 538.28 581.006 C 534.359 584.691 535.406 585.796 533.49 587.711 C 531.574 589.627 529.232 590.958 526.785 592.501 C 524.156 594.159 521.54 597.7 518.164 597.291 C 513.639 596.742 504.686 589.071 501.879 584.838 C 499.792 581.69 498.764 578.377 499.963 575.258 C 501.482 571.307 508.611 568.425 513.374 563.763 C 519.028 558.228 521.458 551.983 531.574 543.647 C 548.973 529.311 602.129 492.43 619.703 486.172 Z" style="fill: rgb(255, 0, 0); stroke-width: 5px;"/>
+  <rect y="286.298" width="460.706" height="433.702" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); visibility: hidden;"/>
+  <g style="" transform="matrix(2.228154, 0, 0, 2.228154, 178.045944, 402.281738)">
+    <title>icon</title>
+    <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="paint-order: fill; stroke-width: 4px; stroke: rgb(0, 0, 0); filter: url(#outline-filter-1);">
+      <title>briefcase-prevent-seam</title>
+    </path>
+    <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; stroke: rgb(186, 218, 85);" d="M 13.695 42.728 C 5.181 42.499 -3.487 32.43 6.373 21.353 C 6.698 20.47 6.794 10.524 6.976 10.524 C 7.198 8.708 13.103 17.207 14.013 18.549 C 20.212 14.327 30.345 15.734 32.993 18.791 C 33.473 18.235 37.132 12.96 38.22 12.071 C 39.939 11.881 39.247 22.507 39.427 22.32 C 47.744 26.516 47.201 40.995 34.919 42.728">
+      <title>head-prevent-seam</title>
+    </path>
+    <g style="mask: url(#mask-4);">
+      <title>briefcase-upper-left</title>
+      <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="stroke: rgb(0, 0, 0); fill: rgb(217, 168, 118);">
+        <title>briefcase</title>
+      </path>
+      <g style="" transform="matrix(0.104132, 0, 0, 0.104132, -2.532993, -0.637008)">
+        <title>Charm</title>
+        <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; stroke: rgb(186, 218, 85);" d="M 155.839 416.452 C 74.076 414.246 -9.163 317.554 85.521 211.184 C 88.642 202.702 89.567 107.184 91.313 107.184 C 93.447 89.745 150.151 171.369 158.89 184.258 C 218.415 143.708 315.724 157.224 341.157 186.578 C 345.771 181.239 380.902 130.582 391.357 122.043 C 407.86 120.218 401.213 222.267 402.943 220.47 C 482.816 260.759 477.595 399.802 359.651 416.452">
+          <title>Head</title>
+        </path>
+        <g style="clip-path: url(#clip-5);">
+          <title>Left Eye</title>
+          <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; fill: rgb(217, 217, 118);" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
+            <title>Left Eye Outer</title>
+          </path>
+          <path style="fill: black; stroke-width: 3px; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; stroke: rgb(0, 0, 0);" d="M 169.232 238.541 C 164.496 240.806 158.937 268.553 168.383 274.458 C 181.214 279.697 208.634 252.081 198.524 245.975 C 194.377 243.919 170.2 237.767 169.232 238.541 Z">
+            <title>Left Eye Pupil</title>
+          </path>
+        </g>
+        <g style="pointer-events: none; clip-path: url(#clip-6); visibility: hidden;">
+          <title>Right Eye</title>
+          <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; stroke: rgb(186, 218, 85);" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
+            <title>Right Eye Outer</title>
+          </path>
+          <path style="fill: black; stroke-width: 3px; stroke-linejoin: round; stroke-linecap: round; stroke: rgb(186, 218, 85);" d="M 296.094 245.378 L 314.081 235.588 C 321.11 237.808 327.078 271.989 309.864 276.822 C 292.65 281.657 295.966 247.777 296.094 245.378 Z">
+            <title>Right Eye Pupil</title>
+          </path>
+        </g>
+        <path style="stroke-width: 3px; fill: rgb(128, 128, 128); stroke-linejoin: round; stroke-linecap: round; pointer-events: none; stroke: rgb(186, 218, 85); visibility: hidden;" d="M 233.32 303.41 C 233.32 302.919 267.736 300.274 267.736 301.963 C 270.98 301.963 267.194 332.711 265.99 332.711 C 262.439 338.218 230.936 307.108 233.32 303.41 Z" transform="matrix(-0.679305, 0.733856, -0.733856, -0.679305, 654.596728, 348.709856)">
+          <title>Nose</title>
+        </path>
+        <path d="M 217.5 -411.659 L 225 -385.967 L 210 -385.967 L 217.5 -411.659 Z" style="fill: rgb(255, 255, 255); visibility: hidden; stroke: rgb(186, 218, 85);" transform="matrix(1, 0, 0, -1, 0, 0)" class="halloween" bx:shape="triangle 210 -411.659 15 25.692 0.5 0 1@d8234d65">
+          <title>Halloween Left Fang</title>
+        </path>
+        <path d="M 280.986 -402.974 L 288.486 -377.282 L 273.486 -377.282 L 280.986 -402.974 Z" style="fill: rgb(255, 255, 255); visibility: hidden; stroke: rgb(186, 218, 85);" transform="matrix(1, 0, 0, -1, 0, 0)" class="halloween" bx:shape="triangle 273.486 -402.974 15 25.692 0.5 0 1@027a9276">
+          <title>Halloween Right Fang</title>
+        </path>
+        <path style="fill: none; stroke-width: 6px; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; stroke: rgb(186, 218, 85); visibility: hidden;" d="M 250.589 336.034 L 252.443 361.372 C 230.077 409.832 166.815 377.88 183.845 340.978">
+          <title>Left Lip</title>
+        </path>
+        <path style="fill: none; stroke-width: 6px; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; stroke: rgb(186, 218, 85); visibility: hidden;" d="M 252.443 359.518 C 278.217 395.377 308.936 368.31 298.175 353.337">
+          <title>Right Lip</title>
+        </path>
+        <path style="stroke-width: 6px; stroke-linejoin: round; stroke-linecap: round; fill: rgb(51, 51, 51); pointer-events: none; stroke-opacity: 0; stroke: rgb(186, 218, 85); visibility: hidden;" d="M 144.908 229.028 C 144.908 229.028 222.328 249.598 222.328 249.598">
+          <title>Left Eyelid Chromium</title>
+        </path>
+        <path style="stroke-width: 6px; stroke-linejoin: round; stroke-linecap: round; fill: rgb(51, 51, 51); pointer-events: none; stroke-opacity: 0; stroke: rgb(186, 218, 85); visibility: hidden;" d="M 278.801 251.337 C 278.801 251.337 339.019 218.997 339.019 218.997">
+          <title>Right Eyelid Chromium</title>
+        </path>
+      </g>
+    </g>
+    <g style="mask: url(#mask-5);">
+      <title>briefcase-lower-right</title>
+      <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="stroke: rgb(0, 0, 0);">
+        <title>briefcase</title>
+      </path>
+      <g style="opacity: 0; visibility: hidden; filter: url(#filter-7);" transform="matrix(0.104132, 0, 0, 0.104132, -2.532993, -0.637008)">
+        <title>Charm</title>
+        <path style="stroke-width: 3px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(51, 51, 51); stroke-linejoin: round; stroke-linecap: round; pointer-events: none; visibility: hidden;" d="M 155.839 416.452 C 74.076 414.246 -9.163 317.554 85.521 211.184 C 88.642 202.702 89.567 107.184 91.313 107.184 C 93.447 89.745 150.151 171.369 158.89 184.258 C 218.415 143.708 315.724 157.224 341.157 186.578 C 345.771 181.239 380.902 130.582 391.357 122.043 C 407.86 120.218 401.213 222.267 402.943 220.47 C 482.816 260.759 477.595 399.802 359.651 416.452">
+          <title>Head</title>
+        </path>
+        <g style="clip-path: url(#clip-7);">
+          <title>Left Eye</title>
+          <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
+            <title>Left Eye Outer</title>
+          </path>
+          <path style="fill: black; stroke-width: 3px; stroke: black; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 169.232 238.541 C 164.496 240.806 158.937 268.553 168.383 274.458 C 181.214 279.697 208.634 252.081 198.524 245.975 C 194.377 243.919 170.2 237.767 169.232 238.541 Z">
+            <title>Left Eye Pupil</title>
+          </path>
+        </g>
+        <g style="pointer-events: none; clip-path: url(#clip-8);">
+          <title>Right Eye</title>
+          <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
+            <title>Right Eye Outer</title>
+          </path>
+          <path style="fill: black; stroke-width: 3px; stroke: black; stroke-linejoin: round; stroke-linecap: round;" d="M 296.094 245.378 L 314.081 235.588 C 321.11 237.808 327.078 271.989 309.864 276.822 C 292.65 281.657 295.966 247.777 296.094 245.378 Z">
+            <title>Right Eye Pupil</title>
+          </path>
+        </g>
+        <path style="stroke-width: 3px; stroke: rgb(128, 128, 128); fill: rgb(128, 128, 128); stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 233.32 303.41 C 233.32 302.919 267.736 300.274 267.736 301.963 C 270.98 301.963 267.194 332.711 265.99 332.711 C 262.439 338.218 230.936 307.108 233.32 303.41 Z" transform="matrix(-0.679305, 0.733856, -0.733856, -0.679305, 654.596728, 348.709856)">
+          <title>Nose</title>
+        </path>
+        <path style="fill: none; stroke: rgb(128, 128, 128); stroke-width: 6px; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 250.589 336.034 L 252.443 361.372 C 230.077 409.832 166.815 377.88 183.845 340.978">
+          <title>Left Lip</title>
+        </path>
+        <path style="fill: none; stroke: rgb(128, 128, 128); stroke-width: 6px; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 252.443 359.518 C 278.217 395.377 308.936 368.31 298.175 353.337">
+          <title>Right Lip</title>
+        </path>
+        <path style="stroke-width: 6px; stroke-linejoin: round; stroke: rgb(128, 128, 128); stroke-linecap: round; fill: rgb(51, 51, 51); pointer-events: none; stroke-opacity: 0;" d="M 144.908 229.028 C 144.908 229.028 222.328 249.598 222.328 249.598">
+          <title>Left Eyelid Chromium</title>
+        </path>
+        <path style="stroke-width: 6px; stroke-linejoin: round; stroke: rgb(128, 128, 128); stroke-linecap: round; fill: rgb(51, 51, 51); pointer-events: none; stroke-opacity: 0;" d="M 278.801 251.337 C 278.801 251.337 339.019 218.997 339.019 218.997">
+          <title>Right Eyelid Chromium</title>
+        </path>
+      </g>
+    </g>
+  </g>
+  <text style="font-family: &quot;Open Sans&quot;; font-size: 53.6px; font-weight: 700; white-space: pre;" x="66.323" y="619.733"><title>Title</title>Hide n' Seek</text>
+</svg>
