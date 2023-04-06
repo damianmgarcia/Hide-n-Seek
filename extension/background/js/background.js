@@ -95,13 +95,13 @@ class Utilities {
 class JobBoards {
   static #jobBoards = [
     {
-      jobBoardUrlMatchPattern: "www.linkedin.com",
+      jobBoardUrlMatchPattern: "linkedin.com",
       jobBoardId: "linkedIn",
       jobBoardName: "LinkedIn",
       jobBoardPromotionalStatusValue: "Promoted",
     },
     {
-      jobBoardUrlMatchPattern: "www.indeed.com",
+      jobBoardUrlMatchPattern: "indeed.com",
       jobBoardId: "indeed",
       jobBoardName: "Indeed",
       jobBoardPromotionalStatusValue: "Sponsored",
@@ -125,7 +125,11 @@ class JobBoards {
   }
 
   static async getTabsWithJobBoardId(jobBoardId = "") {
-    const tabs = await chrome.tabs.query({});
+    const hostPermissions = chrome.runtime.getManifest().host_permissions;
+    const tabs = await chrome.tabs.query({
+      url: hostPermissions,
+      windowType: "normal",
+    });
     return tabs.filter((tab) =>
       jobBoardId
         ? JobBoards.getJobBoardIdByUrl(tab.url) === jobBoardId
@@ -270,7 +274,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 });
 
 chrome.tabs.onUpdated.addListener((tabId, tabChanges, tab) => {
-  if (tabChanges.status !== "loading") return;
+  if (tabChanges.status !== "complete") return;
 
   if (!tab.url) return;
 
@@ -300,19 +304,29 @@ chrome.storage.local.onChanged.addListener((storageChanges) => {
   });
 });
 
-chrome.runtime.onMessage.addListener((message, sender) => {
-  if (!message.to.includes("background script")) return;
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (!message.to?.includes("background script")) return;
 
   if (message.from === "content script" && message.body === "inject css") {
     Utilities.safeAwait(chrome.scripting.insertCSS, {
       target: { tabId: sender.tab.id },
       files: ["/content-script/css/content-script.css"],
     });
+    sendResponse({
+      from: "background script",
+      to: message.from,
+      body: "css injected",
+    });
   } else if (
     message.from === "content script" &&
     message.body === "hasHideNSeekUI changed"
   ) {
     updateBadgeTextAndTitle(message.jobBoardId);
+    sendResponse({
+      from: "background script",
+      to: message.from,
+      body: "updating badge",
+    });
   }
 });
 
