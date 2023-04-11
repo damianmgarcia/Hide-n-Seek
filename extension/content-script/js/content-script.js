@@ -123,6 +123,8 @@
 
       if (!hasHideNSeekUIChanged) return;
 
+      this.#hasHideNSeekUI = hasHideNSeekUI;
+
       chrome.runtime.sendMessage({
         from: "content script",
         to: ["background script", "popup script"],
@@ -130,8 +132,6 @@
         jobBoardId: this.#jobBoardId,
         hasHideNSeekUI: hasHideNSeekUI,
       });
-
-      this.#hasHideNSeekUI = hasHideNSeekUI;
     }
 
     #jobRegistrar = new MutationObserver(() => this.#registerJobs());
