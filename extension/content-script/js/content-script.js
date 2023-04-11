@@ -135,7 +135,7 @@
     }
 
     #jobRegistrar = new MutationObserver(() => this.#registerJobs());
-    async startRegisteringJobs() {
+    startRegisteringJobs() {
       chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (!message.to.includes("content script")) return;
 
@@ -761,31 +761,22 @@
     jobBoardSelectors.selectors.baseElementOfJobElement,
     initialStorage
   ).start();
-  const jobAttributeManagers = JobAttributeManager.getJobAttributes(
-    jobBoardId
-  ).map(
-    (jobAttribute) =>
-      new JobAttributeManager(
-        jobAttribute,
+  JobAttributeManager.getJobAttributes(jobBoardId).forEach((jobAttribute) =>
+    new JobAttributeManager(
+      jobAttribute,
+      jobBoardId,
+      jobRegistrar,
+      jobBlockElementSupplier,
+      jobBlockElementInserter,
+      new JobAttributeValueGetter(
         jobBoardId,
-        jobRegistrar,
-        jobBlockElementSupplier,
-        jobBlockElementInserter,
-        new JobAttributeValueGetter(
-          jobBoardId,
-          jobAttribute,
-          jobBoardSelectors.selectors[jobAttribute],
-          jobBoardSelectors.selectors.baseElementOfJobElement
-        ),
-        jobDisplayManager,
-        initialStorage
-      )
-  );
-
-  await Promise.all(
-    jobAttributeManagers.map((jobAttributeManager) =>
-      jobAttributeManager.start()
-    )
+        jobAttribute,
+        jobBoardSelectors.selectors[jobAttribute],
+        jobBoardSelectors.selectors.baseElementOfJobElement
+      ),
+      jobDisplayManager,
+      initialStorage
+    ).start()
   );
 
   jobRegistrar.startRegisteringJobs();
