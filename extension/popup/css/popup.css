@@ -620,3 +620,19 @@ input[type="text"] {
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+body::-webkit-scrollbar-track {
+  background: hsl(0, 0%, 100%, 0.5);
+}
+
+body::-webkit-scrollbar-track:hover {
+  background: hsl(0, 0%, 100%, 0.55);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: hsl(0, 0%, 100%, 0.5);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: hsl(0, 0%, 100%, 1);
+}
