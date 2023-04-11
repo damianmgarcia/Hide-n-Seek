@@ -796,19 +796,13 @@
     }
   }
 
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  chrome.runtime.onMessage.addListener((message, sender) => {
     if (!message.to.includes("popup script")) return;
 
     if (
       message.from === "content script" &&
       message.body === "hasHideNSeekUI changed"
     ) {
-      sendResponse({
-        from: "popup script",
-        to: message.from,
-        body: "updating badge if necessary",
-      });
-
       const messageFromActiveTabInCurrentWindow =
         sender.tab.id === activeTabInCurrentWindow.id &&
         sender.tab.windowId === activeTabInCurrentWindow.windowId;
