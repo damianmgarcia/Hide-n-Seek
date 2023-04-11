@@ -300,7 +300,7 @@ chrome.storage.local.onChanged.addListener((storageChanges) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender) => {
-  if (!message.to?.includes("background script")) return;
+  if (!message.to.includes("background script")) return;
 
   if (message.from === "content script" && message.body === "inject css") {
     Utilities.safeAwait(chrome.scripting.insertCSS, {
