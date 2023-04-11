@@ -109,9 +109,11 @@ class JobBoards {
   ];
 
   static getJobBoardIdByUrl(url) {
-    return this.#jobBoards.find((jobBoard) =>
-      url?.includes(jobBoard.jobBoardUrlMatchPattern)
-    )?.jobBoardId;
+    if (typeof url !== "string") return;
+    const jobBoardMatch = this.#jobBoards.find((jobBoard) =>
+      url.includes(jobBoard.jobBoardUrlMatchPattern)
+    );
+    if (jobBoardMatch) return jobBoardMatch.jobBoardId;
   }
 
   static getAllJobBoardIds() {
@@ -266,15 +268,8 @@ chrome.runtime.onInstalled.addListener(async () => {
   );
 });
 
-chrome.tabs.onActivated.addListener(async (activeInfo) => {
-  const { jobBoardId } = await JobBoards.getContentScriptStatusOfTab(
-    activeInfo.tabId
-  );
-  if (jobBoardId) updateBadgeTextAndTitle(jobBoardId);
-});
-
 chrome.tabs.onUpdated.addListener((tabId, tabChanges, tab) => {
-  if (tabChanges.status !== "complete") return;
+  if (tabChanges.status !== "loading") return;
 
   if (!tab.url) return;
 
@@ -304,7 +299,7 @@ chrome.storage.local.onChanged.addListener((storageChanges) => {
   });
 });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender) => {
   if (!message.to?.includes("background script")) return;
 
   if (message.from === "content script" && message.body === "inject css") {
@@ -312,21 +307,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       target: { tabId: sender.tab.id },
       files: ["/content-script/css/content-script.css"],
     });
-    sendResponse({
-      from: "background script",
-      to: message.from,
-      body: "css injected",
-    });
   } else if (
     message.from === "content script" &&
     message.body === "hasHideNSeekUI changed"
   ) {
     updateBadgeTextAndTitle(message.jobBoardId);
-    sendResponse({
-      from: "background script",
-      to: message.from,
-      body: "updating badge",
-    });
   }
 });
 
