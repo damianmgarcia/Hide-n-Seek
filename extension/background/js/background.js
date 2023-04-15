@@ -127,9 +127,10 @@ class JobBoards {
   }
 
   static async getTabsWithJobBoardId(jobBoardId = "") {
-    const hostPermissions = chrome.runtime.getManifest().host_permissions;
+    const urlMatchPatterns =
+      chrome.runtime.getManifest().content_scripts[0].matches;
     const tabs = await chrome.tabs.query({
-      url: hostPermissions,
+      url: urlMatchPatterns,
       windowType: "normal",
     });
     return tabs.filter((tab) =>
