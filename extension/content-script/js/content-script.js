@@ -731,19 +731,9 @@
     }
   }
 
-  if (window.jobBlockContentScriptHasBeenInjected) return;
-
-  window.jobBlockContentScriptHasBeenInjected = true;
-
   const jobBoardId = JobBoards.getJobBoardIdByHostname();
 
   if (!jobBoardId) return;
-
-  await chrome.runtime.sendMessage({
-    from: "content script",
-    to: ["background script"],
-    body: "inject css",
-  });
 
   const initialStorage = await chrome.storage.local.get();
   const jobBoardSelectors = new JobBoardSelectors(jobBoardId);

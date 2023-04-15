@@ -268,21 +268,6 @@ chrome.runtime.onInstalled.addListener(async () => {
   );
 });
 
-chrome.tabs.onUpdated.addListener((tabId, tabChanges, tab) => {
-  if (tabChanges.status !== "loading") return;
-
-  if (!tab.url) return;
-
-  const jobBoardId = JobBoards.getJobBoardIdByUrl(tab.url);
-
-  if (!jobBoardId) return;
-
-  Utilities.safeAwait(chrome.scripting.executeScript, {
-    target: { tabId },
-    files: ["/content-script/js/content-script.js"],
-  });
-});
-
 chrome.storage.local.onChanged.addListener((storageChanges) => {
   JobBoards.getAllJobBoardIds().forEach((jobBoardId) => {
     const changesIncludesBlockedJobAttributeValuesForJobBoardId = Object.keys(
@@ -302,12 +287,7 @@ chrome.storage.local.onChanged.addListener((storageChanges) => {
 chrome.runtime.onMessage.addListener((message, sender) => {
   if (!message.to.includes("background script")) return;
 
-  if (message.from === "content script" && message.body === "inject css") {
-    Utilities.safeAwait(chrome.scripting.insertCSS, {
-      target: { tabId: sender.tab.id },
-      files: ["/content-script/css/content-script.css"],
-    });
-  } else if (
+  if (
     message.from === "content script" &&
     message.body === "hasHideNSeekUI changed"
   ) {

@@ -9,8 +9,7 @@
     "48": "/images/hide-n-seek-icon-48.png",
     "128": "/images/hide-n-seek-icon-128.png"
   },
-  "permissions": ["scripting", "storage", "tabs"],
-  "host_permissions": ["https://*.linkedin.com/*", "https://*.indeed.com/*"],
+  "permissions": ["storage", "tabs"],
   "action": {
     "default_title": "Hide n' Seek",
     "default_popup": "/popup/html/popup.html",
@@ -21,6 +20,13 @@
       "128": "/images/hide-n-seek-icon-128.png"
     }
   },
+  "content_scripts": [
+    {
+      "matches": ["https://*.linkedin.com/*", "https://*.indeed.com/*"],
+      "css": ["/content-script/css/content-script.css"],
+      "js": ["/content-script/js/content-script.js"]
+    }
+  ],
   "background": {
     "service_worker": "/background/js/background.js"
   },
