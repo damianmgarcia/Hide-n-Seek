@@ -140,9 +140,9 @@ class JobBoards {
     );
   }
 
-  static async getContentScriptStatusOfTab(tabId) {
+  static async getContentScriptStatusOfTab(tab) {
     try {
-      return await chrome.tabs.sendMessage(tabId, {
+      return await chrome.tabs.sendMessage(tab.id, {
         from: "background script",
         to: ["content script"],
         body: "send status",
@@ -155,23 +155,9 @@ class JobBoards {
       };
     }
   }
-
-  static async getContentScriptStatusesOfJobBoardIdTabs(jobBoardId = "") {
-    const tabsWithJobBoardId = await this.getTabsWithJobBoardId(jobBoardId);
-    const contentScriptStatusesOfJobBoardIdTabs = await Promise.all(
-      tabsWithJobBoardId.map(async (tab) => {
-        const contentScriptStatus = await this.getContentScriptStatusOfTab(
-          tab.id
-        );
-        return { tab, contentScriptStatus };
-      })
-    );
-
-    return contentScriptStatusesOfJobBoardIdTabs;
-  }
 }
 
-const updateBadgeTextAndTitle = async (jobBoardId) => {
+const updateBadgeTextAndTitle = async (jobBoardId, tabs) => {
   const localStorage = await chrome.storage.local.get();
 
   const { jobBoardName, jobBoardPromotionalStatusValue } =
@@ -208,51 +194,65 @@ const updateBadgeTextAndTitle = async (jobBoardId) => {
   const numberOfBlockedJobAttributes =
     numberOfBlockedCompaniesForJobBoardId + promotedJobsAreBlockedForJobBoardId;
 
-  const contentScriptStatusesOfJobBoardIdTabs =
-    await JobBoards.getContentScriptStatusesOfJobBoardIdTabs(jobBoardId);
+  tabs.forEach(async (tab) => {
+    const contentScriptStatus = await JobBoards.getContentScriptStatusOfTab(
+      tab
+    );
 
-  contentScriptStatusesOfJobBoardIdTabs.forEach(
-    ({ tab, contentScriptStatus }) => {
-      if (!contentScriptStatus.hasHideNSeekUI) {
-        Utilities.safeAwait(chrome.action.setTitle, {
+    const setBadge = (title, badgeText, badgeBackgroundColor) => {
+      Utilities.safeAwait(chrome.action.setTitle, title);
+      Utilities.safeAwait(chrome.action.setBadgeText, badgeText);
+      Utilities.safeAwait(
+        chrome.action.setBadgeBackgroundColor,
+        badgeBackgroundColor
+      );
+    };
+
+    if (!contentScriptStatus.hasHideNSeekUI) {
+      setBadge(
+        {
           tabId: tab.id,
           title: "Hide n' Seek",
-        });
-
-        Utilities.safeAwait(chrome.action.setBadgeText, {
+        },
+        {
           tabId: tab.id,
           text: "",
-        });
-
-        return;
-      }
-
-      Utilities.safeAwait(chrome.action.setTitle, {
-        tabId: tab.id,
-        title: `Hide n' Seek
+        },
+        {
+          tabId: tab.id,
+          color: [255, 128, 128, 255],
+        }
+      );
+    } else if (contentScriptStatus.hasHideNSeekUI) {
+      setBadge(
+        {
+          tabId: tab.id,
+          title: `Hide n' Seek
 
 ${jobBoardName}:
 • ${numberOfBlockedCompaniesForJobBoardId} ${
-          numberOfBlockedCompaniesForJobBoardId === 1 ? "company" : "companies"
-        } hidden${
-          promotedJobsAreBlockedForJobBoardId
-            ? `\n• ${jobBoardPromotionalStatusValue} jobs hidden`
-            : ""
-        }
+            numberOfBlockedCompaniesForJobBoardId === 1
+              ? "company"
+              : "companies"
+          } hidden${
+            promotedJobsAreBlockedForJobBoardId
+              ? `
+• ${jobBoardPromotionalStatusValue} jobs hidden`
+              : ""
+          }
 `,
-      });
-
-      Utilities.safeAwait(chrome.action.setBadgeBackgroundColor, {
-        tabId: tab.id,
-        color: [255, 128, 128, 255],
-      });
-
-      Utilities.safeAwait(chrome.action.setBadgeText, {
-        tabId: tab.id,
-        text: `${numberOfBlockedJobAttributes}`,
-      });
+        },
+        {
+          tabId: tab.id,
+          text: `${numberOfBlockedJobAttributes}`,
+        },
+        {
+          tabId: tab.id,
+          color: [255, 128, 128, 255],
+        }
+      );
     }
-  );
+  });
 };
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -270,7 +270,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 });
 
 chrome.storage.local.onChanged.addListener((storageChanges) => {
-  JobBoards.getAllJobBoardIds().forEach((jobBoardId) => {
+  JobBoards.getAllJobBoardIds().forEach(async (jobBoardId) => {
     const changesIncludesBlockedJobAttributeValuesForJobBoardId = Object.keys(
       storageChanges
     ).some(
@@ -280,8 +280,10 @@ chrome.storage.local.onChanged.addListener((storageChanges) => {
         !key.endsWith(".backup")
     );
 
-    if (changesIncludesBlockedJobAttributeValuesForJobBoardId)
-      updateBadgeTextAndTitle(jobBoardId);
+    if (!changesIncludesBlockedJobAttributeValuesForJobBoardId) return;
+
+    const jobBoardIdTabs = await JobBoards.getTabsWithJobBoardId(jobBoardId);
+    updateBadgeTextAndTitle(jobBoardId, jobBoardIdTabs);
   });
 });
 
@@ -292,7 +294,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     message.from === "content script" &&
     message.body === "hasHideNSeekUI changed"
   ) {
-    updateBadgeTextAndTitle(message.jobBoardId);
+    updateBadgeTextAndTitle(message.jobBoardId, [sender.tab]);
   }
 });
 
