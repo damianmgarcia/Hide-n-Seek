@@ -96,7 +96,7 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
 
 - 4.1.2
   - Release date
-    - 2023-04-11
+    - 2023-04-18
   - Bug fixes
     - Hide n' Seek UI not showing
       - Some code optimizations seem to have reduced the frequency of [this issue](https://github.com/damianmgarcia/Hide-n-Seek/issues/11). However, the [source of this bug may be Chrome itself](https://bugs.chromium.org/p/chromium/issues/detail?id=1426461).
