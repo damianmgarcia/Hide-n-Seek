@@ -123,6 +123,8 @@
 
       if (!hasHideNSeekUIChanged) return;
 
+      this.#hasHideNSeekUI = hasHideNSeekUI;
+
       chrome.runtime.sendMessage({
         from: "content script",
         to: ["background script", "popup script"],
@@ -130,12 +132,10 @@
         jobBoardId: this.#jobBoardId,
         hasHideNSeekUI: hasHideNSeekUI,
       });
-
-      this.#hasHideNSeekUI = hasHideNSeekUI;
     }
 
     #jobRegistrar = new MutationObserver(() => this.#registerJobs());
-    async startRegisteringJobs() {
+    startRegisteringJobs() {
       chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (!message.to.includes("content script")) return;
 
@@ -731,19 +731,9 @@
     }
   }
 
-  if (window.jobBlockContentScriptHasBeenInjected) return;
-
-  window.jobBlockContentScriptHasBeenInjected = true;
-
   const jobBoardId = JobBoards.getJobBoardIdByHostname();
 
   if (!jobBoardId) return;
-
-  await chrome.runtime.sendMessage({
-    from: "content script",
-    to: ["background script"],
-    body: "inject css",
-  });
 
   const initialStorage = await chrome.storage.local.get();
   const jobBoardSelectors = new JobBoardSelectors(jobBoardId);
@@ -761,31 +751,22 @@
     jobBoardSelectors.selectors.baseElementOfJobElement,
     initialStorage
   ).start();
-  const jobAttributeManagers = JobAttributeManager.getJobAttributes(
-    jobBoardId
-  ).map(
-    (jobAttribute) =>
-      new JobAttributeManager(
-        jobAttribute,
+  JobAttributeManager.getJobAttributes(jobBoardId).forEach((jobAttribute) =>
+    new JobAttributeManager(
+      jobAttribute,
+      jobBoardId,
+      jobRegistrar,
+      jobBlockElementSupplier,
+      jobBlockElementInserter,
+      new JobAttributeValueGetter(
         jobBoardId,
-        jobRegistrar,
-        jobBlockElementSupplier,
-        jobBlockElementInserter,
-        new JobAttributeValueGetter(
-          jobBoardId,
-          jobAttribute,
-          jobBoardSelectors.selectors[jobAttribute],
-          jobBoardSelectors.selectors.baseElementOfJobElement
-        ),
-        jobDisplayManager,
-        initialStorage
-      )
-  );
-
-  await Promise.all(
-    jobAttributeManagers.map((jobAttributeManager) =>
-      jobAttributeManager.start()
-    )
+        jobAttribute,
+        jobBoardSelectors.selectors[jobAttribute],
+        jobBoardSelectors.selectors.baseElementOfJobElement
+      ),
+      jobDisplayManager,
+      initialStorage
+    ).start()
   );
 
   jobRegistrar.startRegisteringJobs();
