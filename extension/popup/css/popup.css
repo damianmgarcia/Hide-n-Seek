@@ -211,6 +211,10 @@ html[data-applicable-tab="false"] .options-for-inapplicable-tabs {
   fill: hsl(0, 0%, 50%);
 }
 
+.job-board-search-option-container:has(:disabled) {
+  pointer-events: none;
+}
+
 .job-board-search-option-container > input {
   position: absolute;
 }
