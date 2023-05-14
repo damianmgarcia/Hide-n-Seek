@@ -8,18 +8,21 @@
   class JobBoards {
     static #jobBoards = [
       {
-        hostname: "www.linkedin.com",
+        hostname: "linkedin.com",
         jobBoardId: "linkedIn",
       },
       {
-        hostname: "www.indeed.com",
+        hostname: "indeed.com",
         jobBoardId: "indeed",
       },
     ];
 
     static getJobBoardIdByHostname(hostname = location.hostname) {
-      return this.#jobBoards.find((jobBoard) => jobBoard.hostname === hostname)
-        ?.jobBoardId;
+      return this.#jobBoards.find(
+        (jobBoard) =>
+          hostname.endsWith(`.${jobBoard.hostname}`) ||
+          hostname === jobBoard.hostname
+      )?.jobBoardId;
     }
   }
 

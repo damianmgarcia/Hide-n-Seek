@@ -211,6 +211,10 @@ html[data-applicable-tab="false"] .options-for-inapplicable-tabs {
   fill: hsl(0, 0%, 50%);
 }
 
+.job-board-search-option-container:has(:disabled) {
+  pointer-events: none;
+}
+
 .job-board-search-option-container > input {
   position: absolute;
 }
@@ -220,6 +224,7 @@ html[data-applicable-tab="false"] .options-for-inapplicable-tabs {
 }
 
 .options-for-applicable-tabs .job-board-name {
+  max-height: 32.4219px;
   width: 50%;
 }
 
@@ -242,7 +247,8 @@ html[data-applicable-tab="false"] .options-for-inapplicable-tabs {
   grid-column: 2 / 3;
   grid-row: 1 / 1;
   height: auto;
-  transition: background-color 200ms ease-out;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
   width: 30px;
 }
 
@@ -484,6 +490,8 @@ button {
 :disabled {
   opacity: 0.1;
   pointer-events: none;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
 }
 
 .collapse-expand-button:disabled {
@@ -586,13 +594,21 @@ input[type="radio"] {
 }
 
 input[type="text"] {
+  background: hsl(0, 0%, 100%, 1);
   border: none;
   font-family: "Open Sans", sans-serif;
   height: 2rem;
   margin: 0;
   padding: 0;
   text-align: center;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
   width: 100%;
+}
+
+input[type="text"]:disabled {
+  background: hsl(0, 0%, 100%, 0.3);
+  opacity: 1;
 }
 
 ::-webkit-scrollbar {
