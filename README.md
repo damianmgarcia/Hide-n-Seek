@@ -97,7 +97,7 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
     - 2023-05-14
   - Improvements
     - Added support for all country-specific versions of Indeed
-      - All country-specific versions of Indeed (i.e. non-US versions of Indeed) now work with Hide n' Seek. (Issue #14)
+      - All country-specific versions of Indeed (i.e. non-US versions of Indeed) now work with Hide n' Seek. ([Issue #14](https://github.com/damianmgarcia/Hide-n-Seek/issues/14))
     - Added network connectivity handling to the job search popup
       - Hide n' Seek will now automatically disable the job search popup when your device is offline, and it now lets you know if it is unable to connect to a
         job board's site before submitting your job search query.
