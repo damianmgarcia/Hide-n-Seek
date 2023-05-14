@@ -225,7 +225,7 @@
       });
 
       this.#checkboxInput.addEventListener("keydown", (keyboardEvent) => {
-        if (keyboardEvent.key !== "Enter") return;
+        if (keyboardEvent.key !== "Enter" || keyboardEvent.repeat) return;
 
         this.#checkboxInput.checked = this.#checkboxInput.checked
           ? false
@@ -843,7 +843,7 @@
       this.#jobNameSearchContainerInput.addEventListener(
         "keydown",
         (keyboardEvent) => {
-          if (keyboardEvent.key === "Enter")
+          if (keyboardEvent.key === "Enter" && !keyboardEvent.repeat)
             this.#search(activeTabInCurrentWindow);
         }
       );
