@@ -1,19 +1,39 @@
 (async () => {
+  class Utilities {
+    static async safeAwait(functionToAwait, ...args) {
+      try {
+        return await functionToAwait(...args);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
   class JobBoards {
     static #jobBoards = [
       {
+        hostname: "linkedin.com",
         jobBoardId: "linkedIn",
         jobAttributes: ["companyName", "promotionalStatus"],
         logoSrc: "/images/linkedin-logo.svg",
         logoAlt: "The logo for LinkedIn.com",
       },
       {
+        hostname: "indeed.com",
         jobBoardId: "indeed",
         jobAttributes: ["companyName", "promotionalStatus"],
         logoSrc: "/images/indeed-logo.svg",
         logoAlt: "The logo for Indeed.com",
       },
     ];
+
+    static getJobBoardIdByHostname(hostname = "") {
+      return this.#jobBoards.find(
+        (jobBoard) =>
+          hostname.endsWith(`.${jobBoard.hostname}`) ||
+          hostname === jobBoard.hostname
+      )?.jobBoardId;
+    }
 
     static getJobBoardDataByJobBoardId(jobBoardId) {
       return this.#jobBoards.find(
@@ -674,12 +694,16 @@
 
     static #jobBoardUrlSearchData = {
       linkedIn: {
-        queryUrl: "https://www.linkedin.com/jobs/search/",
-        jobNameKey: "keywords",
+        defaultHostname: "https://linkedin.com",
+        pathname: "/jobs/search/",
+        jobSearchParameterName: "keywords",
+        jobBoardName: "LinkedIn",
       },
       indeed: {
-        queryUrl: "https://www.indeed.com/jobs",
-        jobNameKey: "q",
+        defaultHostname: "https://indeed.com",
+        pathname: "/jobs",
+        jobSearchParameterName: "q",
+        jobBoardName: "Indeed",
       },
     };
 
@@ -687,15 +711,13 @@
       this.#jobBoardSelectorElements.forEach(({ label, input }) => {
         label.dataset.checked = input.checked;
         if (!input.checked) return;
-        this.#jobNameSearchContainerInput.setAttribute(
-          "placeholder",
-          `Search ${label.dataset.jobBoardPlaceholderName}`
-        );
-        this.#jobNameSearchContainerInput.focus();
         this.#recentSearchQueryJobBoardId = label.dataset.jobBoardId;
         chrome.storage.local.set({
           recentSearchQueryJobBoardId: label.dataset.jobBoardId,
         });
+        if (!navigator.onLine) return;
+        this.#jobNameSearchContainerInput.placeholder = `Search ${label.dataset.jobBoardPlaceholderName}`;
+        this.#jobNameSearchContainerInput.focus();
       });
     }
 
@@ -704,14 +726,82 @@
         this.#jobNameSearchContainerInput.value.trim() ? false : true;
     }
 
-    static #search(activeTabInCurrentWindow) {
-      const { jobNameKey, queryUrl } =
-        this.#jobBoardUrlSearchData[this.#recentSearchQueryJobBoardId];
-      const jobNameValue = this.#jobNameSearchContainerInput.value;
-      const queryString = new URLSearchParams({
-        [jobNameKey]: jobNameValue,
-      });
-      const url = `${queryUrl}?${queryString}`;
+    static #savedUserInput = "";
+    static #disableInputs(textInputPlaceholder = "") {
+      this.#jobBoardSelectorElements.forEach(
+        ({ input }) => (input.disabled = true)
+      );
+      this.#jobNameSearchContainerInput.disabled = true;
+      this.#jobNameSearchContainerButton.disabled = true;
+      this.#jobNameSearchContainerInput.placeholder = textInputPlaceholder;
+      this.#savedUserInput = this.#jobNameSearchContainerInput.value;
+      this.#jobNameSearchContainerInput.value = "";
+    }
+
+    static #enableInputs(textInputValue = this.#savedUserInput) {
+      this.#jobBoardSelectorElements.forEach(
+        ({ input }) => (input.disabled = false)
+      );
+      this.#jobNameSearchContainerInput.value = textInputValue;
+      this.#jobNameSearchContainerInput.disabled = false;
+      this.#updateSearchButton();
+      this.#updateSelectedJobBoard();
+    }
+
+    static #updateInputsBasedOnConnectivity() {
+      if (navigator.onLine) {
+        this.#enableInputs();
+      } else if (!navigator.onLine) {
+        this.#disableInputs("Device is offline");
+      }
+    }
+
+    static async #search(activeTabInCurrentWindow) {
+      if (this.#jobNameSearchContainerButton.disabled) return;
+
+      const jobSearchParameterValue = this.#jobNameSearchContainerInput.value;
+      this.#disableInputs("Searching...");
+
+      const {
+        defaultHostname,
+        pathname,
+        jobSearchParameterName,
+        jobBoardName,
+      } = this.#jobBoardUrlSearchData[this.#recentSearchQueryJobBoardId];
+
+      const jobBoardResponse = await Utilities.safeAwait(
+        fetch,
+        defaultHostname
+      );
+
+      if (!jobBoardResponse || !jobBoardResponse.ok) {
+        this.#jobNameSearchContainerInput.placeholder = `Can't connect to ${jobBoardName}`;
+
+        const keyframes = [
+          {
+            backgroundColor: "hsl(0, 0%, 100%, 0.3)",
+          },
+          {
+            backgroundColor: "hsl(0, 100%, 85%, 0.9)",
+          },
+        ];
+
+        const options = {
+          direction: "alternate",
+          duration: 200,
+          easing: "linear",
+          iterations: 25,
+        };
+
+        await this.#jobNameSearchContainerInput.animate(keyframes, options)
+          .finished;
+
+        return this.#updateInputsBasedOnConnectivity();
+      }
+
+      const url = new URL(jobBoardResponse.url);
+      url.pathname = pathname;
+      url.searchParams.set(jobSearchParameterName, jobSearchParameterValue);
 
       const browserNewTabUrls = {
         chrome: "chrome://newtab/",
@@ -725,16 +815,21 @@
         (browserNewTabUrl) => activeTabInCurrentWindow.url === browserNewTabUrl
       );
 
-      activeTabInCurrentWindowIsNewTabPage
-        ? chrome.tabs.update(activeTabInCurrentWindow.id, { url })
-        : chrome.tabs.create({ url });
+      const activeTabInCurrentWindowIsJobBoard =
+        JobBoards.getJobBoardIdByHostname(
+          new URL(activeTabInCurrentWindow.url).hostname
+        );
+
+      activeTabInCurrentWindowIsNewTabPage || activeTabInCurrentWindowIsJobBoard
+        ? chrome.tabs.update(activeTabInCurrentWindow.id, { url: url.href })
+        : chrome.tabs.create({ url: url.href });
     }
 
     static #started = false;
     static async start(activeTabInCurrentWindow) {
       htmlDataset.applicableTab = "false";
 
-      if (this.#started) return;
+      if (this.#started) return this.#updateInputsBasedOnConnectivity();
       this.#started = true;
 
       this.#jobBoardSelectorElements.forEach(({ input }) =>
@@ -748,10 +843,7 @@
       this.#jobNameSearchContainerInput.addEventListener(
         "keydown",
         (keyboardEvent) => {
-          if (
-            keyboardEvent.key === "Enter" &&
-            !this.#jobNameSearchContainerButton.disabled
-          )
+          if (keyboardEvent.key === "Enter")
             this.#search(activeTabInCurrentWindow);
         }
       );
@@ -777,7 +869,15 @@
           input.checked = true;
       });
 
-      this.#updateSelectedJobBoard();
+      ["online", "offline"].forEach((eventType) =>
+        addEventListener(eventType, () =>
+          this.#updateInputsBasedOnConnectivity()
+        )
+      );
+
+      this.#updateInputsBasedOnConnectivity();
+
+      if (!navigator.onLine) this.#updateSelectedJobBoard();
     }
   }
 
