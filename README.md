@@ -4,7 +4,10 @@
 
 ## **Description**
 
-Hide n' Seek browser extension lets users _hide companies_ and _promoted jobs_ on LinkedIn and Indeed.
+**Hide n' Seek** browser extension lets you easily:
+
+- **Hide promoted jobs on LinkedIn and Indeed**
+- **Hide companies on LinkedIn and Indeed**
 
 [**Check it out on YouTube**](https://youtu.be/zhh7mI7bgRg)
 
