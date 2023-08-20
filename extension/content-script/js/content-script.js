@@ -30,52 +30,49 @@
     #selectors;
     constructor(jobBoardId) {
       const reduceStringValues = (object) =>
-        [
-          ...new Set(
-            Object.values(object).filter((value) => typeof value === "string")
-          ),
-        ].join(", ");
+        [...new Set(Object.values(object).flat(Infinity))].join(", ");
 
       const selectors = {
         linkedIn: {
           jobElement: {
-            jobCollection: ".jobs-search-results-list li .job-card-container",
-            jobSearchSignedIn:
-              ".jobs-search-results-list li .job-card-container",
-            jobSearchSignedOut: ".jobs-search__results-list li .base-card",
+            jobCollection: ["li:has(.job-card-container) .job-card-container"],
+            jobSearchSignedIn: [
+              "li:has(.job-card-container) .job-card-container",
+            ],
+            jobSearchSignedOut: ["li:has(.base-card) .base-card"],
           },
           baseElementOfJobElement: {
-            jobCollection: "li",
-            jobSearchSignedIn: "li",
-            jobSearchSignedOut: "li",
+            jobCollection: ["li"],
+            jobSearchSignedIn: ["li"],
+            jobSearchSignedOut: ["li"],
           },
           companyName: {
-            jobCollection: ".job-card-container__primary-description",
-            jobSearchSignedIn: ".job-card-container__company-name",
-            jobSearchSignedOut: ".base-search-card__subtitle",
+            jobCollection: [".job-card-container__primary-description"],
+            jobSearchSignedIn: [".job-card-container__company-name"],
+            jobSearchSignedOut: [".base-search-card__subtitle"],
           },
           promotionalStatus: {
-            jobCollection: "time",
-            jobSearchSignedIn: "time",
-            jobSearchSignedOut: "time",
+            jobCollection: ["time"],
+            jobSearchSignedIn: ["time"],
+            jobSearchSignedOut: ["time"],
           },
         },
         indeed: {
           jobElement: {
-            jobFeed: ".jobsearch-ResultsList li .result",
-            jobSearch: ".jobsearch-ResultsList li .result",
+            jobFeed: ["li:has(.result) .result"],
+            jobSearch: ["li:has(.result) .result"],
           },
           baseElementOfJobElement: {
-            jobFeed: "li",
-            jobSearch: "li",
+            jobFeed: ["li"],
+            jobSearch: ["li"],
           },
           companyName: {
-            jobFeed: ".companyName",
-            jobSearch: ".companyName",
+            jobFeed: [".companyName"],
+            jobSearch: [".companyName"],
           },
           promotionalStatus: {
-            jobFeed: ".sponsoredJob",
-            jobSearch: ".sponsoredJob",
+            jobFeed: [".sponsoredJob"],
+            jobSearch: [".sponsoredJob"],
           },
         },
       };
