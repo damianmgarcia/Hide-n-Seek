@@ -95,6 +95,12 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
 
 ## **Release Notes**
 
+- 4.2.3
+  - Release date
+    - 2023-08-20
+  - Bug fixes
+    - Hide n' Seek UI not showing on Indeed
+      - Changes to Indeed's code prevented Hide n' Seek from detecting job listings. This update resolves this issue by taking into account these changes.
 - 4.2.2
   - Release date
     - 2023-05-14
