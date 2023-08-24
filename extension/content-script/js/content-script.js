@@ -29,22 +29,17 @@
   class JobBoardSelectors {
     #selectors;
     constructor(jobBoardId) {
-      const reduceStringValues = (object) =>
-        [...new Set(Object.values(object).flat(Infinity))].join(", ");
-
       const selectors = {
         linkedIn: {
-          jobElement: {
-            jobCollection: ["li:has(.job-card-container) .job-card-container"],
-            jobSearchSignedIn: [
-              "li:has(.job-card-container) .job-card-container",
-            ],
-            jobSearchSignedOut: ["li:has(.base-card) .base-card"],
-          },
           baseElementOfJobElement: {
             jobCollection: ["li"],
             jobSearchSignedIn: ["li"],
             jobSearchSignedOut: ["li"],
+          },
+          card: {
+            jobCollection: [".job-card-container"],
+            jobSearchSignedIn: [".job-card-container"],
+            jobSearchSignedOut: [".job-search-card"],
           },
           companyName: {
             jobCollection: [".job-card-container__primary-description"],
@@ -58,13 +53,13 @@
           },
         },
         indeed: {
-          jobElement: {
-            jobFeed: ["li:has(.result) .result"],
-            jobSearch: ["li:has(.result) .result"],
-          },
           baseElementOfJobElement: {
             jobFeed: ["li"],
             jobSearch: ["li"],
+          },
+          card: {
+            jobFeed: [".result"],
+            jobSearch: [".result"],
           },
           companyName: {
             jobFeed: [".companyName"],
@@ -77,12 +72,18 @@
         },
       };
 
-      this.#selectors = Object.fromEntries(
+      const mergedSelectors = Object.fromEntries(
         Object.entries(selectors[jobBoardId]).map(([key, value]) => [
           key,
-          reduceStringValues(value),
+          [...new Set(Object.values(value).flat(Infinity))].join(", "),
         ])
       );
+
+      const { baseElementOfJobElement, card } = mergedSelectors;
+
+      mergedSelectors.jobElement = `:is(${baseElementOfJobElement}):has(${card}) :is(${card})`;
+
+      this.#selectors = mergedSelectors;
     }
 
     get selectors() {
