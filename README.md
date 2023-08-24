@@ -99,8 +99,10 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
   - Release date
     - 2023-08-24
   - Bug fixes
-    - False positive job listings
+    - False positive job listings on certain pages of the signed-out version of LinkedIn
       - Job listing detection has been adjusted to eliminate false positives on certain pages of the signed-out version of LinkedIn.
+    - Missing extension button badge after pressing back/forward buttons on Indeed
+      - Hide n' Seek is now optimized so that the extension button's badge is updated even on pages that use bfcache
 - 4.2.3
   - Release date
     - 2023-08-20
