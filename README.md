@@ -95,6 +95,12 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
 
 ## **Release Notes**
 
+- 4.2.4
+  - Release date
+    - 2023-08-24
+  - Bug fixes
+    - False positive job listings
+      - Job listing detection has been adjusted to eliminate false positives on certain pages of the signed-out version of LinkedIn.
 - 4.2.3
   - Release date
     - 2023-08-20
