@@ -292,7 +292,8 @@ chrome.runtime.onMessage.addListener((message, sender) => {
 
   if (
     message.from === "content script" &&
-    message.body === "hasHideNSeekUI changed"
+    (message.body === "hasHideNSeekUI changed" ||
+      message.body === "bfcache used")
   ) {
     updateBadgeTextAndTitle(message.jobBoardId, [sender.tab]);
   }

@@ -150,6 +150,18 @@
 
       this.#registerJobs();
 
+      addEventListener("pageshow", (pageTransitionEvent) => {
+        if (!pageTransitionEvent.persisted) return;
+
+        chrome.runtime.sendMessage({
+          from: "content script",
+          to: ["background script", "popup script"],
+          body: "bfcache used",
+          jobBoardId: this.#jobBoardId,
+          hasHideNSeekUI: this.#hasHideNSeekUI,
+        });
+      });
+
       this.#jobRegistrar.observe(document.documentElement, {
         subtree: true,
         childList: true,

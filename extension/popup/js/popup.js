@@ -901,7 +901,8 @@
 
     if (
       message.from === "content script" &&
-      message.body === "hasHideNSeekUI changed"
+      (message.body === "hasHideNSeekUI changed" ||
+        message.body === "bfcache used")
     ) {
       const messageFromActiveTabInCurrentWindow =
         sender.tab.id === activeTabInCurrentWindow.id &&
