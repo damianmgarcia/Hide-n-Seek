@@ -1,4 +1,4 @@
-# **Hide n' Seek**
+# **Hide n' Seek: Hide Promoted Jobs & Companies**
 
 ![A promotional marquee. The logo and name are featured on the left side of the marquee. The logo is a simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. A "before and after" diagram on the right side of the marquee shows how the extension hides jobs and is titled "View the jobs you seek. Hide the ones you don't"](/images/promotional-marquee-2-normalized.svg)
 
