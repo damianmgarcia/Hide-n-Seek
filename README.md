@@ -1,13 +1,10 @@
 # **Hide n' Seek**
 
-![A promotional marquee for the Hide n' Seek browser extension. The logo and name are featured on the left side of the marquee. The logo is a simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. A "before and after" diagram on the right side of the marquee shows how the extension hides jobs and is titled "View the jobs you seek. Hide the ones you don't"](/images/promotional-marquee-2-normalized.svg)
+![A promotional marquee. The logo and name are featured on the left side of the marquee. The logo is a simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. A "before and after" diagram on the right side of the marquee shows how the extension hides jobs and is titled "View the jobs you seek. Hide the ones you don't"](/images/promotional-marquee-2-normalized.svg)
 
 ## **Description**
 
-**Hide n' Seek** browser extension lets you easily:
-
-- **Hide promoted jobs on LinkedIn and Indeed**
-- **Hide companies on LinkedIn and Indeed**
+**Hide n' Seek** lets you easily remove promoted job postings and companies from your search results on LinkedIn and Indeed.
 
 [**Check it out on YouTube**](https://youtu.be/zhh7mI7bgRg)
 
@@ -15,26 +12,34 @@
  <img src="images/hide-n-seek-youtube-thumbnail-github-readme-normalized.svg" alt="Check it out on YouTube" width="50%" />
 </a>
 
+## **How It Works**
+
+“Block” buttons are added next to every listing. If you see a listing you don’t like, simply click the button to hide it. By default, the listing will be hidden under an overlay. Alternatively, you can completely eliminate it from search results by enabling the “Do not display hidden jobs” option.
+
+To hide promoted jobs, click the “block” button on any promoted listing and then activate the “Promoted” toggle.
+
+For easy management, you can view a list of everything you've hidden by clicking the Hide n’ Seek button on your browser’s toolbar.
+
 ## **Usage**
 
-- Get started by clicking the Hide n' Seek browser button to open the popup. Select a job board, enter a job name, and then click the search button. You may also go directly to a supported job board's website to perform your search if you prefer.
+- Get started by clicking the Hide n' Seek button on the browser's toolbar. Select a job board, enter a job name, and then click the search button. You may also go directly to a supported job board's website to perform your search if you prefer.
 
-<img src="/images/usage-job-search-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram that shows a job search in the Hide n' Seek popup" /><br><br>
+<img src="/images/usage-job-search-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram that shows a job search in the extension's popup" /><br><br>
 
-- Click a job's "hide" button and all jobs by that company will be hidden behind an overlay.
+- Click a job's "block" button and all jobs by that company will be hidden behind an overlay.
 
 <img src="/images/usage-hide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of hiding a job' /><br><br>
 
-- Click a job's "unhide" button to remove the overlays.
+- Click a job's "unblock" button to remove the overlays.
 
 <img src="/images/usage-unhide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of unhiding a job' /><br><br>
 
-- Click the Hide n' Seek browser button for additional options:
+- Click the toolbar button for additional options:
   - Scroll through your list of hidden jobs and click a hidden job's name to remove it.
   - Click the "Unhide all jobs" button to reset your hidden jobs list. This action can be undone by clicking the "Undo" button.
   - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays.
 
-<img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of Hide n' Seek's browser button, along with its popup, shows a list of hidden jobs and controls for managing the list." /><br><br>
+<img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of the extension's toolbar button, along with the options panel, shows a list of hidden jobs and controls for managing the list." /><br><br>
 
 ## **Supported Job Boards**
 
@@ -43,50 +48,18 @@
 
 ## **Privacy Policy**
 
-Nobody has access to Hide n' Seek data except for the users of the device it is installed on. Data is not shared or sold.
-
-All data, such as the user's list of hidden jobs, is stored on the user's device.
-
-Data may be synced with the user's other devices if their browser has extension data synchronization enabled.
+Your data remains completely private and is never shared. All data is stored locally on your device and may sync across your devices if browser synchronization is enabled.
 
 ## **Permissions**
 
 The following permissions are required:
 
-- Read and change your data on all indeed.com sites and all linkedin.com sites
-  - This permission is necessary for the extension to add its UI elements, such as "hide" buttons and job overlays, to the job board's website.
-- Read your browsing history
-  - This permission is necessary for the extension to detect when the user is searching for jobs on a supported job board's website so that it knows when to run.
+- "Read and change your data on all indeed.com sites and all linkedin.com sites"
+  - Enables the addition of "Block" buttons and other UI elements to listings.
+- "Read your browsing history"
+  - Enables the detection of LinkedIn and Indeed so the extension can look for listings.
 
-Note that the above permissions are written exactly as Chrome displays them to the user during installation of Hide n' Seek. Other browsers will ask for the same permissions, but the wording may vary.
-
-### **Firefox Permissions**
-
-Unlike Chrome and Edge, Firefox does not ask for the required permissions during installation.
-
-Firefox incorrectly labels the permissions as "Optional permissions for added functionality."
-
-**_However, these permissions must be granted or the extension will not work._**
-
-To grant the necessary permissions, Firefox users must perform the following steps:
-
-1. Click the menu button
-2. Click "Add-ons and themes"
-
-<img src="/images/firefox-permissions-setup-1-normalized.svg" width="28.188585607940446650124069478908%" alt="A screenshot of Firefox that corresponds with step 1 and step 2" /><br><br>
-
-3. Click "Extensions"
-4. Click the "..." button
-5. Click "Manage"
-
-<img src="/images/firefox-permissions-setup-2-normalized.svg" width="100%" alt="A screenshot of Firefox that corresponds with step 3, step 4, and step 5" /><br><br>
-
-6. Click "Permissions"
-7. Turn on "Access your data for sites in the [Job Board URL] domain" for the job boards that you want Hide n' Seek to work on
-
-<img src="/images/firefox-permissions-setup-3-normalized.svg" width="67.344913151364764267990074441687%" alt="A screenshot of Firefox that corresponds with step 6 and step 7" /><br><br>
-
-Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see the "hide" buttons on your job search list, reload the page by clicking Firefox's reload button._**
+Note that the above permissions are written exactly as Chrome displays them to the user during installation. Other browsers will ask for the same permissions, but the wording may vary.
 
 ## **Releases**
 
@@ -143,7 +116,7 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
     - 2023-02-14
   - New features
     - Start a job search from the popup
-      - If you are not already searching for jobs, the Hide n' Seek browser button popup now displays a search box that lets you start a job search.
+      - If you are not already searching for jobs, the option panel now displays a search box that lets you start a job search.
   - Improvements
     - Support for LinkedIn job collections and Indeed job feed
       - The extension now detects and adds "hide" buttons to jobs in LinkedIn job collections and Indeed job feeds.
@@ -158,7 +131,7 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
   - Improvements
     - Added Firefox support
       - Firefox 109, released 2023-01-17, added support for Manifest Version 3 (MV3) extensions.
-      - [Firefox's handling of permissions for MV3 extensions, such as Hide n' Seek, is broken](https://github.com/w3c/webextensions/issues/119#issuecomment-965799707). Unlike other browsers, Firefox does not ask users to grant the permissions that Hide n' Seek needs during installation, nor does it make it obvious enough to users that permissions are needed even when they search for jobs on a supported job board. [Instead, users must take additional steps after installation of to grant necessary permissions](#firefox-permissions). This is an unfortunate user experience. Therefore, publication to Firefox Add-ons has been suspended until Firefox resolves this issue.
+      - [Firefox's handling of permissions for MV3 extensions is broken](https://github.com/w3c/webextensions/issues/119#issuecomment-965799707). Unlike other browsers, Firefox does not ask users to grant permissions during installation, nor does it make it obvious enough to users that permissions are needed even when they search for jobs on a supported job board. Instead, users must take additional steps after installation to grant necessary permissions. This is an unfortunate user experience. Therefore, publication to Firefox Add-ons has been suspended until Firefox resolves this issue.
 - 3.0.0
   - Release date
     - 2023-02-01
@@ -181,7 +154,7 @@ Once finished, perform a job search on LinkedIn or Indeed. **_If you do not see 
     - Remove hidden jobs from display
       - The extension's browser button popup includes a new toggle button, "Do not display hidden jobs", that lets you remove hidden jobs from view, rather than hide them behind overlays.
     - Hidden jobs tally
-      - Hide n' Seek now keeps a tally of what has been hidden next to the extension's browser button. The tally increases or decreases by 1 each time a company is hidden or unhidden, respectively. It also increases or decreases by 1 if promoted or sponsored jobs are hidden or unhidden, respectively. A simple breakdown of the tally is displayed when your cursor hovers over the extension's browser button.
+      - The toolbar button now includes a tally of hidden jobs. The tally increases or decreases by 1 each time a company is hidden or unhidden, respectively. It also increases or decreases by 1 if promoted or sponsored jobs are hidden or unhidden, respectively. A simple breakdown of the tally is displayed when your cursor hovers over the extension's browser button.
   - Improvements
     - No more delay when unhiding all jobs
       - Clicking the "Unhide all jobs" button (or its "Undo" button) now produces instantaneous results across all active tabs and windows. Previously, there was a short delay.
