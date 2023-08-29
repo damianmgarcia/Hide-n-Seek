@@ -68,6 +68,12 @@ Note that the above permissions are written exactly as Chrome displays them to t
 
 ## **Release Notes**
 
+- 4.2.5
+  - Release date
+    - 2023-08-28
+  - Bug fixes
+    - Not optimized for discoverability by search engines
+      - Updated the name in the manifest to improve discoverability by search engines.
 - 4.2.4
   - Release date
     - 2023-08-24
@@ -89,8 +95,7 @@ Note that the above permissions are written exactly as Chrome displays them to t
     - Added support for all non-US versions of Indeed
       - The extension now works with all non-US versions of Indeed. This update resolves [#14](https://github.com/damianmgarcia/Hide-n-Seek/issues/14).
     - Added network connectivity handling to the job search popup
-      - The job search popup now automatically disables itself when your device is offline, and it also lets you know if it is unable to connect to a
-        job board's site before submitting your job search query.
+      - The job search popup now automatically disables itself when your device is offline, and it also lets you know if it is unable to connect to a job board's site before submitting your job search query.
 - 4.1.2
   - Release date
     - 2023-04-18
