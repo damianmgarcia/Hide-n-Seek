@@ -72,7 +72,7 @@ Note that the above permissions are written exactly as Chrome displays them to t
   - Release date
     - 2023-09-02
   - Bug fixes
-    - Duplicated hidden job overlays on Indeed Job Feed with Chrome
+    - Duplicated hidden job overlays on the Indeed job feed with Chrome
       - The caching of job listings has been adjusted to prevent the duplication of hidden job overlays on previously-loaded job listings. This issue specifically occurred whenever the Indeed job feed lazy-loaded new listings, and only with Chrome (not Edge).
 - 4.2.5
   - Release date
