@@ -350,15 +350,27 @@
           useAncestor[jobBoardId] && ancestorSelector
             ? jobElement.closest(ancestorSelector)
             : jobElement;
+
         if (!insertionReferenceElement) return false;
+
+        if (insertionReferenceElement.contains(jobBlockElement)) return true;
+
+        const obsoleteJobBlockElements =
+          insertionReferenceElement.querySelectorAll(".job-block-element");
+        obsoleteJobBlockElements.forEach((obsoleteJobBlockElement) =>
+          obsoleteJobBlockElement.remove()
+        );
+
         insertionReferenceElement.style.setProperty("position", "relative");
         insertionReferenceElement.insertAdjacentElement(
           position[jobBoardId],
           jobBlockElement
         );
+
         return true;
       };
     }
+
     get insertJobBlockElement() {
       return this.#insertJobBlockElement;
     }
@@ -520,6 +532,14 @@
         );
       }
 
+      const jobBlockElements = {};
+      this.#jobElementToJobBlockElementsMap.set(jobElement, jobBlockElements);
+
+      const jobBlockElement =
+        this.#jobBlockElementSupplier.getJobBlockElement(jobElement);
+      jobBlockElements.jobBlockElement = jobBlockElement;
+      jobBlockElement.dataset.jobBoardId = this.#jobBoardId;
+
       const jobAttributeValue =
         this.#jobAttributeValueGetter.getJobAttributeValue(jobElement);
 
@@ -538,13 +558,6 @@
         jobElementsWithJobAttributeValue.push(jobElement);
       }
 
-      const jobBlockElements = {};
-
-      const jobBlockElement =
-        this.#jobBlockElementSupplier.getJobBlockElement(jobElement);
-      jobBlockElement.dataset.jobBoardId = this.#jobBoardId;
-      jobBlockElements.jobBlockElement = jobBlockElement;
-
       if (this.#jobAttribute === "companyName")
         jobBlockElement
           .querySelector(".job-block-block-button")
@@ -556,7 +569,8 @@
         this.#jobBlockElementSupplier.getJobBlockToggleButtonElement(
           jobAttributeValue
         );
-
+      jobBlockElements.jobAttributeToggleButtonElement =
+        jobAttributeToggleButtonElement;
       jobAttributeToggleButtonElement.dataset.jobAttribute = this.#jobAttribute;
 
       const jobAttributeValueIsBlocked =
@@ -575,9 +589,6 @@
         .querySelector(".job-block-blocked-job-overlay")
         .insertAdjacentElement("afterbegin", jobAttributeToggleButtonElement);
 
-      jobBlockElements.jobAttributeToggleButtonElement =
-        jobAttributeToggleButtonElement;
-
       const successfullyInserted =
         this.#jobBlockElementInserter.insertJobBlockElement(
           jobElement,
@@ -587,8 +598,6 @@
       if (!successfullyInserted) return;
 
       this.#updateJobBlockElementDataAttribute(jobBlockElement);
-
-      this.#jobElementToJobBlockElementsMap.set(jobElement, jobBlockElements);
     }
 
     #getThisJobAttributeValueIsBlocked(jobAttributeValue) {
