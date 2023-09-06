@@ -61,10 +61,20 @@ The following permissions are required:
 
 Note that the above permissions are written exactly as Chrome displays them to the user during installation. Other browsers will ask for the same permissions, but the wording may vary.
 
-## **Releases**
+## **Download**
 
-- [Chrome](https://chrome.google.com/webstore/detail/hide-n-seek/agghbaheofcoecndkbflbnggdjcmiaml)
-- [Edge](https://microsoftedge.microsoft.com/addons/detail/hide-n-seek/lnfbapfcdippajlhlmefaabhkdbmgiog)
+- [Chrome Web Store **(Recommended)**](https://chromewebstore.google.com/detail/hide-n-seek-hide-promoted/agghbaheofcoecndkbflbnggdjcmiaml)
+- [Edge Add-ons Store](https://microsoftedge.microsoft.com/addons/detail/hide-n-seek/lnfbapfcdippajlhlmefaabhkdbmgiog)
+
+Edge users: I recommend that you download from the Chrome Web Store because it releases extension updates much faster (1–2 days) than the Edge Add-ons Store (2–4 weeks).
+
+## **How It Was Made**
+
+Hide n' Seek was written in HTML, CSS, and JavaScript. No libraries or frameworks were used.
+
+Graphic artwork was drawn with BoxySVG.
+
+The promotional video was created with a combination of Adobe After Effects and Adobe Premiere Pro.
 
 ## **Release Notes**
 
