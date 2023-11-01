@@ -62,8 +62,8 @@
             jobSearch: [".result"],
           },
           companyName: {
-            jobFeed: [".companyName"],
-            jobSearch: [".companyName"],
+            jobFeed: [".companyName", "[data-testid='company-name']"],
+            jobSearch: [".companyName", "[data-testid='company-name']"],
           },
           promotionalStatus: {
             jobFeed: [".sponsoredJob"],
