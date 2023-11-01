@@ -78,6 +78,12 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 4.2.7
+  - Release date
+    - 2023-11-01
+  - Bug fixes
+    - Companies on Indeed being detected as "Unknown Company"
+      - Indeed's recent website update broke company name detection, but this is now resolved.
 - 4.2.6
   - Release date
     - 2023-09-02
