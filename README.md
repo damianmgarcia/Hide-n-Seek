@@ -83,11 +83,11 @@ The promotional video was created with a combination of Adobe After Effects and 
     - 2023-12-27
   - Improvements
     - Small UI improvements
-      - The "x" remove icons on hidden job buttons in the popup now become red when you hover over them
-      - A job attribute's title text now shows when you hover over any part of the job attribute toggle button, not just when you hover over the job attribute title.
+      - The "x" remove icons on hidden job buttons in the popup list now become red when you hover over them.
+      - A job attribute's title text now shows when you hover over any part of the job attribute toggle button, not just when you hover over the job attribute title itself.
   - Bug fixes
     - Incorrect pointer priority in popup hidden jobs list
-      - An element below the hidden jobs list was negatively affecting the scrolling and clicking because it had pointer priority
+      - An element below the hidden jobs list that was negatively affecting scroll and click behavior has been fixed.
 - 4.2.7
   - Release date
     - 2023-11-01
