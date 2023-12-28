@@ -296,6 +296,7 @@ html[data-applicable-tab="false"] .options-for-inapplicable-tabs {
   left: calc(50% - var(--width) * 0.5 - var(--padding));
   line-height: 1;
   padding: var(--padding);
+  pointer-events: none;
   position: absolute;
   text-align: center;
   top: calc(50% - var(--height) * 0.5 - var(--padding));
@@ -460,11 +461,22 @@ main.expanded-list .collapse-expand-button .top-half {
   white-space: nowrap;
 }
 
-.hidden-job-container img {
+.hidden-job-container svg {
+  aspect-ratio: 1 / 1;
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   height: 100%;
   max-width: 100%;
+  transition: 200ms ease-out;
+  transition-property: fill;
+}
+
+.hidden-job-container:hover svg {
+  fill: hsl(0, 100%, 40%);
+}
+
+.hidden-job-container:active svg {
+  fill: hsl(0, 100%, 45%);
 }
 
 .unhide-all-and-undo-buttons {

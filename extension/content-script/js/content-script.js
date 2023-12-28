@@ -297,20 +297,17 @@
     }
 
     getJobBlockToggleButtonElement(toggleButtonText) {
-      const jobAttributeToggleButtonElement = document.createElement("div");
+      const jobAttributeToggleButtonElement = document.createElement("button");
       jobAttributeToggleButtonElement.classList.add(
         "job-block-attribute-toggle-button"
       );
+      jobAttributeToggleButtonElement.setAttribute("title", toggleButtonText);
 
       const jobAttributeToggleButtonTextElement = document.createElement("div");
       jobAttributeToggleButtonTextElement.classList.add(
         "job-block-attribute-toggle-button-text"
       );
       jobAttributeToggleButtonTextElement.textContent = toggleButtonText;
-      jobAttributeToggleButtonTextElement.setAttribute(
-        "title",
-        toggleButtonText
-      );
 
       const jobAttributeToggleButtonHiddenIndicator =
         document.createElement("div");
