@@ -425,11 +425,19 @@
       const hiddenJobName = document.createElement("div");
       hiddenJobName.classList.add("hidden-job-name");
       hiddenJobName.textContent = itemName;
-      const removeIcon = document.createElement("img");
-      removeIcon.setAttribute("src", "/images/remove-icon.svg");
-      removeIcon.ondragstart = (dragEvent) => dragEvent.preventDefault();
+      const removeIconSvg = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "svg"
+      );
+      removeIconSvg.ondragstart = (dragEvent) => dragEvent.preventDefault();
+      const removeIconUse = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "use"
+      );
+      removeIconUse.setAttribute("href", "#remove-icon");
+      removeIconSvg.insertAdjacentElement("beforeend", removeIconUse);
 
-      [hiddenJobName, removeIcon].forEach((element) =>
+      [hiddenJobName, removeIconSvg].forEach((element) =>
         hiddenJobContainer.insertAdjacentElement("beforeend", element)
       );
 
