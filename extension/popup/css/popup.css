@@ -296,6 +296,7 @@ html[data-applicable-tab="false"] .options-for-inapplicable-tabs {
   left: calc(50% - var(--width) * 0.5 - var(--padding));
   line-height: 1;
   padding: var(--padding);
+  pointer-events: none;
   position: absolute;
   text-align: center;
   top: calc(50% - var(--height) * 0.5 - var(--padding));
