@@ -12,18 +12,25 @@
   class JobBoards {
     static #jobBoards = [
       {
-        hostname: "linkedin.com",
-        jobBoardId: "linkedIn",
-        jobAttributes: ["companyName", "promotionalStatus"],
-        logoSrc: "/images/linkedin-logo.svg",
-        logoAlt: "The logo for LinkedIn.com",
+        hostname: "glassdoor.com",
+        jobBoardId: "glassdoor",
+        jobAttributes: ["companyName"],
+        logoSrc: "/images/glassdoor-logo.svg",
+        logoAlt: "The Glassdoor logo",
       },
       {
         hostname: "indeed.com",
         jobBoardId: "indeed",
         jobAttributes: ["companyName", "promotionalStatus"],
         logoSrc: "/images/indeed-logo.svg",
-        logoAlt: "The logo for Indeed.com",
+        logoAlt: "The Indeed logo",
+      },
+      {
+        hostname: "linkedin.com",
+        jobBoardId: "linkedIn",
+        jobAttributes: ["companyName", "promotionalStatus"],
+        logoSrc: "/images/linkedin-logo.svg",
+        logoAlt: "The LinkedIn logo",
       },
     ];
 
@@ -251,15 +258,9 @@
   class HiddenJobsListManager {
     #jobBoardId;
     #jobAttributes;
-
     #hiddenJobAttributeValuesContainer =
       document.querySelector(".hidden-jobs-list");
     #jobAttributeValueSelector = ".hidden-job-container";
-    #collapseExpandButtonElement = document.querySelector(
-      ".collapse-expand-button"
-    );
-    #expandedListClassToggleElement = document.querySelector("main");
-    #expandedListClassName = "expanded-list";
     #hiddenJobsMessageElement = document.querySelector(
       ".nothing-hidden-message"
     );
@@ -272,7 +273,6 @@
       this.#jobAttributes = jobAttributes;
     }
 
-    #hiddenJobAttributeValuesContainerCollapsedClientHeight;
     start(storage) {
       chrome.storage.local.onChanged.addListener((storageChanges) => {
         const changesIncludesBlockedJobAttributeValues = Object.keys(
@@ -287,34 +287,9 @@
           this.#updateHiddenJobsPopupList();
       });
 
-      this.#collapseExpandButtonElement.addEventListener("click", () => {
-        this.#expandedListClassToggleElement.classList.toggle(
-          this.#expandedListClassName
-        );
-
-        const listIsNotScrollable = this.#getListIsNotScrollable();
-        this.#collapseExpandButtonElement.disabled = listIsNotScrollable;
-      });
-
-      const { minHeight, paddingBottom, paddingTop } = getComputedStyle(
-        this.#hiddenJobAttributeValuesContainer
-      );
-
-      this.#hiddenJobAttributeValuesContainerCollapsedClientHeight =
-        Number.parseFloat(minHeight) +
-        Number.parseFloat(paddingBottom) +
-        Number.parseFloat(paddingTop);
-
       this.#updateHiddenJobsPopupList(storage);
 
       return this;
-    }
-
-    #getListIsNotScrollable() {
-      return (
-        this.#hiddenJobAttributeValuesContainer.scrollHeight <=
-        this.#hiddenJobAttributeValuesContainerCollapsedClientHeight
-      );
     }
 
     #getHiddenJobAttributeValuesFromStorage(jobAttribute, storage) {
@@ -611,9 +586,6 @@
       await hiddenJobAttributeValueElement.animate(
         ...this.#getPopupListChangeAnimation("add")
       ).finished;
-
-      const listIsNotScrollable = this.#getListIsNotScrollable();
-      this.#collapseExpandButtonElement.disabled = listIsNotScrollable;
     }
 
     async #removeHiddenJobAttributeValueFromList(
@@ -652,15 +624,6 @@
 
       hiddenJobAttributeValueElementToRemove.remove();
 
-      const listIsNotScrollable = this.#getListIsNotScrollable();
-
-      this.#collapseExpandButtonElement.disabled = listIsNotScrollable;
-
-      if (listIsNotScrollable)
-        this.#expandedListClassToggleElement.classList.remove(
-          this.#expandedListClassName
-        );
-
       const listIsEmpty = !document.querySelectorAll(
         this.#jobAttributeValueSelector
       ).length;
@@ -674,10 +637,10 @@
     static #jobBoardSelectorElements = [
       {
         label: document.querySelector(
-          "label.job-board-search-option-container[data-job-board-id='linkedIn']"
+          "label.job-board-search-option-container[data-job-board-id='glassdoor']"
         ),
         input: document.querySelector(
-          "label.job-board-search-option-container[data-job-board-id='linkedIn'] > input"
+          "label.job-board-search-option-container[data-job-board-id='glassdoor'] > input"
         ),
       },
       {
@@ -686,6 +649,14 @@
         ),
         input: document.querySelector(
           "label.job-board-search-option-container[data-job-board-id='indeed'] > input"
+        ),
+      },
+      {
+        label: document.querySelector(
+          "label.job-board-search-option-container[data-job-board-id='linkedIn']"
+        ),
+        input: document.querySelector(
+          "label.job-board-search-option-container[data-job-board-id='linkedIn'] > input"
         ),
       },
     ];
@@ -700,18 +671,37 @@
       ".job-name-search-container > button"
     );
 
-    static #jobBoardUrlSearchData = {
-      linkedIn: {
-        defaultHostname: "https://linkedin.com",
-        pathname: "/jobs/search/",
-        jobSearchParameterName: "keywords",
-        jobBoardName: "LinkedIn",
+    static #jobBoardSearch = {
+      glassdoor: {
+        defaultOrigin: "https://glassdoor.com",
+        jobBoardName: "Glassdoor",
+        getUrl(responseUrl, searchQuery) {
+          const encodedSearchQuery = searchQuery.trim().replace(/\s+/g, "-");
+          const url = new URL(responseUrl);
+          return `${url.origin}/Job/${encodedSearchQuery}-jobs-SRCH_KO0,${encodedSearchQuery.length}.htm`;
+        },
       },
       indeed: {
-        defaultHostname: "https://indeed.com",
-        pathname: "/jobs",
-        jobSearchParameterName: "q",
+        defaultOrigin: "https://indeed.com",
         jobBoardName: "Indeed",
+        getUrl(responseUrl, searchQuery) {
+          const queryString = new URLSearchParams([
+            ["q", searchQuery],
+          ]).toString();
+          const url = new URL(responseUrl);
+          return `${url.origin}/jobs/?${queryString}`;
+        },
+      },
+      linkedIn: {
+        defaultOrigin: "https://linkedin.com",
+        jobBoardName: "LinkedIn",
+        getUrl(responseUrl, searchQuery) {
+          const queryString = new URLSearchParams([
+            ["keywords", searchQuery],
+          ]).toString();
+          const url = new URL(responseUrl);
+          return `${url.origin}/jobs/search/?${queryString}`;
+        },
       },
     };
 
@@ -767,20 +757,13 @@
     static async #search(activeTabInCurrentWindow) {
       if (this.#jobNameSearchContainerButton.disabled) return;
 
-      const jobSearchParameterValue = this.#jobNameSearchContainerInput.value;
+      const searchQuery = this.#jobNameSearchContainerInput.value;
       this.#disableInputs("Searching...");
 
-      const {
-        defaultHostname,
-        pathname,
-        jobSearchParameterName,
-        jobBoardName,
-      } = this.#jobBoardUrlSearchData[this.#recentSearchQueryJobBoardId];
+      const { defaultOrigin, jobBoardName, getUrl } =
+        this.#jobBoardSearch[this.#recentSearchQueryJobBoardId];
 
-      const jobBoardResponse = await Utilities.safeAwait(
-        fetch,
-        defaultHostname
-      );
+      const jobBoardResponse = await Utilities.safeAwait(fetch, defaultOrigin);
 
       if (!jobBoardResponse || !jobBoardResponse.ok) {
         this.#jobNameSearchContainerInput.placeholder = `Can't connect to ${jobBoardName}`;
@@ -807,10 +790,6 @@
         return this.#updateInputsBasedOnConnectivity();
       }
 
-      const url = new URL(jobBoardResponse.url);
-      url.pathname = pathname;
-      url.searchParams.set(jobSearchParameterName, jobSearchParameterValue);
-
       const browserNewTabUrls = {
         chrome: "chrome://newtab/",
         edge: "edge://newtab/",
@@ -828,9 +807,10 @@
           new URL(activeTabInCurrentWindow.url).hostname
         );
 
+      const url = getUrl(jobBoardResponse.url, searchQuery);
       activeTabInCurrentWindowIsNewTabPage || activeTabInCurrentWindowIsJobBoard
-        ? chrome.tabs.update(activeTabInCurrentWindow.id, { url: url.href })
-        : chrome.tabs.create({ url: url.href });
+        ? chrome.tabs.update(activeTabInCurrentWindow.id, { url })
+        : chrome.tabs.create({ url });
     }
 
     static #started = false;

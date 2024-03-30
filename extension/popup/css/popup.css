@@ -74,71 +74,19 @@ main {
 }
 
 .branding-container {
-  height: 155.188px;
-  margin: 1rem;
-  transition: height 400ms ease;
-}
-
-main.expanded-list .branding-container {
-  height: 16px;
-  transition: height 400ms ease 200ms;
-}
-
-.branding-container > img {
-  left: 0;
-  position: absolute;
-  scale: 1;
-  top: 0;
-  transform: translate3d(
-    calc((var(--document-width) * 0.5) - 50%),
-    calc(var(--body-margin) + var(--main-padding)),
-    0
-  );
-  transform-origin: top left;
-  transition: 400ms ease 200ms;
-  transition-property: scale, transform;
-  width: 9rem;
-}
-
-main.expanded-list .branding-container > img {
-  --scale: calc(1 / 3);
-  --inverse-scale: calc(1 / var(--scale));
-  scale: var(--scale);
-  transform: translate3d(
-    calc(
-      (var(--document-width) * 0.5) * var(--inverse-scale) - 100% -
-        var(--body-margin) * var(--inverse-scale) - 35.550749999999994px *
-        var(--inverse-scale)
-    ),
-    calc(
-      var(--body-margin) * var(--inverse-scale) + var(--main-padding) *
-        var(--inverse-scale)
-    ),
-    0
-  );
-  transition: 400ms ease;
+  display: flex;
+  gap: 1rem;
+  height: 3rem;
+  place-items: center;
 }
 
 .branding-container > h1 {
-  left: 0;
   line-height: 1;
-  position: absolute;
-  top: 0;
-  transform: translate3d(
-    calc((var(--document-width) * 0.5) - 50%),
-    calc(4px + 16px + 144px + 100%),
-    0
-  );
-  transition: transform 400ms ease;
+  margin-top: 4px;
 }
 
-main.expanded-list .branding-container > h1 {
-  transform: translate3d(
-    calc((var(--document-width) * 0.5) + 8px - 35.550749999999994px),
-    calc(2px + 8px + 16px + 24px - 10px),
-    0
-  );
-  transition: transform 400ms ease 200ms;
+.branding-container > img {
+  height: 100%;
 }
 
 .options-container {
@@ -164,13 +112,13 @@ html[data-applicable-tab="false"] .options-for-inapplicable-tabs {
   align-items: center;
   display: grid;
   gap: 1rem;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   justify-items: center;
 }
 
 .job-board-search-option-container {
   border-radius: 0.5rem;
-  height: 1.5rem;
+  height: 1rem;
   display: grid;
   padding: 0.5rem;
   place-items: center;
@@ -178,12 +126,16 @@ html[data-applicable-tab="false"] .options-for-inapplicable-tabs {
   width: calc(100% - 1rem);
 }
 
-.job-board-search-option-container[data-job-board-id="linkedIn"][data-checked="true"] {
-  background: hsl(210, 90%, 40%);
+.job-board-search-option-container[data-job-board-id="glassdoor"][data-checked="true"] {
+  background: hsl(157, 100%, 32%);
 }
 
 .job-board-search-option-container[data-job-board-id="indeed"][data-checked="true"] {
   background: hsl(218, 100%, 30%);
+}
+
+.job-board-search-option-container[data-job-board-id="linkedIn"][data-checked="true"] {
+  background: hsl(210, 90%, 40%);
 }
 
 .job-board-search-option-container[data-checked="false"] {
@@ -220,7 +172,7 @@ html[data-applicable-tab="false"] .options-for-inapplicable-tabs {
 }
 
 .options-for-inapplicable-tabs .job-board-name {
-  width: 75%;
+  width: 100%;
 }
 
 .options-for-applicable-tabs .job-board-name {
@@ -310,69 +262,6 @@ html[data-applicable-tab="false"] .options-for-inapplicable-tabs {
 
 .nothing-hidden-message[data-list-is-empty="false"] {
   opacity: 0;
-}
-
-.collapse-expand-button {
-  --height: 16.8125px;
-  --padding: 0.25rem;
-  --width: 0.5rem;
-  background: hsl(0, 0%, 0%, 0.2);
-  border-radius: 1rem;
-  box-sizing: content-box;
-  display: grid;
-  height: var(--height);
-  left: calc(
-    (var(--scrollbar-width) + 1.5rem) * 0.5 -
-      (var(--width) + var(--padding) * 2) * 0.5
-  );
-  padding: var(--padding);
-  position: absolute;
-  top: calc(50% - ((var(--height) + var(--padding)) * 0.5));
-  transition: 200ms ease-out;
-  transition-property: background-color, opacity;
-  width: var(--width);
-  z-index: 1;
-}
-
-.bottom-half,
-.top-half {
-  transition: transform 200ms ease 600ms;
-}
-
-main.expanded-list .bottom-half,
-main.expanded-list .top-half {
-  transition: transform 400ms ease 600ms;
-}
-
-main.expanded-list .collapse-expand-button .bottom-half {
-  transform: matrix(1, 0, 0, -1, 0, 34.062374);
-}
-
-main.expanded-list .collapse-expand-button .top-half {
-  transform: matrix(1, 0, 0, -1, 0, 14.1385);
-}
-
-.collapse-expand-button:hover {
-  background: hsl(0, 0%, 0%, 0.25);
-}
-
-.collapse-expand-button:active {
-  background: hsl(0, 0%, 0%, 0.3);
-}
-
-.collapse-expand-button .bottom-half,
-.collapse-expand-button .top-half {
-  fill: hsl(0, 0%, 0%, 0.5);
-}
-
-.collapse-expand-button:hover .bottom-half,
-.collapse-expand-button:hover .top-half {
-  fill: hsl(0, 0%, 0%, 0.9);
-}
-
-.collapse-expand-button:active .bottom-half,
-.collapse-expand-button:active .top-half {
-  fill: hsl(0, 0%, 0%, 1);
 }
 
 .hidden-jobs-list {
@@ -504,10 +393,6 @@ button {
   pointer-events: none;
   transition: 200ms ease-out;
   transition-property: background-color, opacity;
-}
-
-.collapse-expand-button:disabled {
-  opacity: 0;
 }
 
 .text-button {
