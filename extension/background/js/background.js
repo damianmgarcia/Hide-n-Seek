@@ -95,16 +95,21 @@ class Utilities {
 class JobBoards {
   static #jobBoards = [
     {
-      jobBoardUrlMatchPattern: "linkedin.com",
-      jobBoardId: "linkedIn",
-      jobBoardName: "LinkedIn",
-      jobBoardPromotionalStatusValue: "Promoted",
+      jobBoardUrlMatchPattern: "glassdoor.com",
+      jobBoardId: "glassdoor",
+      jobBoardName: "Glassdoor",
     },
     {
       jobBoardUrlMatchPattern: "indeed.com",
       jobBoardId: "indeed",
       jobBoardName: "Indeed",
-      jobBoardPromotionalStatusValue: "Sponsored",
+      jobBoardPromotionalStatusValue: "Promoted",
+    },
+    {
+      jobBoardUrlMatchPattern: "linkedin.com",
+      jobBoardId: "linkedIn",
+      jobBoardName: "LinkedIn",
+      jobBoardPromotionalStatusValue: "Promoted",
     },
   ];
 

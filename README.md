@@ -4,7 +4,7 @@
 
 ## **Description**
 
-**Hide n' Seek** lets you easily remove promoted job postings and companies from your search results on LinkedIn and Indeed.
+**Hide n' Seek** lets you easily remove promoted job postings and companies from your search results on LinkedIn, Indeed, and Glassdoor.
 
 [**Check it out on YouTube**](https://youtu.be/zhh7mI7bgRg)
 
@@ -43,8 +43,9 @@ For easy management, you can view a list of everything you've hidden by clicking
 
 ## **Supported Job Boards**
 
-- LinkedIn
+- Glassdoor
 - Indeed
+- LinkedIn
 
 ## **Privacy Policy**
 
@@ -57,7 +58,7 @@ The following permissions are required:
 - "Read and change your data on all indeed.com sites and all linkedin.com sites"
   - Enables the addition of "Block" buttons and other UI elements to listings.
 - "Read your browsing history"
-  - Enables the detection of LinkedIn and Indeed so the extension can look for listings.
+  - Enables the detection of LinkedIn, Indeed, and Glassdoor so the extension can look for listings.
 
 Note that the above permissions are written exactly as Chrome displays them to the user during installation. Other browsers will ask for the same permissions, but the wording may vary.
 
@@ -65,8 +66,9 @@ Note that the above permissions are written exactly as Chrome displays them to t
 
 - [Chrome Web Store **(Recommended)**](https://chromewebstore.google.com/detail/hide-n-seek-hide-promoted/agghbaheofcoecndkbflbnggdjcmiaml)
 - [Edge Add-ons Store](https://microsoftedge.microsoft.com/addons/detail/hide-n-seek/lnfbapfcdippajlhlmefaabhkdbmgiog)
+- Firefox Add-ons: Link coming soon
 
-Edge users: I recommend that you download from the Chrome Web Store because it releases extension updates much faster (1–2 days) than the Edge Add-ons Store (2–4 weeks).
+Edge users: I recommend that you download from the Chrome Web Store because it releases extension updates much faster than the Edge Add-ons Store (1-2 days versus 2–4 weeks).
 
 ## **How It Was Made**
 
@@ -78,6 +80,12 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 4.3
+  - Release date
+    - 2024-03-30
+  - Improvements
+    - Added support for Firefox
+    - Added support for Glassdoor
 - 4.2.8
   - Release date
     - 2023-12-27
