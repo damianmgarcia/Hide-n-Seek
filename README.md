@@ -80,6 +80,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 4.3.1
+  - Release date
+    - 2024-03-30
+  - Bug fixes
+    - Fixed popup search getting stuck on "Searching..." in Firefox
 - 4.3
   - Release date
     - 2024-03-30

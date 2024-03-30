@@ -790,27 +790,8 @@
         return this.#updateInputsBasedOnConnectivity();
       }
 
-      const browserNewTabUrls = {
-        chrome: "chrome://newtab/",
-        edge: "edge://newtab/",
-        firefox: "about:newtab",
-      };
-
-      const activeTabInCurrentWindowIsNewTabPage = Object.values(
-        browserNewTabUrls
-      ).some(
-        (browserNewTabUrl) => activeTabInCurrentWindow.url === browserNewTabUrl
-      );
-
-      const activeTabInCurrentWindowIsJobBoard =
-        JobBoards.getJobBoardIdByHostname(
-          new URL(activeTabInCurrentWindow.url).hostname
-        );
-
       const url = getUrl(jobBoardResponse.url, searchQuery);
-      activeTabInCurrentWindowIsNewTabPage || activeTabInCurrentWindowIsJobBoard
-        ? chrome.tabs.update(activeTabInCurrentWindow.id, { url })
-        : chrome.tabs.create({ url });
+      chrome.tabs.update(activeTabInCurrentWindow.id, { url });
     }
 
     static #started = false;
