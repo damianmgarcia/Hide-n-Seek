@@ -80,11 +80,16 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 4.3.2
+  - Release date
+    - 2024-03-31
+  - Bug fixes
+    - Firefox: Fixed buttons in popup list missing the remove icon
 - 4.3.1
   - Release date
     - 2024-03-30
   - Bug fixes
-    - Fixed popup search getting stuck on "Searching..." in Firefox
+    - Firefox: Fixed popup search getting stuck on "Searching..." after starting a search
 - 4.3
   - Release date
     - 2024-03-30
