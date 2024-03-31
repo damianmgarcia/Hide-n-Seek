@@ -65,10 +65,10 @@ Note that the above permissions are written exactly as Chrome displays them to t
 ## **Download**
 
 - [Chrome Web Store **(Recommended)**](https://chromewebstore.google.com/detail/hide-n-seek-hide-promoted/agghbaheofcoecndkbflbnggdjcmiaml)
-- [Edge Add-ons Store](https://microsoftedge.microsoft.com/addons/detail/hide-n-seek/lnfbapfcdippajlhlmefaabhkdbmgiog)
-- Firefox Add-ons: Link coming soon
+- [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/hide-n-seek/lnfbapfcdippajlhlmefaabhkdbmgiog)
+- [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/hide-n-seek/)
 
-Edge users: I recommend that you download from the Chrome Web Store because it releases extension updates much faster than the Edge Add-ons Store (1-2 days versus 2–4 weeks).
+Edge users: I recommend that you download from the Chrome Web Store because it releases extension updates much faster than Edge Add-ons (1-2 days versus 2–4 weeks).
 
 ## **How It Was Made**
 
