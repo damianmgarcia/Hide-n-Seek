@@ -80,6 +80,13 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 4.3.3
+  - Release date
+    - 2024-04-01
+  - Bug fixes
+    - Chrome: Fixed bug in which popup job searches get stuck on "Searching..." after starting a search. This appears to be caused by a [Chromium bug](https://issues.chromium.org/issues/40288048)
+    - Fixed a bug caused by pointer events bubbling through block buttons, leading to jobs opening in Glassdoor when clicking a block button
+    - Added permission notifications in Firefox and permission requests in Chrome and Edge when permissions are missing when attempting to perform a job search with the popup
 - 4.3.2
   - Release date
     - 2024-03-31

@@ -7,6 +7,15 @@
         console.log(error);
       }
     }
+
+    static async getActiveTabInCurrentWindow() {
+      const [activeTabInCurrentWindow] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+
+      return activeTabInCurrentWindow;
+    }
   }
 
   class JobBoards {
@@ -80,7 +89,7 @@
     }
 
     #jobBoardName = document.querySelector(
-      ".options-for-applicable-tabs .job-board-name"
+      ".options-for-job-board .job-board-name"
     );
     #optionButton = document.querySelector(".option-button");
     #undoButton = document.querySelector(".undo-button");
@@ -633,7 +642,7 @@
     }
   }
 
-  class InapplicableTabPopup {
+  class JobSearchPopup {
     static #jobBoardSelectorElements = [
       {
         label: document.querySelector(
@@ -674,6 +683,7 @@
     static #jobBoardSearch = {
       glassdoor: {
         defaultOrigin: "https://glassdoor.com",
+        originMatchPattern: "https://*.glassdoor.com/*",
         jobBoardName: "Glassdoor",
         getUrl(responseUrl, searchQuery) {
           const encodedSearchQuery = searchQuery.trim().replace(/\s+/g, "-");
@@ -683,6 +693,7 @@
       },
       indeed: {
         defaultOrigin: "https://indeed.com",
+        originMatchPattern: "https://*.indeed.com/*",
         jobBoardName: "Indeed",
         getUrl(responseUrl, searchQuery) {
           const queryString = new URLSearchParams([
@@ -694,6 +705,7 @@
       },
       linkedIn: {
         defaultOrigin: "https://linkedin.com",
+        originMatchPattern: "https://*.linkedin.com/*",
         jobBoardName: "LinkedIn",
         getUrl(responseUrl, searchQuery) {
           const queryString = new URLSearchParams([
@@ -754,49 +766,76 @@
       }
     }
 
+    static async flashError(errorMessage) {
+      this.#jobNameSearchContainerInput.placeholder = errorMessage;
+
+      const keyframes = [
+        {
+          backgroundColor: "hsl(0, 0%, 100%, 0.3)",
+        },
+        {
+          backgroundColor: "hsl(0, 100%, 85%, 0.9)",
+        },
+      ];
+
+      const options = {
+        direction: "alternate",
+        duration: 200,
+        easing: "linear",
+        iterations: 25,
+      };
+
+      await this.#jobNameSearchContainerInput.animate(keyframes, options)
+        .finished;
+
+      return this.#updateInputsBasedOnConnectivity();
+    }
+
     static async #search(activeTabInCurrentWindow) {
       if (this.#jobNameSearchContainerButton.disabled) return;
 
       const searchQuery = this.#jobNameSearchContainerInput.value;
-      this.#disableInputs("Searching...");
 
-      const { defaultOrigin, jobBoardName, getUrl } =
+      const { defaultOrigin, originMatchPattern, jobBoardName, getUrl } =
         this.#jobBoardSearch[this.#recentSearchQueryJobBoardId];
+
+      const hasPermission = await chrome.permissions.contains({
+        origins: [originMatchPattern],
+      });
+
+      if (!hasPermission) {
+        this.#disableInputs("Requesting permission...");
+        try {
+          const permissionGranted = await chrome.permissions.request({
+            origins: [originMatchPattern],
+          });
+          if (!permissionGranted) return this.flashError("Permission required");
+        } catch {
+          return this.flashError("Permission required");
+        }
+      }
+
+      this.#disableInputs("Searching...");
 
       const jobBoardResponse = await Utilities.safeAwait(fetch, defaultOrigin);
 
       if (!jobBoardResponse || !jobBoardResponse.ok) {
-        this.#jobNameSearchContainerInput.placeholder = `Can't connect to ${jobBoardName}`;
-
-        const keyframes = [
-          {
-            backgroundColor: "hsl(0, 0%, 100%, 0.3)",
-          },
-          {
-            backgroundColor: "hsl(0, 100%, 85%, 0.9)",
-          },
-        ];
-
-        const options = {
-          direction: "alternate",
-          duration: 200,
-          easing: "linear",
-          iterations: 25,
-        };
-
-        await this.#jobNameSearchContainerInput.animate(keyframes, options)
-          .finished;
-
-        return this.#updateInputsBasedOnConnectivity();
+        return this.flashError(`Can't connect to ${jobBoardName}`);
       }
 
       const url = getUrl(jobBoardResponse.url, searchQuery);
-      chrome.tabs.update(activeTabInCurrentWindow.id, { url });
+
+      try {
+        await chrome.tabs.update(activeTabInCurrentWindow.id, { url });
+      } catch (error) {
+        console.log(error);
+        chrome.tabs.create({ url });
+      }
     }
 
     static #started = false;
     static async start(activeTabInCurrentWindow) {
-      htmlDataset.applicableTab = "false";
+      document.documentElement.setAttribute("data-tab-is-job-board", "false");
 
       if (this.#started) return this.#updateInputsBasedOnConnectivity();
       this.#started = true;
@@ -850,10 +889,10 @@
     }
   }
 
-  class ApplicableTabPopup {
+  class JobBoardPopup {
     static #started = false;
     static async start(jobBoardId) {
-      htmlDataset.applicableTab = "true";
+      document.documentElement.setAttribute("data-tab-is-job-board", "true");
 
       if (this.#started) return;
       this.#started = true;
@@ -865,7 +904,7 @@
     }
   }
 
-  chrome.runtime.onMessage.addListener((message, sender) => {
+  chrome.runtime.onMessage.addListener(async (message, sender) => {
     if (!message.to.includes("popup script")) return;
 
     if (
@@ -873,6 +912,9 @@
       (message.body === "hasHideNSeekUI changed" ||
         message.body === "bfcache used")
     ) {
+      const activeTabInCurrentWindow =
+        await Utilities.getActiveTabInCurrentWindow();
+
       const messageFromActiveTabInCurrentWindow =
         sender.tab.id === activeTabInCurrentWindow.id &&
         sender.tab.windowId === activeTabInCurrentWindow.windowId;
@@ -880,28 +922,24 @@
       if (!messageFromActiveTabInCurrentWindow) return;
 
       if (message.hasHideNSeekUI === true) {
-        ApplicableTabPopup.start(message.jobBoardId);
+        JobBoardPopup.start(message.jobBoardId);
       } else if (message.hasHideNSeekUI === false) {
-        InapplicableTabPopup.start(activeTabInCurrentWindow);
+        JobSearchPopup.start(activeTabInCurrentWindow);
       }
     }
   });
 
-  const htmlDataset = document.documentElement.dataset;
-
-  const [activeTabInCurrentWindow] = await chrome.tabs.query({
-    active: true,
-    currentWindow: true,
-  });
+  const activeTabInCurrentWindow =
+    await Utilities.getActiveTabInCurrentWindow();
 
   if (!activeTabInCurrentWindow)
-    return InapplicableTabPopup.start(activeTabInCurrentWindow);
+    return JobSearchPopup.start(activeTabInCurrentWindow);
 
   const { hasContentScript, hasHideNSeekUI, jobBoardId } =
     await JobBoards.getContentScriptStatusOfTab(activeTabInCurrentWindow.id);
 
   if (!hasContentScript || !hasHideNSeekUI)
-    return InapplicableTabPopup.start(activeTabInCurrentWindow);
+    return JobSearchPopup.start(activeTabInCurrentWindow);
 
-  ApplicableTabPopup.start(jobBoardId);
+  JobBoardPopup.start(jobBoardId);
 })();

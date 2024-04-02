@@ -339,9 +339,10 @@
       if (this.jobAttribute === "companyName")
         jobBlockElement
           .querySelector(".job-block-block-button")
-          .addEventListener("click", () =>
-            this.blockJobAttributeValue(jobAttributeValue)
-          );
+          .addEventListener("click", (event) => {
+            event.stopPropagation();
+            this.blockJobAttributeValue(jobAttributeValue);
+          });
 
       const toggleButtonElement =
         this.createToggleButtonElement(jobAttributeValue);
@@ -356,9 +357,10 @@
 
       this.updateToggleButton(toggleButtonElement, jobAttributeValueIsBlocked);
 
-      toggleButtonElement.addEventListener("click", () =>
-        this.toggleJobAttributeValue(jobAttributeValue)
-      );
+      toggleButtonElement.addEventListener("click", (event) => {
+        event.stopPropagation();
+        this.toggleJobAttributeValue(jobAttributeValue);
+      });
 
       jobBlockElement
         .querySelector(".job-block-blocked-job-overlay")
