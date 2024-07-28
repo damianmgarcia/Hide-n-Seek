@@ -16,6 +16,29 @@
 
       return activeTabInCurrentWindow;
     }
+
+    static initiateDownload(url, fileName) {
+      const tempAnchor = document.createElement("a");
+      tempAnchor.style.setProperty("display", "none");
+      tempAnchor.href = url;
+      tempAnchor.download = fileName;
+      document.body.append(tempAnchor);
+      tempAnchor.click();
+      tempAnchor.remove();
+    }
+
+    static initiateUpload(handler) {
+      const tempFileInput = document.createElement("input");
+      tempFileInput.type = "file";
+      tempFileInput.accept = "application/json";
+      tempFileInput.addEventListener(
+        "change",
+        () => handler(tempFileInput.files),
+        { once: true }
+      );
+      tempFileInput.click();
+      tempFileInput.remove();
+    }
   }
 
   class JobBoards {
@@ -91,8 +114,8 @@
     #jobBoardName = document.querySelector(
       ".options-for-job-board .job-board-name"
     );
-    #optionButton = document.querySelector(".option-button");
-    #undoButton = document.querySelector(".undo-button");
+    #unhideAllJobsButton = document.querySelector("#unhide-all-jobs");
+    #undoUnhideAllJobsButton = document.querySelector("#undo-unhide-all-jobs");
 
     start(storage) {
       chrome.storage.local.onChanged.addListener((storageChanges) => {
@@ -102,8 +125,12 @@
         if (syncIdIsTheOnlyChange) return;
         this.#updateElementsBasedOnStorage();
       });
-      this.#optionButton.addEventListener("click", () => this.#unblock());
-      this.#undoButton.addEventListener("click", () => this.#undoUnblock());
+      this.#unhideAllJobsButton.addEventListener("click", () =>
+        this.#unblock()
+      );
+      this.#undoUnhideAllJobsButton.addEventListener("click", () =>
+        this.#undoUnblock()
+      );
       this.#updateElementsBasedOnStorage(storage);
       this.#jobBoardName.setAttribute("src", this.#logoSrc);
       this.#jobBoardName.setAttribute("alt", this.#logoAlt);
@@ -132,25 +159,25 @@
         !allBlockedJobAttributeValuesFromStorageAreEmpty &&
         allBlockedJobAttributeValuesBackupFromStorageAreEmpty
       ) {
-        this.#optionButton.disabled = false;
-        this.#undoButton.disabled = true;
+        this.#unhideAllJobsButton.disabled = false;
+        this.#undoUnhideAllJobsButton.disabled = true;
       } else if (
         allBlockedJobAttributeValuesFromStorageAreEmpty &&
         !allBlockedJobAttributeValuesBackupFromStorageAreEmpty
       ) {
-        this.#optionButton.disabled = true;
-        this.#undoButton.disabled = false;
+        this.#unhideAllJobsButton.disabled = true;
+        this.#undoUnhideAllJobsButton.disabled = false;
       } else if (
         allBlockedJobAttributeValuesFromStorageAreEmpty &&
         allBlockedJobAttributeValuesBackupFromStorageAreEmpty
       ) {
-        this.#optionButton.disabled = true;
-        this.#undoButton.disabled = true;
+        this.#unhideAllJobsButton.disabled = true;
+        this.#undoUnhideAllJobsButton.disabled = true;
       }
     }
 
     async #unblock() {
-      this.#optionButton.disabled = true;
+      this.#unhideAllJobsButton.disabled = true;
 
       const blockedJobAttributeValuesFromStorage =
         await this.#getBlockedJobAttributeValuesFromStorage();
@@ -168,7 +195,7 @@
     }
 
     async #undoUnblock() {
-      this.#undoButton.disabled = true;
+      this.#undoUnhideAllJobsButton.disabled = true;
 
       const blockedJobAttributeValuesBackupFromStorage =
         await this.#getBlockedJobAttributeValuesBackupFromStorage();
@@ -782,7 +809,7 @@
         direction: "alternate",
         duration: 200,
         easing: "linear",
-        iterations: 25,
+        iterations: 24,
       };
 
       await this.#jobNameSearchContainerInput.animate(keyframes, options)
@@ -864,6 +891,8 @@
 
       const storage = await chrome.storage.local.get();
 
+      backupManager.start();
+
       const storageIncludesRecentSearchQueryJobBoardId = Object.hasOwn(
         storage,
         "recentSearchQueryJobBoardId"
@@ -901,8 +930,78 @@
       new UnblockAllJobsManager(jobBoardId).start(storage);
       new RemoveHiddenJobsManager(jobBoardId).start(storage);
       new HiddenJobsListManager(jobBoardId).start(storage);
+      backupManager.start();
     }
   }
+
+  const backupManager = {};
+
+  backupManager.start = function () {
+    const main = document.querySelector("main");
+    const settingsButtons = document.querySelectorAll(
+      "#settings-strip > button"
+    );
+    const settingsToggle = document.querySelector("#settings-toggle");
+    settingsToggle.addEventListener("click", () => {
+      const withSettings = main.classList.toggle("with-settings");
+      settingsButtons.forEach(
+        (settingsButton) => (settingsButton.tabIndex = withSettings ? 0 : -1)
+      );
+    });
+
+    const backupButton = document.querySelector("#backup-button");
+    backupButton.addEventListener("click", () => this.backup());
+
+    const restoreButton = document.querySelector("#restore-button");
+    restoreButton.addEventListener("click", () =>
+      Utilities.initiateUpload(this.restore.bind(this))
+    );
+  };
+
+  backupManager.backup = async function () {
+    const backup = await chrome.storage.local.get();
+    const jsonStorage = JSON.stringify(backup, null, 2);
+    const base64Storage = btoa(jsonStorage);
+    const dataUri = `data:application/json;base64,${base64Storage}`;
+    const fileName = `hide-n-seek-backup-${Date.now()}.json`;
+
+    Utilities.initiateDownload(dataUri, fileName);
+  };
+
+  backupManager.restore = async function (fileList) {
+    try {
+      const file = fileList[0];
+      const fileText = await file.text();
+      const jsonStorage = JSON.parse(fileText);
+      chrome.storage.local.set(jsonStorage);
+    } catch (error) {
+      console.log(error);
+
+      const restoreButton = document.querySelector("#restore-button");
+
+      const keyframes = [
+        {
+          backgroundColor: "hsl(0, 0%, 0%)",
+        },
+        {
+          backgroundColor: "hsl(0, 100%, 40%)",
+        },
+      ];
+
+      const options = {
+        direction: "alternate",
+        duration: 200,
+        easing: "linear",
+        iterations: 24,
+      };
+
+      restoreButton.disabled = true;
+      restoreButton.style.setProperty("opacity", "1");
+      await restoreButton.animate(keyframes, options).finished;
+      restoreButton.style.removeProperty("opacity");
+      restoreButton.disabled = false;
+    }
+  };
 
   chrome.runtime.onMessage.addListener(async (message, sender) => {
     if (!message.to.includes("popup script")) return;
