@@ -80,6 +80,12 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 5.0.0
+  - Release date
+    - 2024-07-28
+  - New features
+    - Backup and Restore
+      - You can now backup your settings and hidden jobs to a file on your device, and then restore them later when you need to. The backup file does not include any personal data, so you can freely share your list of hidden jobs with others.
 - 4.3.3
   - Release date
     - 2024-04-01
