@@ -20,13 +20,40 @@
   </head>
   <body>
     <main>
-      <div class="branding-container">
-        <img
-          alt="The Hide n' Seek logo: A cartoon briefcase, bisected diagonally, one side black and the other side light brown. The face of a black cat with yellow eyes is partially visible as it peeks around the center of the bisection."
-          draggable="false"
-          src="/images/hide-n-seek-icon.svg"
-        />
-        <h1 class="hide-n-seek-title">Hide n' Seek</h1>
+      <header>
+        <div class="brand-container">
+          <img
+            alt="The Hide n' Seek logo: A cartoon briefcase, bisected diagonally, one side black and the other side light brown. The face of a black cat with yellow eyes is partially visible as it peeks around the center of the bisection."
+            draggable="false"
+            src="/images/hide-n-seek-icon.svg"
+          />
+          <h1 class="hide-n-seek-title">Hide n' Seek</h1>
+        </div>
+        <button id="settings-toggle">
+          <svg viewBox="0 0 761.6 800">
+            <path
+              d="M 333.8 800 C 315.8 800 300.3 794 287.3 782 C 274.3 770 266.467 755.333 263.8 738 L 254.8 672 C 246.133 668.667 237.967 664.667 230.3 660 C 222.633 655.333 215.133 650.333 207.8 645 L 145.8 671 C 129.133 678.333 112.467 679 95.8 673 C 79.133 667 66.133 656.333 56.8 641 L 9.8 559 C 0.467 543.667 -2.2 527.333 1.8 510 C 5.8 492.667 14.8 478.333 28.8 467 L 81.8 427 C 81.133 422.333 80.8 417.833 80.8 413.5 L 80.8 386.5 C 80.8 382.167 81.133 377.667 81.8 373 L 28.8 333 C 14.8 321.667 5.8 307.333 1.8 290 C -2.2 272.667 0.467 256.333 9.8 241 L 56.8 159 C 66.133 143.667 79.133 133 95.8 127 C 112.467 121 129.133 121.667 145.8 129 L 207.8 155 C 215.133 149.667 222.8 144.667 230.8 140 C 238.8 135.333 246.8 131.333 254.8 128 L 263.8 62 C 266.467 44.667 274.3 30 287.3 18 C 300.3 6 315.8 0 333.8 0 L 427.8 0 C 445.8 0 461.3 6 474.3 18 C 487.3 30 495.133 44.667 497.8 62 L 506.8 128 C 515.467 131.333 523.633 135.333 531.3 140 C 538.967 144.667 546.467 149.667 553.8 155 L 615.8 129 C 632.467 121.667 649.133 121 665.8 127 C 682.467 133 695.467 143.667 704.8 159 L 751.8 241 C 761.133 256.333 763.8 272.667 759.8 290 C 755.8 307.333 746.8 321.667 732.8 333 L 679.8 373 C 680.467 377.667 680.8 382.167 680.8 386.5 L 680.8 413.5 C 680.8 417.833 680.133 422.333 678.8 427 L 731.8 467 C 745.8 478.333 754.8 492.667 758.8 510 C 762.8 527.333 760.133 543.667 750.8 559 L 702.8 641 C 693.467 656.333 680.467 667 663.8 673 C 647.133 679 630.467 678.333 613.8 671 L 553.8 645 C 546.467 650.333 538.8 655.333 530.8 660 C 522.8 664.667 514.8 668.667 506.8 672 L 497.8 738 C 495.133 755.333 487.3 770 474.3 782 C 461.3 794 445.8 800 427.8 800 L 333.8 800 Z M 382.8 540 C 421.467 540 454.467 526.333 481.8 499 C 509.133 471.667 522.8 438.667 522.8 400 C 522.8 361.333 509.133 328.333 481.8 301 C 454.467 273.667 421.467 260 382.8 260 C 343.467 260 310.3 273.667 283.3 301 C 256.3 328.333 242.8 361.333 242.8 400 C 242.8 438.667 256.3 471.667 283.3 499 C 310.3 526.333 343.467 540 382.8 540 Z"
+            ></path>
+          </svg>
+        </button>
+      </header>
+      <div id="settings-strip" class="button-strip">
+        <button
+          id="backup-button"
+          class="text-button black-button"
+          tabindex="-1"
+          title="Backup your settings and hidden jobs to a file on your device"
+        >
+          Backup
+        </button>
+        <button
+          id="restore-button"
+          class="text-button black-button"
+          tabindex="-1"
+          title="Restore your settings and hidden jobs from a backup file"
+        >
+          Restore
+        </button>
       </div>
       <div class="options-container options-for-job-search">
         <div class="job-board-search-options-container">
@@ -107,6 +134,7 @@
               draggable="false"
               src="/images/search-icon.svg"
             />
+            <div class="glass"></div>
           </button>
         </div>
       </div>
@@ -128,10 +156,20 @@
             <div class="hidden-jobs-list"></div>
           </div>
           <div class="unhide-all-and-undo-buttons">
-            <button class="text-button option-button" disabled>
+            <button
+              id="unhide-all-jobs"
+              class="text-button red-button"
+              disabled
+            >
               Unhide all jobs
             </button>
-            <button class="text-button undo-button" disabled>Undo</button>
+            <button
+              id="undo-unhide-all-jobs"
+              class="text-button gray-button"
+              disabled
+            >
+              Undo
+            </button>
           </div>
         </div>
         <label class="toggle-container focus-visible-within">
