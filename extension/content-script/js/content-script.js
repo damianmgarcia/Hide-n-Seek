@@ -68,14 +68,21 @@
                     ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle"
                   )
                   ?.textContent.replaceAll("\n", "")
-                  .trim() || "Unknown Company"
+                  .trim()
+                  .replace(/\s*·\s*.*$/, "") || "Unknown Company"
               );
             },
           },
           {
             name: "promotionalStatus",
             get(jobElement) {
-              return jobElement.querySelector("time") ? "" : "Promoted";
+              return jobElement
+                .querySelector(
+                  ".job-card-list__footer-wrapper, .job-card-container__footer-wrapper"
+                )
+                ?.textContent.includes("Promoted")
+                ? "Promoted"
+                : "";
             },
           },
         ],

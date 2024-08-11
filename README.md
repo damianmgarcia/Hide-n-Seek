@@ -80,6 +80,13 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 5.0.1
+  - Release date
+    - 2024-08-11
+  - Patch
+    - Add support for a new LinkedIn job listing format
+      - Added support for a new LinkedIn job listing format where the company name is separated by its location with a middle dot instead of being on a separate line
+      - Updated promoted job detection algorithm
 - 5.0.0
   - Release date
     - 2024-07-28
@@ -103,7 +110,7 @@ The promotional video was created with a combination of Adobe After Effects and 
     - 2024-03-30
   - Bug fixes
     - Firefox: Fixed popup search getting stuck on "Searching..." after starting a search
-- 4.3
+- 4.3.0
   - Release date
     - 2024-03-30
   - Improvements
