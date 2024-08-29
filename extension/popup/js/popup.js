@@ -961,7 +961,9 @@
   backupManager.backup = async function () {
     const backup = await chrome.storage.local.get();
     const jsonStorage = JSON.stringify(backup, null, 2);
-    const base64Storage = btoa(jsonStorage);
+    const base64Storage = btoa(
+      String.fromCodePoint(...new TextEncoder().encode(jsonStorage))
+    );
     const dataUri = `data:application/json;base64,${base64Storage}`;
     const fileName = `hide-n-seek-backup-${Date.now()}.json`;
 
