@@ -85,13 +85,13 @@ The promotional video was created with a combination of Adobe After Effects and 
     - 2024-08-28
   - Bug fix
     - Backup fails when the blocked jobs list includes company names with non-ASCII characters
-      - Added support for non-ASCII characters in company names. This change resolves [#34](https://github.com/damianmgarcia/Hide-n-Seek/issues/34). Thanks [Matej9937](https://github.com/Matej9937) for helping to resolve this issue!
+      - Added support for non-ASCII characters in company names. This change resolves [#34](https://github.com/damianmgarcia/Hide-n-Seek/issues/34). Once again, many thanks to [Matej9937](https://github.com/Matej9937) for discovering this issue, documenting it with incredible attention to detail, and using amazing problem solving skills to help find a solution!
 - 5.0.1
   - Release date
     - 2024-08-11
   - Patch
     - Add support for a new LinkedIn job listing format
-      - Added support for a new LinkedIn job listing format where the company name is separated by its location with a middle dot instead of being on a separate line. This change resolves [#32](https://github.com/damianmgarcia/Hide-n-Seek/issues/32). Thanks [Matej9937](https://github.com/Matej9937) for helping to resolve this issue!
+      - Added support for a new LinkedIn job listing format where the company name is separated by its location with a middle dot instead of being on a separate line. This change resolves [#32](https://github.com/damianmgarcia/Hide-n-Seek/issues/32). Many thanks to [Matej9937](https://github.com/Matej9937) for discovering this issue, documenting it with incredible attention to detail, and using amazing problem solving skills to help find a solution!
       - Updated promoted job detection algorithm
 - 5.0.0
   - Release date
