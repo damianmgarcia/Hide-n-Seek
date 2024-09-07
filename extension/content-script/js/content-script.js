@@ -76,11 +76,47 @@
           {
             name: "promotionalStatus",
             get(jobElement) {
-              return jobElement
-                .querySelector(
+              const promotedTranslations = [
+                "الترويج" /* Arabic */,
+                "প্রমোটেড" /* Bangla */,
+                "推广" /* Chinese (Simplified) */,
+                "已宣傳" /* Chinese (Traditional) */,
+                "Propagováno" /* Czech */,
+                "Promoveret" /* Danish */,
+                "Gepromoot" /* Dutch */,
+                "Promoted" /* English */,
+                "Mainostettu" /* Finnish */,
+                "Promu\\(e\\)" /* French */,
+                "Anzeige" /* German */,
+                "Προωθημένη" /* Greek */,
+                "प्रमोट किया गया" /* Hindi */,
+                "Kiemelt" /* Hungarian */,
+                "Dipromosikan" /* Indonesian */,
+                "Promosso" /* Italian */,
+                "プロモーション" /* Japanese */,
+                "프로모션" /* Korean */,
+                "Dipromosikan" /* Malay */,
+                "प्रमोट केले" /* Marathi */,
+                "Promotert" /* Norwegian */,
+                "Promowana oferta pracy" /* Polish */,
+                "Promovida" /* Portuguese */,
+                "ਪ੍ਰੋਮੋਟ ਕੀਤਾ" /* Punjabi */,
+                "Promovat" /* Romanian */,
+                "Продвигается" /* Russian */,
+                "Promocionado" /* Spanish */,
+                "Marknadsfört" /* Swedish */,
+                "Na-promote" /* Tagalog */,
+                "ప్రమోట్ చేయబడింది" /* Telugu */,
+                "โปรโมทแล้ว" /* Thai */,
+                "Tanıtıldı" /* Turkish */,
+                "Просувається" /* Ukrainian */,
+                "Được quảng bá" /* Vietnamese */,
+              ];
+              return new RegExp(promotedTranslations.join("|")).test(
+                jobElement.querySelector(
                   ".job-card-list__footer-wrapper, .job-card-container__footer-wrapper"
-                )
-                ?.textContent.includes("Promoted")
+                )?.textContent
+              )
                 ? "Promoted"
                 : "";
             },
