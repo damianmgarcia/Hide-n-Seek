@@ -84,7 +84,7 @@ The promotional video was created with a combination of Adobe After Effects and 
   - Release date
     - 2024-09-06
   - Bug fix
-    - Unable to block promoted jobs on non-english versions of LinkedIn
+    - Unable to block promoted jobs on non-English versions of LinkedIn
       - Updated the LinkedIn promoted job detection heuristic
 - 5.0.2
   - Release date
