@@ -124,7 +124,7 @@
         ],
         getJobElements() {
           return document.querySelectorAll(
-            "li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper)"
+            "li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id])"
           );
         },
       },
