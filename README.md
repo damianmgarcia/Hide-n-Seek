@@ -80,6 +80,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 5.0.4
+  - Release date
+    - 2024-09-15
+  - Bug fix
+    - Updated the LinkedIn job detection heuristic. Many thanks to [wchen342](https://github.com/wchen342) for contributing this fix!
 - 5.0.3
   - Release date
     - 2024-09-06
