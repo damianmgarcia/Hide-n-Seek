@@ -65,7 +65,7 @@
               return (
                 jobElement
                   .querySelector(
-                    ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle"
+                    ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle"
                   )
                   ?.textContent.replaceAll("\n", "")
                   .trim()
@@ -124,7 +124,7 @@
         ],
         getJobElements() {
           return document.querySelectorAll(
-            "li:has(.job-card-container, .job-search-card)"
+            "li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper)"
           );
         },
       },
