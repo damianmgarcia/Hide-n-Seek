@@ -80,6 +80,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 5.0.5
+  - Release date
+    - 2024-10-06
+  - Improvement
+    - Removed web_accessible_resources from the manifest
 - 5.0.4
   - Release date
     - 2024-09-15
