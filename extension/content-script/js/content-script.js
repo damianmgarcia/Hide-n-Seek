@@ -1,7 +1,7 @@
 (async () => {
   class Utilities {
-    static getStorageKeyName(jobBlockComponent, jobBoard, ...otherIdentifiers) {
-      return [jobBlockComponent, jobBoard, ...otherIdentifiers].join(".");
+    static getStorageKeyName(hnsComponent, jobBoardId, ...otherIdentifiers) {
+      return [hnsComponent, jobBoardId, ...otherIdentifiers].join(".");
     }
   }
 
@@ -9,13 +9,13 @@
     static #jobBoards = [
       {
         hostname: "glassdoor.com",
-        jobBoardId: "glassdoor",
+        id: "glassdoor",
         attributes: [
           {
             name: "companyName",
-            get(jobElement) {
+            getValue(jobListing) {
               return (
-                jobElement
+                jobListing
                   .querySelector(".EmployerProfile_compactEmployerName__LE242")
                   ?.textContent.replaceAll("\n", "")
                   .trim() || "Unknown Company"
@@ -23,19 +23,19 @@
             },
           },
         ],
-        getJobElements() {
+        getJobListings() {
           return document.querySelectorAll("li[data-test='jobListing']");
         },
       },
       {
         hostname: "indeed.com",
-        jobBoardId: "indeed",
+        id: "indeed",
         attributes: [
           {
             name: "companyName",
-            get(jobElement) {
+            getValue(jobListing) {
               return (
-                jobElement
+                jobListing
                   .querySelector(".companyName, [data-testid='company-name']")
                   ?.textContent.replaceAll("\n", "")
                   .trim() || "Unknown Company"
@@ -44,26 +44,26 @@
           },
           {
             name: "promotionalStatus",
-            get(jobElement) {
-              return jobElement.querySelector(".sponsoredJob")
+            getValue(jobListing) {
+              return jobListing.querySelector(".sponsoredJob")
                 ? "Promoted"
                 : "";
             },
           },
         ],
-        getJobElements() {
+        getJobListings() {
           return document.querySelectorAll("li:has(.result)");
         },
       },
       {
         hostname: "linkedin.com",
-        jobBoardId: "linkedIn",
+        id: "linkedIn",
         attributes: [
           {
             name: "companyName",
-            get(jobElement) {
+            getValue(jobListing) {
               return (
-                jobElement
+                jobListing
                   .querySelector(
                     ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle"
                   )
@@ -75,7 +75,7 @@
           },
           {
             name: "promotionalStatus",
-            get(jobElement) {
+            getValue(jobListing) {
               const promotedTranslations = [
                 "الترويج" /* Arabic */,
                 "প্রমোটেড" /* Bangla */,
@@ -113,7 +113,7 @@
                 "Được quảng bá" /* Vietnamese */,
               ];
               return new RegExp(promotedTranslations.join("|")).test(
-                jobElement.querySelector(
+                jobListing.querySelector(
                   ".job-card-list__footer-wrapper, .job-card-container__footer-wrapper"
                 )?.textContent
               )
@@ -122,7 +122,7 @@
             },
           },
         ],
-        getJobElements() {
+        getJobListings() {
           return document.querySelectorAll(
             "li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id])"
           );
@@ -139,22 +139,36 @@
     }
   }
 
-  class ElementManager {
-    #jobElementObserver = new MutationObserver(() => this.processElements());
-    #jobBlockElementMap = new WeakMap();
+  class JobListingManager {
+    #jobListingObserver = new MutationObserver(() => this.processJobListings());
+    #hnsElementMap = new WeakMap();
 
     constructor(jobBoard, jobAttributeManagers, storage) {
       this.jobBoard = jobBoard;
       this.attributeManagers = jobAttributeManagers;
       this.removeHiddenJobsStorageKey = Utilities.getStorageKeyName(
         "JobDisplayManager",
-        this.jobBoard.jobBoardId,
+        this.jobBoard.id,
         "removeHiddenJobs"
       );
       document.documentElement.setAttribute(
         "data-hns-remove-hidden-jobs",
         storage[this.removeHiddenJobsStorageKey] || false
       );
+
+      this.hnsElementTemplate = document.createElement("template");
+      this.hnsElementTemplate.innerHTML = `
+        <div class="hns-element" style="display: none;">
+          <div class="hns-unblocked-job-overlay">
+            <div class="hns-block-button">
+              <svg viewBox="1.196 4.287 42.55 42.55">
+                <path/>
+              </svg>
+            </div>
+          </div>
+          <div class="hns-blocked-job-overlay"></div>
+        </div>
+      `;
     }
 
     start() {
@@ -165,7 +179,7 @@
           sendResponse({
             hasContentScript: true,
             hasHideNSeekUI: this.hasHideNSeekUI,
-            jobBoardId: this.jobBoard.jobBoardId,
+            jobBoardId: this.jobBoard.id,
           });
       });
 
@@ -183,7 +197,7 @@
         );
       });
 
-      this.processElements();
+      this.processJobListings();
 
       addEventListener("pageshow", (pageTransitionEvent) => {
         if (!pageTransitionEvent.persisted) return;
@@ -192,12 +206,12 @@
           from: "content script",
           to: ["background script", "popup script"],
           body: "bfcache used",
-          jobBoardId: this.jobBoard.jobBoardId,
+          jobBoardId: this.jobBoard.id,
           hasHideNSeekUI: this.hasHideNSeekUI,
         });
       });
 
-      this.#jobElementObserver.observe(document.documentElement, {
+      this.#jobListingObserver.observe(document.documentElement, {
         subtree: true,
         childList: true,
       });
@@ -205,66 +219,30 @@
       return this;
     }
 
-    processElements() {
+    processJobListings() {
       this.jobBoard
-        .getJobElements()
-        .forEach((jobElement) => this.processJobElement(jobElement));
+        .getJobListings()
+        .forEach((jobListing) => this.processJobListing(jobListing));
 
-      const hasHideNSeekUI = Boolean(
-        document.querySelector(".job-block-element")
-      );
+      const hasHideNSeekUI = Boolean(document.querySelector(".hns-element"));
       const hideNSeekUIChanged = hasHideNSeekUI !== this.hasHideNSeekUI;
       if (hideNSeekUIChanged) this.notifyScripts(hasHideNSeekUI);
     }
 
-    processJobElement(jobElement) {
-      const existingJobBlockElement = this.#jobBlockElementMap.get(jobElement);
-      if (existingJobBlockElement?.isConnected) return;
+    processJobListing(jobListing) {
+      const existingHnsElement = this.#hnsElementMap.get(jobListing);
+      if (existingHnsElement?.isConnected) return;
 
-      const newJobBlockElement = this.createJobBlockElement();
-      this.#jobBlockElementMap.set(jobElement, newJobBlockElement);
+      const newHnsElement =
+        this.hnsElementTemplate.content.firstElementChild.cloneNode(true);
+      this.#hnsElementMap.set(jobListing, newHnsElement);
 
       this.attributeManagers.forEach((attributeManager) =>
-        attributeManager.processJobBlockElement(newJobBlockElement, jobElement)
+        attributeManager.processHnsElement(newHnsElement, jobListing)
       );
 
-      jobElement.setAttribute("data-hns-job-element", "");
-      jobElement.append(newJobBlockElement);
-    }
-
-    createJobBlockElement() {
-      const jobBlockElement = document.createElement("div");
-      jobBlockElement.classList.add("job-block-element");
-      jobBlockElement.style.setProperty("display", "none");
-
-      const jobBlockOverlayBlockedJob = document.createElement("div");
-      jobBlockOverlayBlockedJob.classList.add("job-block-blocked-job-overlay");
-
-      const jobBlockOverlayUnblockedJob = document.createElement("div");
-      jobBlockOverlayUnblockedJob.classList.add(
-        "job-block-unblocked-job-overlay"
-      );
-
-      const jobBlockBlockButton = document.createElement("div");
-      jobBlockBlockButton.classList.add("job-block-block-button");
-
-      const jobBlockBlockButtonIcon = document.createElement("img");
-      jobBlockBlockButtonIcon.classList.add("job-block-block-button-icon");
-      jobBlockBlockButtonIcon.setAttribute(
-        "src",
-        chrome.runtime.getURL("images/hide-button-icon.svg")
-      );
-      jobBlockBlockButtonIcon.ondragstart = (dragEvent) =>
-        dragEvent.preventDefault();
-
-      jobBlockBlockButton.append(jobBlockBlockButtonIcon);
-      jobBlockOverlayUnblockedJob.append(jobBlockBlockButton);
-      jobBlockElement.append(
-        jobBlockOverlayUnblockedJob,
-        jobBlockOverlayBlockedJob
-      );
-
-      return jobBlockElement;
+      jobListing.setAttribute("data-hns-job-listing", "");
+      jobListing.append(newHnsElement);
     }
 
     notifyScripts(hasHideNSeekUI) {
@@ -272,7 +250,7 @@
         from: "content script",
         to: ["background script", "popup script"],
         body: "hasHideNSeekUI changed",
-        jobBoardId: this.jobBoard.jobBoardId,
+        jobBoardId: this.jobBoard.id,
         hasHideNSeekUI,
       });
 
@@ -283,19 +261,19 @@
   class JobAttributeManager {
     static blockedJobAttributeValueStorageKeys = new Set();
 
-    #jobBlockElementToToggleButtonMap = new WeakMap();
+    #hnsElementToToggleButtonMap = new WeakMap();
     #changesPendingExport = new Map();
 
     constructor(jobBoard, jobAttribute, storage) {
-      this.jobBoardId = jobBoard.jobBoardId;
-      this.getJobAttributeValue = jobBoard.attributes.find(
+      this.jobBoardId = jobBoard.id;
+      this.jobAttributeConfig = jobBoard.attributes.find(
         ({ name }) => name === jobAttribute
-      ).get;
+      );
       this.jobAttribute = jobAttribute;
 
       this.blockedJobAttributeValuesStorageKey = Utilities.getStorageKeyName(
         "JobAttributeManager",
-        jobBoard.jobBoardId,
+        jobBoard.id,
         jobAttribute,
         "blockedJobAttributeValues"
       );
@@ -316,6 +294,14 @@
 
       if (storagePropertiesToSet.length)
         chrome.storage.local.set(Object.fromEntries(storagePropertiesToSet));
+
+      this.toggleButtonTemplate = document.createElement("template");
+      this.toggleButtonTemplate.innerHTML = `
+        <button class="hns-block-attribute-toggle">
+          <div class="hns-block-attribute-toggle-text"></div>
+          <div class="hns-block-attribute-toggle-hidden-indicator">Hidden</div>
+        </button>
+      `;
     }
 
     start() {
@@ -368,20 +354,20 @@
       return this;
     }
 
-    processJobBlockElement(jobBlockElement, jobElement) {
+    processHnsElement(hnsElement, jobListing) {
       const existingToggleButton =
-        this.#jobBlockElementToToggleButtonMap.get(jobBlockElement);
+        this.#hnsElementToToggleButtonMap.get(hnsElement);
       if (existingToggleButton) return;
 
-      const jobAttributeValue = this.getJobAttributeValue(jobElement);
+      const jobAttributeValue = this.jobAttributeConfig.getValue(jobListing);
 
       if (!jobAttributeValue) return;
 
-      jobBlockElement.setAttribute("data-hns-job-board-id", this.jobBoardId);
+      hnsElement.setAttribute("data-hns-job-board-id", this.jobBoardId);
 
       if (this.jobAttribute === "companyName")
-        jobBlockElement
-          .querySelector(".job-block-block-button")
+        hnsElement
+          .querySelector(".hns-block-button")
           .addEventListener("click", (event) => {
             event.stopPropagation();
             this.blockJobAttributeValue(jobAttributeValue);
@@ -389,71 +375,49 @@
 
       const toggleButtonElement =
         this.createToggleButtonElement(jobAttributeValue);
-      this.#jobBlockElementToToggleButtonMap.set(
-        jobBlockElement,
-        toggleButtonElement
-      );
+      this.#hnsElementToToggleButtonMap.set(hnsElement, toggleButtonElement);
       toggleButtonElement.setAttribute("data-hns-attribute", this.jobAttribute);
 
-      const jobAttributeValueIsBlocked =
-        this.getJobAttributeValueIsBlocked(jobAttributeValue);
-
-      this.updateToggleButton(toggleButtonElement, jobAttributeValueIsBlocked);
+      this.updateToggleButton(toggleButtonElement, jobAttributeValue);
 
       toggleButtonElement.addEventListener("click", (event) => {
         event.stopPropagation();
-        this.toggleJobAttributeValue(jobAttributeValue);
+        if (this.jobAttributeValueIsBlocked(jobAttributeValue)) {
+          this.unblockJobAttributeValue(jobAttributeValue);
+        } else {
+          this.blockJobAttributeValue(jobAttributeValue);
+        }
       });
 
-      jobBlockElement
-        .querySelector(".job-block-blocked-job-overlay")
+      hnsElement
+        .querySelector(".hns-blocked-job-overlay")
         .prepend(toggleButtonElement);
     }
 
     createToggleButtonElement(jobAttributeValue) {
-      const toggleButtonElement = document.createElement("button");
-      toggleButtonElement.classList.add("job-block-attribute-toggle-button");
-      toggleButtonElement.setAttribute("title", jobAttributeValue);
+      const toggleButtonElement =
+        this.toggleButtonTemplate.content.firstElementChild.cloneNode(true);
+      toggleButtonElement.title = jobAttributeValue;
       toggleButtonElement.setAttribute(
         "data-hns-attribute-value",
         jobAttributeValue
       );
-
-      const toggleButtonTextElement = document.createElement("div");
-      toggleButtonTextElement.classList.add(
-        "job-block-attribute-toggle-button-text"
-      );
-      toggleButtonTextElement.textContent = jobAttributeValue;
-
-      const toggleButtonHiddenIndicator = document.createElement("div");
-      toggleButtonHiddenIndicator.classList.add(
-        "job-block-attribute-toggle-button-hidden-indicator"
-      );
-      toggleButtonHiddenIndicator.textContent = "Hidden";
-
-      toggleButtonElement.append(
-        toggleButtonTextElement,
-        toggleButtonHiddenIndicator
-      );
+      toggleButtonElement.querySelector(
+        ".hns-block-attribute-toggle-text"
+      ).textContent = jobAttributeValue;
 
       return toggleButtonElement;
     }
 
-    getJobAttributeValueIsBlocked(jobAttributeValue) {
+    jobAttributeValueIsBlocked(jobAttributeValue) {
       return this.blockedJobAttributeValues.has(jobAttributeValue);
     }
 
-    updateToggleButton(toggleButtonElement, jobAttributeValueIsBlocked) {
+    updateToggleButton(toggleButtonElement, jobAttributeValue) {
       toggleButtonElement.setAttribute(
         "data-hns-blocked-attribute",
-        jobAttributeValueIsBlocked
+        this.jobAttributeValueIsBlocked(jobAttributeValue)
       );
-    }
-
-    toggleJobAttributeValue(jobAttributeValue) {
-      this.getJobAttributeValueIsBlocked(jobAttributeValue)
-        ? this.unblockJobAttributeValue(jobAttributeValue)
-        : this.blockJobAttributeValue(jobAttributeValue);
     }
 
     blockJobAttributeValue(jobAttributeValue, updateStorage = true) {
@@ -477,19 +441,16 @@
 
     updateToggleButtonsWithJobAttributeValue(jobAttributeValue) {
       const toggleButtonsWithJobAttributeValue = document.querySelectorAll(
-        `.job-block-element [data-hns-attribute-value="${jobAttributeValue}"]`
+        `.hns-element [data-hns-attribute-value="${jobAttributeValue}"]`
       );
 
       if (!toggleButtonsWithJobAttributeValue.length) return;
-
-      const jobAttributeValueIsBlocked =
-        this.getJobAttributeValueIsBlocked(jobAttributeValue);
 
       toggleButtonsWithJobAttributeValue.forEach(
         (toggleButtonWithJobAttributeValue) =>
           this.updateToggleButton(
             toggleButtonWithJobAttributeValue,
-            jobAttributeValueIsBlocked
+            jobAttributeValue
           )
       );
     }
@@ -529,5 +490,5 @@
     new JobAttributeManager(jobBoard, name, storage).start()
   );
 
-  new ElementManager(jobBoard, jobAttributeManagers, storage).start();
+  new JobListingManager(jobBoard, jobAttributeManagers, storage).start();
 })();
