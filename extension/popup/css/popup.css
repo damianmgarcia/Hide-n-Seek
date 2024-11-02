@@ -37,7 +37,11 @@ html[data-tab-is-job-board="true"] {
 }
 
 html[data-tab-is-job-board="false"] {
-  height: auto;
+  height: 14rem;
+}
+
+html[data-tab-is-job-board="false"]:has(#settings-container:not(.invisible)) {
+  height: 37.5rem;
 }
 
 body {
@@ -55,12 +59,11 @@ body {
 
 main {
   --main-padding: 1rem;
-  align-items: center;
   background: hsl(39, 77%, 83%);
   border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 1rem;
+  grid-template-rows: 48px 1fr;
   height: calc(100% - 2rem);
   padding: var(--main-padding);
 }
@@ -112,9 +115,25 @@ header {
   height: 1.75rem;
   justify-self: end;
   margin-top: 4px;
-  transition: 200ms ease-out;
-  transition-property: background-color;
+  position: relative;
+  transition: background-color 200ms ease-out;
   z-index: 1;
+}
+
+main:has(.warning) #settings-toggle::after {
+  --size: 0.8rem;
+  background: hsl(60, 100%, 50%);
+  border-radius: 50%;
+  content: "!";
+  display: grid;
+  font-size: calc(var(--size) / 1.5);
+  font-weight: bold;
+  height: var(--size);
+  left: calc(0px + 50% - (var(--size) / 2) + (cos(45deg) * 50%));
+  place-content: center;
+  position: absolute;
+  top: calc(0px + 50% - (var(--size) / 2) - (cos(45deg) * 50%));
+  width: var(--size);
 }
 
 #settings-toggle:hover {
@@ -126,16 +145,42 @@ header {
   background: hsl(0, 0%, 100%, 0.6);
 }
 
-main.with-settings #settings-toggle {
+main:has(#settings-container:not(.invisible)) #settings-toggle {
   background: hsl(0, 0%, 100%, 0.6);
 }
 
-main.with-settings #settings-toggle:hover {
+main:has(#settings-container:not(.invisible)) #settings-toggle:hover {
   background: hsl(0, 0%, 100%, 0.5);
 }
 
-main.with-settings #settings-toggle:active {
+main:has(#settings-container:not(.invisible)) #settings-toggle:active {
   background: hsl(0, 0%, 100%, 0.3);
+}
+
+#settings-toggle svg {
+  transition: transform 400ms ease-out;
+}
+
+main:has(#settings-container:not(.invisible)) #settings-toggle svg {
+  transform: rotate(180deg);
+}
+
+.main-content {
+  position: relative;
+}
+
+.main-content > * {
+  display: flex;
+  height: calc(100% - 2rem);
+  inset: 0;
+  position: absolute;
+  transition: 200ms ease-out;
+  transition-property: opacity, visibility;
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .options-container {
@@ -517,27 +562,6 @@ button {
   background: hsl(0, 0%, 30%);
 }
 
-.button-strip {
-  display: grid;
-  gap: 1rem;
-  grid-auto-flow: column;
-  height: 50px;
-  width: 100%;
-  z-index: 0;
-}
-
-#settings-strip {
-  margin-top: -4.125rem;
-  opacity: 0;
-  transition: margin-top 200ms ease 200ms, opacity 200ms ease-out;
-}
-
-main.with-settings #settings-strip {
-  margin-top: 0;
-  opacity: 1;
-  transition: margin-top 200ms ease, opacity 200ms ease-out 200ms;
-}
-
 .toggle-container {
   align-items: center;
   border-radius: 0.5rem;
@@ -657,4 +681,62 @@ body::-webkit-scrollbar-thumb {
 
 body::-webkit-scrollbar-thumb:hover {
   background: hsl(0, 0%, 100%, 1);
+}
+
+#settings-container {
+  background: hsl(30, 56.6%, 65.7%);
+  border-radius: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: auto;
+  padding: 1rem;
+  width: calc(100% - 2rem);
+}
+
+#settings-container.invisible {
+  overflow: hidden;
+}
+
+.setting-group {
+  background: hsl(0, 0%, 100%, 0.3);
+  border-radius: 1rem;
+  display: grid;
+  font-size: 0.8em;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.info-box {
+  align-items: baseline;
+  border-radius: 1rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1rem 1fr;
+  padding: 1rem;
+  width: calc(100% - 2rem);
+}
+
+.info-box.warning {
+  background: hsl(60, 100%, 60%, 0.2);
+}
+
+.info-box.warning .info-box-icon {
+  --size: 1rem;
+  background: hsl(60, 100%, 50%);
+  border-radius: 50%;
+  display: grid;
+  font-size: calc(var(--size) / 1.5);
+  font-weight: bold;
+  height: var(--size);
+  left: calc(0px + 50% - (var(--size) / 2) + (cos(45deg) * 50%));
+  place-content: center;
+  top: calc(0px + 50% - (var(--size) / 2) - (cos(45deg) * 50%));
+  width: var(--size);
+}
+
+a,
+a:link,
+a:visited {
+  color: hsl(240, 100%, 50%);
+  text-decoration: none;
 }

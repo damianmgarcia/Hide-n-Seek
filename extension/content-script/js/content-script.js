@@ -17,8 +17,7 @@
               return (
                 jobListing
                   .querySelector(".EmployerProfile_compactEmployerName__LE242")
-                  ?.textContent.replaceAll("\n", "")
-                  .trim() || "Unknown Company"
+                  ?.textContent.trim() || "Unknown Company"
               );
             },
           },
@@ -37,8 +36,7 @@
               return (
                 jobListing
                   .querySelector(".companyName, [data-testid='company-name']")
-                  ?.textContent.replaceAll("\n", "")
-                  .trim() || "Unknown Company"
+                  ?.textContent.trim() || "Unknown Company"
               );
             },
           },
@@ -67,8 +65,7 @@
                   .querySelector(
                     ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle"
                   )
-                  ?.textContent.replaceAll("\n", "")
-                  .trim()
+                  ?.textContent.trim()
                   .replace(/\s*·\s*.*$/, "") || "Unknown Company"
               );
             },
@@ -183,9 +180,9 @@
           });
       });
 
-      chrome.storage.local.onChanged.addListener((storageChanges) => {
+      chrome.storage.local.onChanged.addListener((changes) => {
         const containsChangesToRemoveHiddenJobs = Object.hasOwn(
-          storageChanges,
+          changes,
           this.removeHiddenJobsStorageKey
         );
 
@@ -193,7 +190,7 @@
 
         document.documentElement.setAttribute(
           "data-hns-remove-hidden-jobs",
-          storageChanges[this.removeHiddenJobsStorageKey].newValue
+          changes[this.removeHiddenJobsStorageKey].newValue
         );
       });
 
@@ -305,15 +302,15 @@
     }
 
     start() {
-      chrome.storage.local.onChanged.addListener((storageChanges) => {
+      chrome.storage.local.onChanged.addListener((changes) => {
         const containsChangesToThisJobAttribute = Object.hasOwn(
-          storageChanges,
+          changes,
           this.blockedJobAttributeValuesStorageKey
         );
         if (!containsChangesToThisJobAttribute) return;
 
         const blockedJobAttributeValuesFromStorage = new Set(
-          storageChanges[this.blockedJobAttributeValuesStorageKey].newValue
+          changes[this.blockedJobAttributeValuesStorageKey].newValue
         );
 
         const mergedJobAttributeValueChanges = new Map([
@@ -484,11 +481,11 @@
 
   if (!jobBoard) return;
 
-  const storage = await chrome.storage.local.get();
+  const localStorage = await chrome.storage.local.get();
 
   const jobAttributeManagers = jobBoard.attributes.map(({ name }) =>
-    new JobAttributeManager(jobBoard, name, storage).start()
+    new JobAttributeManager(jobBoard, name, localStorage).start()
   );
 
-  new JobListingManager(jobBoard, jobAttributeManagers, storage).start();
+  new JobListingManager(jobBoard, jobAttributeManagers, localStorage).start();
 })();
