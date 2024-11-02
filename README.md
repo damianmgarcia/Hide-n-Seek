@@ -86,6 +86,8 @@ The promotional video was created with a combination of Adobe After Effects and 
   - Improvements
     - Updated data storage strategy so that many more jobs can be blocked. Previously, a few hundred jobs could be blocked before the extension's sync storage quota would have been exceeded. Now, users can block thousands of jobs.
     - A notification now shows when a user exceeds the sync storage quota for the extension. Users who exceed the sync storage quota will still be able to block jobs, but the blocked jobs won't sync.
+    - Many thanks to [wchen342](https://github.com/wchen342) for contributing this fix!
+    - This update resolves [#40](https://github.com/damianmgarcia/Hide-n-Seek/issues/40).
 - 5.0.5
   - Release date
     - 2024-10-06
