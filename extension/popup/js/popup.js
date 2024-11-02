@@ -30,7 +30,7 @@
     static initiateUpload(handler) {
       const tempFileInput = document.createElement("input");
       tempFileInput.type = "file";
-      tempFileInput.accept = "application/json";
+      tempFileInput.accept = ".json";
       tempFileInput.addEventListener(
         "change",
         () => handler(tempFileInput.files),
@@ -118,10 +118,9 @@
     #undoUnhideAllJobsButton = document.querySelector("#undo-unhide-all-jobs");
 
     start(storage) {
-      chrome.storage.local.onChanged.addListener((storageChanges) => {
+      chrome.storage.local.onChanged.addListener((changes) => {
         const syncIdIsTheOnlyChange =
-          Object.hasOwn(storageChanges, "syncId") &&
-          Object.keys(storageChanges).length === 1;
+          Object.hasOwn(changes, "syncId") && Object.keys(changes).length === 1;
         if (syncIdIsTheOnlyChange) return;
         this.#updateElementsBasedOnStorage();
       });
@@ -247,16 +246,16 @@
     #checkboxLabel = this.#checkboxInput.closest("label");
 
     async start(storage) {
-      chrome.storage.local.onChanged.addListener((storageChanges) => {
+      chrome.storage.local.onChanged.addListener((changes) => {
         const containsChangesToRemoveHiddenJobs = Object.hasOwn(
-          storageChanges,
+          changes,
           this.#removeHiddenJobsStorageKey
         );
 
         if (!containsChangesToRemoveHiddenJobs) return;
 
         this.#checkboxInput.checked =
-          storageChanges[this.#removeHiddenJobsStorageKey].newValue;
+          changes[this.#removeHiddenJobsStorageKey].newValue;
         this.#checkboxLabel.dataset.checked = this.#checkboxInput.checked;
       });
 
@@ -310,9 +309,9 @@
     }
 
     start(storage) {
-      chrome.storage.local.onChanged.addListener((storageChanges) => {
+      chrome.storage.local.onChanged.addListener((changes) => {
         const changesIncludesBlockedJobAttributeValues = Object.keys(
-          storageChanges
+          changes
         ).some(
           (key) =>
             key.includes("blockedJobAttributeValues") &&
@@ -349,7 +348,7 @@
     #getElementTextContentForJobAttribute(jobAttribute, elements) {
       return elements
         .filter((element) => element.dataset.jobAttribute === jobAttribute)
-        .map((element) => this.#getCleanedElementTextContent(element));
+        .map((element) => element.textContent.trim());
     }
 
     #updatePopupListToReflectStorageForJobAttribute(
@@ -426,10 +425,6 @@
       );
     }
 
-    #getCleanedElementTextContent(element) {
-      return element.textContent.replaceAll("\n", "").trim();
-    }
-
     #createElementForHiddenJobAttributeValue(itemName) {
       const hiddenJobContainer = document.createElement("button");
       hiddenJobContainer.classList.add("hidden-job-container");
@@ -485,7 +480,7 @@
         : [[expanded, collapsed], options];
     }
 
-    #getAllArrayItemsLowerCased(array) {
+    getLowerCased(array) {
       return array.map((item) => item.toLowerCase());
     }
 
@@ -505,8 +500,9 @@
           hiddenJobAttributeValueElementsInPopupList
         );
 
-      const lowerCaseHiddenCompanyNamesInPopupList =
-        this.#getAllArrayItemsLowerCased(hiddenCompanyNamesInPopupList);
+      const lowerCaseHiddenCompanyNamesInPopupList = this.getLowerCased(
+        hiddenCompanyNamesInPopupList
+      );
 
       const companyNameIsInPopupList =
         jobAttribute === "companyName" &&
@@ -522,8 +518,9 @@
           hiddenJobAttributeValueElementsInPopupList
         );
 
-      const lowerCaseHiddenPromotionalStatusesInPopupList =
-        this.#getAllArrayItemsLowerCased(hiddenPromotionalStatusesInPopupList);
+      const lowerCaseHiddenPromotionalStatusesInPopupList = this.getLowerCased(
+        hiddenPromotionalStatusesInPopupList
+      );
 
       const promotionalStatusIsInPopupList =
         jobAttribute === "promotionalStatus" &&
@@ -546,14 +543,9 @@
       Object.assign(hiddenJobAttributeValueElement.dataset, { jobAttribute });
 
       hiddenJobAttributeValueElement.addEventListener("click", async () => {
-        const textContent = this.#getCleanedElementTextContent(
-          hiddenJobAttributeValueElement
+        const entries = Object.entries(
+          await this.#getBlockedJobAttributeValuesFromStorage()
         );
-
-        const blockedJobAttributeValuesFromStorage =
-          await this.#getBlockedJobAttributeValuesFromStorage();
-
-        const entries = Object.entries(blockedJobAttributeValuesFromStorage);
 
         if (!entries.length) return;
 
@@ -565,7 +557,11 @@
               return [key, value];
             return [
               key,
-              value.filter((valueItem) => valueItem !== textContent),
+              value.filter(
+                (valueItem) =>
+                  valueItem !==
+                  hiddenJobAttributeValueElement.textContent.trim()
+              ),
             ];
           }),
         ]);
@@ -648,8 +644,7 @@
         hiddenJobAttributeValueElementsInPopupList.find(
           (element) =>
             element.dataset.jobAttribute === jobAttribute &&
-            this.#getCleanedElementTextContent(element) ===
-              hiddenJobAttributeValue
+            element.textContent.trim() === hiddenJobAttributeValue
         );
 
       if (!hiddenJobAttributeValueElementToRemove) return;
@@ -889,17 +884,18 @@
 
       this.#jobNameSearchContainerInput.focus();
 
-      const storage = await chrome.storage.local.get();
+      const localStorage = await chrome.storage.local.get();
 
-      backupManager.start();
+      settingsManager.start();
 
       const storageIncludesRecentSearchQueryJobBoardId = Object.hasOwn(
-        storage,
+        localStorage,
         "recentSearchQueryJobBoardId"
       );
 
       if (storageIncludesRecentSearchQueryJobBoardId)
-        this.#recentSearchQueryJobBoardId = storage.recentSearchQueryJobBoardId;
+        this.#recentSearchQueryJobBoardId =
+          localStorage.recentSearchQueryJobBoardId;
 
       this.#jobBoardSelectorElements.forEach(({ label, input }) => {
         if (label.dataset.jobBoardId === this.#recentSearchQueryJobBoardId)
@@ -926,27 +922,29 @@
       if (this.#started) return;
       this.#started = true;
 
-      const storage = await chrome.storage.local.get();
-      new UnblockAllJobsManager(jobBoardId).start(storage);
-      new RemoveHiddenJobsManager(jobBoardId).start(storage);
-      new HiddenJobsListManager(jobBoardId).start(storage);
-      backupManager.start();
+      const localStorage = await chrome.storage.local.get();
+      new UnblockAllJobsManager(jobBoardId).start(localStorage);
+      new RemoveHiddenJobsManager(jobBoardId).start(localStorage);
+      new HiddenJobsListManager(jobBoardId).start(localStorage);
+      settingsManager.start();
     }
   }
 
-  const backupManager = {};
+  const settingsManager = {};
+  settingsManager.start = function () {
+    if (this.started) return;
+    this.started = true;
 
-  backupManager.start = function () {
-    const main = document.querySelector("main");
-    const settingsButtons = document.querySelectorAll(
-      "#settings-strip > button"
-    );
+    const settingsContainer = document.querySelector("#settings-container");
     const settingsToggle = document.querySelector("#settings-toggle");
     settingsToggle.addEventListener("click", () => {
-      const withSettings = main.classList.toggle("with-settings");
-      settingsButtons.forEach(
-        (settingsButton) => (settingsButton.tabIndex = withSettings ? 0 : -1)
-      );
+      const settingsInvisible = settingsContainer.classList.toggle("invisible");
+      settingsContainer
+        .querySelectorAll("button")
+        .forEach((button) => (button.tabIndex = settingsInvisible ? -1 : 0));
+      document
+        .querySelectorAll(".options-container :is(button, input)")
+        .forEach((button) => (button.tabIndex = settingsInvisible ? 0 : -1));
     });
 
     const backupButton = document.querySelector("#backup-button");
@@ -958,8 +956,9 @@
     );
   };
 
-  backupManager.backup = async function () {
+  settingsManager.backup = async function () {
     const backup = await chrome.storage.local.get();
+    delete backup.syncError;
     const jsonStorage = JSON.stringify(backup, null, 2);
     const base64Storage = btoa(
       String.fromCodePoint(...new TextEncoder().encode(jsonStorage))
@@ -969,17 +968,15 @@
 
     Utilities.initiateDownload(dataUri, fileName);
   };
-
-  backupManager.restore = async function (fileList) {
+  settingsManager.restore = async function (fileList) {
     try {
       const file = fileList[0];
       const fileText = await file.text();
       const jsonStorage = JSON.parse(fileText);
-      chrome.storage.local.set(jsonStorage);
+      await chrome.storage.local.clear();
+      await chrome.storage.local.set(jsonStorage);
     } catch (error) {
       console.log(error);
-
-      const restoreButton = document.querySelector("#restore-button");
 
       const keyframes = [
         {
@@ -997,11 +994,61 @@
         iterations: 24,
       };
 
+      const restoreButton = document.querySelector("#restore-button");
       restoreButton.disabled = true;
       restoreButton.style.setProperty("opacity", "1");
       await restoreButton.animate(keyframes, options).finished;
       restoreButton.style.removeProperty("opacity");
       restoreButton.disabled = false;
+    }
+  };
+
+  const createHtmlTemplate = function (htmlString) {
+    const template = document.createElement("template");
+    template.innerHTML = htmlString;
+    return template;
+  };
+
+  const infoBoxTemplate = {};
+  infoBoxTemplate.template = createHtmlTemplate(`
+      <div class="info-box">
+        <div class="info-box-icon"></div>
+        <div class="info-box-message"></div>
+      </div>
+    `);
+  infoBoxTemplate.get = function (type, message) {
+    const container = this.template.content.firstElementChild.cloneNode(true);
+    if (type === "warning") {
+      container.classList.add("warning");
+      container.querySelector(".info-box-icon").textContent = "!";
+    }
+    container.querySelector(".info-box-message").textContent = message;
+    return container;
+  };
+
+  const browserSyncManager = {};
+  browserSyncManager.quotaWarningElement = infoBoxTemplate.get(
+    "warning",
+    "Impressive. You've reached the max number of blocked jobs that can sync across devices. Blocked jobs will no longer sync, but you can back them up to a file."
+  );
+  browserSyncManager.start = async function () {
+    if (this.listening) return;
+    this.listening = true;
+
+    const localStorage = await chrome.storage.local.get();
+    this.updateStatus(localStorage.syncError);
+    chrome.storage.local.onChanged.addListener((changes) => {
+      if (!changes.syncError) return;
+      this.updateStatus(changes.syncError.newValue);
+    });
+  };
+  browserSyncManager.updateStatus = function (error = "") {
+    if (error && !this.quotaWarningElement.isConnected) {
+      document
+        .querySelector("#data-settings")
+        .prepend(this.quotaWarningElement);
+    } else if (!error && this.quotaWarningElement.isConnected) {
+      browserSyncManager.quotaWarningElement.remove();
     }
   };
 
@@ -1029,6 +1076,8 @@
       }
     }
   });
+
+  browserSyncManager.start();
 
   const activeTabInCurrentWindow =
     await Utilities.getActiveTabInCurrentWindow();
