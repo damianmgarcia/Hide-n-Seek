@@ -341,7 +341,9 @@
 
     #getHiddenJobAttributeValueElementsInPopupList() {
       return Array.from(
-        document.querySelectorAll(this.#jobAttributeValueSelector)
+        document.querySelectorAll(
+          `${this.#jobAttributeValueSelector}:not(.removing)`
+        )
       );
     }
 
@@ -649,6 +651,7 @@
 
       if (!hiddenJobAttributeValueElementToRemove) return;
 
+      hiddenJobAttributeValueElementToRemove.classList.add("removing");
       await hiddenJobAttributeValueElementToRemove.animate(
         ...this.#getPopupListChangeAnimation("remove")
       ).finished;
