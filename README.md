@@ -80,6 +80,12 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 5.1.0
+  - Release date
+    - 2024-11-02
+  - Improvements
+    - Updated data storage strategy so that many more jobs can be blocked. Previously, a few hundred jobs could be blocked before the extension's sync storage quota would have been exceeded. Now, users can block thousands of jobs.
+    - A notification now shows when a user exceeds the sync storage quota for the extension. Users who exceed the sync storage quota will still be able to block jobs, but the blocked jobs won't sync.
 - 5.0.5
   - Release date
     - 2024-10-06
