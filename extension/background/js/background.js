@@ -92,6 +92,62 @@ class Utilities {
   }
 }
 
+const CHUNK_SIZE = 100;
+const CHUNK_PATTERN = /^(?<key>[^_]+)(?<chunk>_\d+)?$/;
+const chunkArray = function (array, chunkSize = CHUNK_SIZE) {
+  const chunks = [];
+  for (let i = 0; i < array.length; i += chunkSize) {
+    chunks.push(array.slice(i, i + chunkSize));
+  }
+  return chunks;
+};
+
+const chunkStorage = function (storage) {
+  const chunkedStorage = {};
+  for (const [key, value] of Object.entries(storage)) {
+    if (Array.isArray(value) && value.length > CHUNK_SIZE) {
+      const chunks = chunkArray(value);
+      for (let i = 0; i < chunks.length; i++) {
+        chunkedStorage[`${key}${!i ? "" : `_${i}`}`] = chunks[i];
+        chunkedStorage[
+          `${
+            key.includes(".backup")
+              ? key.replace(".backup", "")
+              : `${key}.backup`
+          }${!i ? "" : `_${i}`}`
+        ] = [];
+      }
+    } else {
+      chunkedStorage[key] = value;
+    }
+  }
+  return chunkedStorage;
+};
+
+const deChunkStorage = function (storage) {
+  const deChunkedStorage = {};
+  for (const [key, value] of Object.entries(storage)) {
+    if (Array.isArray(value)) {
+      const chunkMatch = key.match(CHUNK_PATTERN);
+      if (Array.isArray(deChunkedStorage[chunkMatch.groups.key])) {
+        deChunkedStorage[chunkMatch.groups.key] = [
+          ...deChunkedStorage[chunkMatch.groups.key],
+          ...value,
+        ];
+      } else {
+        deChunkedStorage[chunkMatch.groups.key] = value;
+      }
+    } else {
+      deChunkedStorage[key] = value;
+    }
+  }
+  return deChunkedStorage;
+};
+
+const setDifference = (setA, setB) => {
+  return setA.filter((item) => !setB.includes(item));
+};
+
 class JobBoards {
   static #jobBoards = [
     {
@@ -115,10 +171,9 @@ class JobBoards {
 
   static getJobBoardIdByUrl(url) {
     if (typeof url !== "string") return;
-    const jobBoardMatch = this.#jobBoards.find((jobBoard) =>
+    return this.#jobBoards.find((jobBoard) =>
       url.includes(jobBoard.jobBoardUrlMatchPattern)
-    );
-    if (jobBoardMatch) return jobBoardMatch.jobBoardId;
+    )?.jobBoardId;
   }
 
   static getAllJobBoardIds() {
@@ -162,13 +217,13 @@ class JobBoards {
   }
 }
 
-const updateBadgeTextAndTitle = async (jobBoardId, tabs) => {
+const updateBadge = async (jobBoardId, tabs) => {
   const localStorage = await chrome.storage.local.get();
 
   const { jobBoardName, jobBoardPromotionalStatusValue } =
     JobBoards.getJobBoardDataByJobBoardId(jobBoardId);
 
-  const blockedCompaniesKey = Object.keys(localStorage).find(
+  const blockedCompaniesStorageKey = Object.keys(localStorage).find(
     (key) =>
       key.includes(jobBoardId) &&
       key.includes("companyName") &&
@@ -176,12 +231,13 @@ const updateBadgeTextAndTitle = async (jobBoardId, tabs) => {
       !key.endsWith(".backup")
   );
 
-  const numberOfBlockedCompaniesForJobBoardId =
-    blockedCompaniesKey && Array.isArray(localStorage[blockedCompaniesKey])
-      ? localStorage[blockedCompaniesKey].length
+  const blockedCompaniesCount =
+    blockedCompaniesStorageKey &&
+    Array.isArray(localStorage[blockedCompaniesStorageKey])
+      ? localStorage[blockedCompaniesStorageKey].length
       : 0;
 
-  const promotedJobsKey = Object.keys(localStorage).find(
+  const promotedJobsStorageKey = Object.keys(localStorage).find(
     (key) =>
       key.includes(jobBoardId) &&
       key.includes("promotionalStatus") &&
@@ -189,15 +245,17 @@ const updateBadgeTextAndTitle = async (jobBoardId, tabs) => {
       !key.endsWith(".backup")
   );
 
-  const promotedJobsAreBlockedForJobBoardId =
-    promotedJobsKey &&
-    Array.isArray(localStorage[promotedJobsKey]) &&
-    localStorage[promotedJobsKey].includes(jobBoardPromotionalStatusValue)
+  const promotedJobsAreBlocked =
+    promotedJobsStorageKey &&
+    Array.isArray(localStorage[promotedJobsStorageKey]) &&
+    localStorage[promotedJobsStorageKey].includes(
+      jobBoardPromotionalStatusValue
+    )
       ? true
       : false;
 
-  const numberOfBlockedJobAttributes =
-    numberOfBlockedCompaniesForJobBoardId + promotedJobsAreBlockedForJobBoardId;
+  const blockedJobAttributesCount =
+    blockedCompaniesCount + promotedJobsAreBlocked;
 
   tabs.forEach(async (tab) => {
     const contentScriptStatus = await JobBoards.getContentScriptStatusOfTab(
@@ -235,12 +293,10 @@ const updateBadgeTextAndTitle = async (jobBoardId, tabs) => {
           title: `Hide n' Seek
 
 ${jobBoardName}:
-• ${numberOfBlockedCompaniesForJobBoardId} ${
-            numberOfBlockedCompaniesForJobBoardId === 1
-              ? "company"
-              : "companies"
+• ${blockedCompaniesCount} ${
+            blockedCompaniesCount === 1 ? "company" : "companies"
           } hidden${
-            promotedJobsAreBlockedForJobBoardId
+            promotedJobsAreBlocked
               ? `
 • ${jobBoardPromotionalStatusValue} jobs hidden`
               : ""
@@ -249,7 +305,7 @@ ${jobBoardName}:
         },
         {
           tabId: tab.id,
-          text: `${numberOfBlockedJobAttributes}`,
+          text: `${blockedJobAttributesCount}`,
         },
         {
           tabId: tab.id,
@@ -260,13 +316,15 @@ ${jobBoardName}:
   });
 };
 
-chrome.runtime.onInstalled.addListener(async () => {
-  const syncStorage = await chrome.storage.sync.get();
-  if (Object.keys(syncStorage).length)
-    await chrome.storage.local.set(syncStorage);
+chrome.runtime.onInstalled.addListener(async (details) => {
+  if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    const syncStorage = deChunkStorage(await chrome.storage.sync.get());
+    if (Object.keys(syncStorage).length) {
+      await chrome.storage.local.set(syncStorage);
+    }
+  }
 
   const tabsWithJobBoardId = await JobBoards.getTabsWithJobBoardId();
-
   tabsWithJobBoardId.forEach((tabWithJobBoardId) =>
     Utilities.safeAwait(chrome.tabs.reload, tabWithJobBoardId.id, {
       bypassCache: true,
@@ -274,10 +332,10 @@ chrome.runtime.onInstalled.addListener(async () => {
   );
 });
 
-chrome.storage.local.onChanged.addListener((storageChanges) => {
+chrome.storage.local.onChanged.addListener((changes) => {
   JobBoards.getAllJobBoardIds().forEach(async (jobBoardId) => {
     const changesIncludesBlockedJobAttributeValuesForJobBoardId = Object.keys(
-      storageChanges
+      changes
     ).some(
       (key) =>
         key.includes(jobBoardId) &&
@@ -288,7 +346,7 @@ chrome.storage.local.onChanged.addListener((storageChanges) => {
     if (!changesIncludesBlockedJobAttributeValuesForJobBoardId) return;
 
     const jobBoardIdTabs = await JobBoards.getTabsWithJobBoardId(jobBoardId);
-    updateBadgeTextAndTitle(jobBoardId, jobBoardIdTabs);
+    updateBadge(jobBoardId, jobBoardIdTabs);
   });
 });
 
@@ -300,101 +358,124 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     (message.body === "hasHideNSeekUI changed" ||
       message.body === "bfcache used")
   ) {
-    updateBadgeTextAndTitle(message.jobBoardId, [sender.tab]);
+    updateBadge(message.jobBoardId, [sender.tab]);
   }
 });
 
-const getSyncConflictPatch = (storageChanges) => {
-  const jobBoardIdSyncConflictData = JobBoards.getAllJobBoardIds().map(
-    (jobBoardId) => ({
-      blockedJobAttributeValuesKeys: Object.keys(storageChanges).filter(
-        (key) =>
-          key.includes(jobBoardId) &&
-          key.includes("blockedJobAttributeValues") &&
-          !key.includes("backup")
-      ),
+let syncId = "";
+let syncError = "";
+chrome.storage.local
+  .get()
+  .then((localStorage) => (syncError = localStorage.syncError));
+const updateSyncStorage =
+  Utilities.addCallBlockingForRepetitiveCallsButAllowLastCall(async () => {
+    const [localStorage, syncStorage] = await Promise.all([
+      chrome.storage.local.get(),
+      chrome.storage.sync.get(),
+    ]);
 
-      backupAvailable: Object.entries(storageChanges).some(
-        ([key, value]) =>
-          key.includes(jobBoardId) &&
-          key.includes("blockedJobAttributeValues") &&
-          key.includes("backup") &&
-          value?.length
-      ),
-    })
-  );
+    for (const value of Object.values(localStorage)) {
+      if (Array.isArray(value)) value.sort();
+    }
 
-  return Object.fromEntries(
-    jobBoardIdSyncConflictData
-      .filter(({ backupAvailable }) => backupAvailable)
-      .flatMap(({ blockedJobAttributeValuesKeys }) =>
-        blockedJobAttributeValuesKeys.map((key) => [key, []])
+    const chunkedLocalStorage = chunkStorage(localStorage);
+    const localStorageKeys = Object.keys(chunkedLocalStorage);
+    const syncStorageKeys = Object.keys(syncStorage);
+    const syncKeysToRemove = setDifference(syncStorageKeys, localStorageKeys);
+    const trimmedSyncStorage = Object.fromEntries(
+      Object.entries(syncStorage).filter(
+        ([key]) => !syncKeysToRemove.includes(key)
       )
+    );
+    syncId = crypto.randomUUID();
+
+    const newSyncStorage = {
+      ...trimmedSyncStorage,
+      ...chunkedLocalStorage,
+      syncId,
+    };
+    delete newSyncStorage.syncError;
+
+    await chrome.storage.sync.remove(syncKeysToRemove);
+    try {
+      await chrome.storage.sync.set(chunkStorage(newSyncStorage));
+      syncError = "";
+      chrome.storage.local.set({ syncError });
+    } catch (error) {
+      syncError = error.message;
+      chrome.storage.local.set({ syncError });
+    }
+  }, 2000);
+
+const hasOnlySyncIdOrOldSyncId = (changes) => {
+  const hasSyncId = Object.hasOwn(changes, "syncId");
+  const onlySyncIdChanged = hasSyncId && Object.keys(changes).length === 1;
+  if (onlySyncIdChanged) return true;
+
+  const hasOldSyncId =
+    hasSyncId &&
+    Object.hasOwn(changes.syncId, "newValue") &&
+    changes.syncId.newValue === syncId;
+  if (hasOldSyncId) return true;
+  return false;
+};
+
+const hasOnlyRemovals = (changes) => {
+  return Object.values(changes).every(
+    (value) =>
+      Object.hasOwn(value, "oldValue") && !Object.hasOwn(value, "newValue")
   );
 };
 
-let syncId = "";
-const generateSyncId = () => `${Utilities.getRandomString(8)}.${Date.now()}`;
+chrome.storage.local.onChanged.addListener((changes) => {
+  const hasSyncError = Object.hasOwn(changes, "syncError");
+  const onlySyncErrorChanged =
+    hasSyncError && Object.keys(changes).length === 1;
+  if (onlySyncErrorChanged) return;
+  if (hasOnlySyncIdOrOldSyncId(changes)) return;
+  if (hasOnlyRemovals(changes)) return;
 
-const storageChangesPendingSet = {};
-const exportStorageChangesToSyncStorage =
-  Utilities.addCallBlockingForRepetitiveCallsButAllowLastCall(async () => {
-    const localStorage = await chrome.storage.local.get();
+  updateSyncStorage();
+});
 
-    syncId = generateSyncId();
+chrome.storage.sync.onChanged.addListener(async (changes) => {
+  if (syncError) return;
+  if (hasOnlySyncIdOrOldSyncId(changes)) return;
+  if (hasOnlyRemovals(changes)) {
+    const syncCleared = !(await chrome.storage.sync.getKeys()).length;
+    if (syncCleared) {
+      const oldSync = Object.fromEntries(
+        Object.entries(changes).map(([key, value]) => [key, value["oldValue"]])
+      );
+      chrome.storage.sync.set(oldSync);
+    }
+    return;
+  }
 
-    const mergedStorageChanges = Object.assign(
-      {},
-      localStorage,
-      storageChangesPendingSet,
-      { syncId }
-    );
+  const [localStorage, syncStorage] = await Promise.all([
+    chrome.storage.local.get(),
+    chrome.storage.sync.get(),
+  ]);
 
-    const syncConflictPatch = getSyncConflictPatch(mergedStorageChanges);
+  const deChunkedSyncStorage = deChunkStorage(syncStorage);
+  const localStorageKeys = Object.keys(localStorage);
+  const syncStorageKeys = Object.keys(deChunkedSyncStorage);
+  const localKeysToRemove = setDifference(localStorageKeys, syncStorageKeys);
+  const trimmedLocalStorage = Object.fromEntries(
+    Object.entries(localStorage).filter(
+      ([key]) => !localKeysToRemove.includes(key)
+    )
+  );
 
-    const patchedStorageChanges = Object.assign(
-      mergedStorageChanges,
-      syncConflictPatch
-    );
+  const newLocalStorage = {
+    ...trimmedLocalStorage,
+    ...deChunkedSyncStorage,
+  };
 
-    chrome.storage.sync.set(patchedStorageChanges);
-    chrome.storage.local.set(patchedStorageChanges);
-  }, 2000);
+  for (const value of Object.values(newLocalStorage)) {
+    if (Array.isArray(value)) value.sort();
+  }
 
-chrome.storage.onChanged.addListener((storageChanges, storageArea) => {
-  const syncIdExists = Object.hasOwn(storageChanges, "syncId");
-
-  const syncIdIsTheOnlyChange =
-    syncIdExists && Object.keys(storageChanges).length === 1;
-
-  const syncIdIsOld =
-    syncIdExists &&
-    Object.hasOwn(storageChanges.syncId, "newValue") &&
-    storageChanges.syncId.newValue === syncId;
-
-  if (syncIdIsTheOnlyChange || syncIdIsOld) return;
-
-  const syncStorageWasClearedOnAnotherDevice =
-    storageArea === "sync" &&
-    Object.values(storageChanges).every(
-      (value) =>
-        Object.hasOwn(value, "oldValue") && !Object.hasOwn(value, "newValue")
-    );
-
-  const updateStorageChangesPendingSet = (valueAge) =>
-    Object.assign(
-      storageChangesPendingSet,
-      Object.fromEntries(
-        Object.entries(storageChanges).map(([key, value]) => [
-          key,
-          value[valueAge],
-        ])
-      )
-    );
-
-  !syncStorageWasClearedOnAnotherDevice
-    ? updateStorageChangesPendingSet("newValue")
-    : updateStorageChangesPendingSet("oldValue");
-
-  exportStorageChangesToSyncStorage();
+  await chrome.storage.local.remove(localKeysToRemove);
+  await chrome.storage.local.set(newLocalStorage);
 });
