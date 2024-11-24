@@ -963,8 +963,11 @@
     const backup = await chrome.storage.local.get();
     delete backup.syncError;
     const jsonStorage = JSON.stringify(backup, null, 2);
+    const encodedJsonStorage = new TextEncoder().encode(jsonStorage);
     const base64Storage = btoa(
-      String.fromCodePoint(...new TextEncoder().encode(jsonStorage))
+      encodedJsonStorage.reduce(function (data, byte) {
+        return data + String.fromCodePoint(byte);
+      })
     );
     const dataUri = `data:application/json;base64,${base64Storage}`;
     const fileName = `hide-n-seek-backup-${Date.now()}.json`;
