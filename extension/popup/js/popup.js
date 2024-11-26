@@ -1085,6 +1085,11 @@
   const activeTabInCurrentWindow =
     await Utilities.getActiveTabInCurrentWindow();
 
+  // Hide if Firefox because backup doesn't work on Firefox. See https://github.com/damianmgarcia/Hide-n-Seek/issues/40
+  const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+  const dataSettings = document.querySelector("#data-settings");
+  if (isFirefox) dataSettings.style.display = "none";
+
   if (!activeTabInCurrentWindow)
     return JobSearchPopup.start(activeTabInCurrentWindow);
 

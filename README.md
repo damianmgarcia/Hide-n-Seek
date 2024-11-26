@@ -80,6 +80,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 5.1.1
+  - Release date
+    - 2024-11-25
+  - Bug fix
+    - In the Firefox version of Hide n' Seek, company names were previously not being detected due to a change in LinkedIn's company name selector.
 - 5.1.0
   - Release date
     - 2024-11-02
