@@ -3,7 +3,7 @@
   "name": "Hide n' Seek: Hide Promoted Jobs & Companies",
   "short_name": "Hide n' Seek",
   "description": "View the jobs you seek. Hide the ones you don't. Easily hide promoted jobs and companies on LinkedIn, Indeed, and Glassdoor.",
-  "version": "4.3.3",
+  "version": "5.1.2",
   "icons": {
     "16": "/images/hide-n-seek-icon-16.png",
     "32": "/images/hide-n-seek-icon-32.png",
@@ -35,21 +35,6 @@
   "background": {
     "scripts": ["/background/js/background.js"]
   },
-  "host_permissions": [
-    "https://*.glassdoor.com/*",
-    "https://*.indeed.com/*",
-    "https://*.linkedin.com/*"
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["/images/hide-button-icon.svg"],
-      "matches": [
-        "https://*.glassdoor.com/*",
-        "https://*.indeed.com/*",
-        "https://*.linkedin.com/*"
-      ]
-    }
-  ],
   "browser_specific_settings": {
     "gecko": {
       "id": "damian@outlook.com"
