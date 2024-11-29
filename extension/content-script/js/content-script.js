@@ -16,7 +16,9 @@
             getValue(jobListing) {
               return (
                 jobListing
-                  .querySelector(".EmployerProfile_compactEmployerName__LE242")
+                  .querySelector(
+                    ".EmployerProfile_compactEmployerName__LE242, .EmployerProfile_compactEmployerName__9MGcV"
+                  )
                   ?.textContent.trim() || "Unknown Company"
               );
             },
