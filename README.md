@@ -80,6 +80,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 5.1.2
+  - Release date
+    - 2024-11-28
+  - Patch
+    - Glassdoor recently updated their website code, which affected the extension's ability to detect company names. This update fixes this issue.
 - 5.1.1
   - Release date
     - 2024-11-25
