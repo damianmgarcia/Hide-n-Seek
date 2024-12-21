@@ -967,7 +967,7 @@
     const base64Storage = btoa(
       encodedJsonStorage.reduce(function (data, byte) {
         return data + String.fromCodePoint(byte);
-      })
+      }, "")
     );
     const dataUri = `data:application/json;base64,${base64Storage}`;
     const fileName = `hide-n-seek-backup-${Date.now()}.json`;
