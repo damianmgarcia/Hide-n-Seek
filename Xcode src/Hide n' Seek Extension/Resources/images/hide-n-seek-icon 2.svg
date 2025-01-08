@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="-14.5 -16.388 76 76" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="outline-filter-1" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%">
+      <feMorphology in="SourceAlpha" result="dilated" operator="dilate" radius="0"/>
+      <feFlood flood-color="rgba(255,255,255,1)" result="flood"/>
+      <feComposite in="flood" in2="dilated" operator="in" result="outline"/>
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <mask id="mask-2">
+      <polygon style="fill: rgb(255, 255, 255);" points="91 -41 -44 -41 -44 94">
+      </polygon>
+    </mask>
+    <clipPath id="clip-5">
+      <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
+      </path>
+    </clipPath>
+    <clipPath id="clip-6">
+      <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
+      </path>
+    </clipPath>
+    <mask id="mask-3">
+      <polygon style="fill: rgb(255, 255, 255);" points="-44 94 91 94 91 -41">
+      </polygon>
+    </mask>
+    <filter id="saturate-filter-0" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%">
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <clipPath id="clip-7">
+      <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
+      </path>
+    </clipPath>
+    <clipPath id="clip-8">
+      <path style="stroke-width: 3px; fill: rgb(255, 255, 0); stroke: rgb(0, 0, 0); stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none;" d="M 285.049 249.847 L 333.339 223.346 C 388.849 270.474 281.291 335.727 285.049 249.847 Z">
+      </path>
+    </clipPath>
+  </defs>
+  <g style="">
+    <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="paint-order: fill; stroke-width: 4px; stroke: rgb(0, 0, 0); filter: url(#outline-filter-1);">
+    </path>
+    <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; stroke: rgb(186, 218, 85);" d="M 13.695 42.728 C 5.181 42.499 -3.487 32.43 6.373 21.353 C 6.698 20.47 6.794 10.524 6.976 10.524 C 7.198 8.708 13.103 17.207 14.013 18.549 C 20.212 14.327 30.345 15.734 32.993 18.791 C 33.473 18.235 37.132 12.96 38.22 12.071 C 39.939 11.881 39.247 22.507 39.427 22.32 C 47.744 26.516 47.201 40.995 34.919 42.728">
+    </path>
+    <g style="mask: url(#mask-2);">
+      <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="stroke: rgb(0, 0, 0); fill: rgb(217, 168, 118);">
+      </path>
+      <g style="" transform="matrix(0.104132, 0, 0, 0.104132, -2.532993, -0.637008)">
+        <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; stroke: rgb(186, 218, 85);" d="M 155.839 416.452 C 74.076 414.246 -9.163 317.554 85.521 211.184 C 88.642 202.702 89.567 107.184 91.313 107.184 C 93.447 89.745 150.151 171.369 158.89 184.258 C 218.415 143.708 315.724 157.224 341.157 186.578 C 345.771 181.239 380.902 130.582 391.357 122.043 C 407.86 120.218 401.213 222.267 402.943 220.47 C 482.816 260.759 477.595 399.802 359.651 416.452">
+        </path>
+        <g style="clip-path: url(#clip-5);">
+          <path style="stroke-width: 3px; stroke-opacity: 0; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; fill: rgb(217, 217, 118);" d="M 214.768 255.253 C 208.387 241.371 147.803 231.913 146.804 234.787 C 122.672 296.86 217.521 311.741 214.768 255.253 Z">
+          </path>
+          <path style="fill: black; stroke-width: 3px; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; stroke: rgb(0, 0, 0);" d="M 169.232 238.541 C 164.496 240.806 158.937 268.553 168.383 274.458 C 181.214 279.697 208.634 252.081 198.524 245.975 C 194.377 243.919 170.2 237.767 169.232 238.541 Z">
+          </path>
+        </g>
+      </g>
+    </g>
+    <g style="mask: url(#mask-3);">
+      <path d="M -7.098 57.612 C -8.539 57.612 -9.8 57.045 -10.88 55.906 C -11.962 54.77 -12.5 53.442 -12.5 51.928 L -12.5 6.455 C -12.5 4.938 -11.962 3.61 -10.88 2.475 C -9.8 1.338 -8.539 0.768 -7.098 0.768 L 9.099 0.768 L 9.099 -8.704 C 9.099 -10.218 9.642 -11.546 10.718 -12.682 C 11.8 -13.821 13.06 -14.388 14.5 -14.388 L 32.5 -14.388 C 33.94 -14.388 35.2 -13.821 36.282 -12.682 C 37.358 -11.546 37.901 -10.218 37.901 -8.704 L 37.901 0.768 L 54.098 0.768 C 55.539 0.768 56.8 1.338 57.88 2.475 C 58.959 3.61 59.5 4.938 59.5 6.455 L 59.5 51.928 C 59.5 53.442 58.959 54.77 57.88 55.906 C 56.8 57.045 55.539 57.612 54.098 57.612 L -7.098 57.612 Z M 14.5 0.768 L 32.5 0.768 L 32.5 -8.704 L 14.5 -8.704 L 14.5 0.768 Z" style="stroke: rgb(0, 0, 0);">
+      </path>
+    </g>
+  </g>
+</svg>
