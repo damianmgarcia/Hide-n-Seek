@@ -1,9 +1,12 @@
 (async () => {
-  class Utilities {
-    static getStorageKeyName(hnsComponent, jobBoardId, ...otherIdentifiers) {
-      return [hnsComponent, jobBoardId, ...otherIdentifiers].join(".");
-    }
-  }
+  const jobBoard2 = await chrome.runtime.sendMessage({
+    from: "content script",
+    to: ["background script"],
+    body: "send job board",
+    data: location.hostname,
+  });
+
+  console.log(jobBoard2);
 
   class JobBoards {
     static #jobBoards = [
@@ -145,11 +148,8 @@
     constructor(jobBoard, jobAttributeManagers, storage) {
       this.jobBoard = jobBoard;
       this.attributeManagers = jobAttributeManagers;
-      this.removeHiddenJobsStorageKey = Utilities.getStorageKeyName(
-        "JobDisplayManager",
-        this.jobBoard.id,
-        "removeHiddenJobs"
-      );
+      this.removeHiddenJobsStorageKey = `JobDisplayManager.${this.jobBoard.id}.removeHiddenJobs`;
+
       document.documentElement.setAttribute(
         "data-hns-remove-hidden-jobs",
         storage[this.removeHiddenJobsStorageKey] || false
@@ -179,6 +179,9 @@
             hasContentScript: true,
             hasHideNSeekUI: this.hasHideNSeekUI,
             jobBoardId: this.jobBoard.id,
+            blockedJobsCount: document.querySelectorAll(
+              `.hns-element:has([data-hns-blocked-attribute="true"])`
+            ).length,
           });
       });
 
@@ -222,6 +225,14 @@
       this.jobBoard
         .getJobListings()
         .forEach((jobListing) => this.processJobListing(jobListing));
+
+      chrome.runtime.sendMessage({
+        from: "content script",
+        to: ["background script"],
+        body: "new listings",
+        jobBoardId: this.jobBoard.id,
+        hasHideNSeekUI: this.hasHideNSeekUI,
+      });
 
       const hasHideNSeekUI = Boolean(document.querySelector(".hns-element"));
       const hideNSeekUIChanged = hasHideNSeekUI !== this.hasHideNSeekUI;
@@ -270,12 +281,8 @@
       );
       this.jobAttribute = jobAttribute;
 
-      this.blockedJobAttributeValuesStorageKey = Utilities.getStorageKeyName(
-        "JobAttributeManager",
-        jobBoard.id,
-        jobAttribute,
-        "blockedJobAttributeValues"
-      );
+      this.blockedJobAttributeValuesStorageKey = `JobAttributeManager.${jobBoard.id}.${jobAttribute}.blockedJobAttributeValues`;
+
       this.blockedJobAttributeValues = new Set(
         storage[this.blockedJobAttributeValuesStorageKey]
       );
@@ -388,9 +395,13 @@
         }
       });
 
-      hnsElement
-        .querySelector(".hns-blocked-job-overlay")
-        .prepend(toggleButtonElement);
+      const blockedJobOverlay = hnsElement.querySelector(
+        ".hns-blocked-job-overlay"
+      );
+      blockedJobOverlay.addEventListener("click", (pointerEvent) =>
+        pointerEvent.stopPropagation()
+      );
+      blockedJobOverlay.prepend(toggleButtonElement);
     }
 
     createToggleButtonElement(jobAttributeValue) {

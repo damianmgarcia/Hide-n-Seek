@@ -33,6 +33,7 @@
     }
   ],
   "background": {
-    "service_worker": "/background/js/background.js"
+    "service_worker": "/background/js/background.js",
+    "type": "module"
   }
 }
