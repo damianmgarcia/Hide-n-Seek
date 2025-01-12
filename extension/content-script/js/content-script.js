@@ -154,20 +154,6 @@
         "data-hns-remove-hidden-jobs",
         storage[this.removeHiddenJobsStorageKey] || false
       );
-
-      this.hnsElementTemplate = document.createElement("template");
-      this.hnsElementTemplate.innerHTML = `
-        <div class="hns-element" style="display: none;">
-          <div class="hns-unblocked-job-overlay">
-            <div class="hns-block-button">
-              <svg viewBox="1.196 4.287 42.55 42.55">
-                <path/>
-              </svg>
-            </div>
-          </div>
-          <div class="hns-blocked-job-overlay"></div>
-        </div>
-      `;
     }
 
     start() {
@@ -243,8 +229,7 @@
       const existingHnsElement = this.#hnsElementMap.get(jobListing);
       if (existingHnsElement?.isConnected) return;
 
-      const newHnsElement =
-        this.hnsElementTemplate.content.firstElementChild.cloneNode(true);
+      const newHnsElement = ui.createElement("hns-element");
       this.#hnsElementMap.set(jobListing, newHnsElement);
 
       this.attributeManagers.forEach((attributeManager) =>
@@ -271,7 +256,7 @@
   class JobAttributeManager {
     static blockedJobAttributeValueStorageKeys = new Set();
 
-    #hnsElementToToggleButtonMap = new WeakMap();
+    #hnsElementToToggleMap = new WeakMap();
     #changesPendingExport = new Map();
 
     constructor(jobBoard, jobAttribute, storage) {
@@ -280,66 +265,50 @@
         ({ name }) => name === jobAttribute
       );
       this.jobAttribute = jobAttribute;
-
-      this.blockedJobAttributeValuesStorageKey = `JobAttributeManager.${jobBoard.id}.${jobAttribute}.blockedJobAttributeValues`;
-
-      this.blockedJobAttributeValues = new Set(
-        storage[this.blockedJobAttributeValuesStorageKey]
-      );
+      this.storageKey = `JobAttributeManager.${jobBoard.id}.${jobAttribute}.blockedJobAttributeValues`;
+      this.values = new Set(storage[this.storageKey]);
 
       JobAttributeManager.blockedJobAttributeValueStorageKeys.add(
-        this.blockedJobAttributeValuesStorageKey
+        this.storageKey
       );
 
       const storagePropertiesToSet = [
-        this.blockedJobAttributeValuesStorageKey,
-        `${this.blockedJobAttributeValuesStorageKey}.backup`,
+        this.storageKey,
+        `${this.storageKey}.backup`,
       ]
         .filter((storageKey) => !Object.hasOwn(storage, storageKey))
         .map((storageKey) => [storageKey, []]);
 
       if (storagePropertiesToSet.length)
         chrome.storage.local.set(Object.fromEntries(storagePropertiesToSet));
-
-      this.toggleButtonTemplate = document.createElement("template");
-      this.toggleButtonTemplate.innerHTML = `
-        <button class="hns-block-attribute-toggle">
-          <div class="hns-block-attribute-toggle-text"></div>
-          <div class="hns-block-attribute-toggle-hidden-indicator">Hidden</div>
-        </button>
-      `;
     }
 
     start() {
       chrome.storage.local.onChanged.addListener((changes) => {
-        const containsChangesToThisJobAttribute = Object.hasOwn(
+        const hasChangesToThisJobAttribute = Object.hasOwn(
           changes,
-          this.blockedJobAttributeValuesStorageKey
+          this.storageKey
         );
-        if (!containsChangesToThisJobAttribute) return;
+        if (!hasChangesToThisJobAttribute) return;
 
-        const blockedJobAttributeValuesFromStorage = new Set(
-          changes[this.blockedJobAttributeValuesStorageKey].newValue
+        const blockedValuesFromStorage = new Set(
+          changes[this.storageKey].newValue
         );
 
         const mergedJobAttributeValueChanges = new Map([
-          ...[...blockedJobAttributeValuesFromStorage]
+          ...[...blockedValuesFromStorage]
             .filter(
               (blockedJobAttributeValueFromStorage) =>
-                !this.blockedJobAttributeValues.has(
-                  blockedJobAttributeValueFromStorage
-                )
+                !this.values.has(blockedJobAttributeValueFromStorage)
             )
             .map((blockedJobAttributeValue) => [
               blockedJobAttributeValue,
               "block",
             ]),
-          ...[...this.blockedJobAttributeValues]
+          ...[...this.values]
             .filter(
               (blockedJobAttributeValue) =>
-                !blockedJobAttributeValuesFromStorage.has(
-                  blockedJobAttributeValue
-                )
+                !blockedValuesFromStorage.has(blockedJobAttributeValue)
             )
             .map((unblockedJobAttributeValue) => [
               unblockedJobAttributeValue,
@@ -352,8 +321,8 @@
 
         mergedJobAttributeValueChanges.forEach((action, jobAttributeValue) =>
           action === "block"
-            ? this.blockJobAttributeValue(jobAttributeValue, false)
-            : this.unblockJobAttributeValue(jobAttributeValue, false)
+            ? this.blockValue(jobAttributeValue, false)
+            : this.unblockValue(jobAttributeValue, false)
         );
       });
 
@@ -361,8 +330,7 @@
     }
 
     processHnsElement(hnsElement, jobListing) {
-      const existingToggleButton =
-        this.#hnsElementToToggleButtonMap.get(hnsElement);
+      const existingToggleButton = this.#hnsElementToToggleMap.get(hnsElement);
       if (existingToggleButton) return;
 
       const jobAttributeValue = this.jobAttributeConfig.getValue(jobListing);
@@ -376,22 +344,26 @@
           .querySelector(".hns-block-button")
           .addEventListener("click", (event) => {
             event.stopPropagation();
-            this.blockJobAttributeValue(jobAttributeValue);
+            this.blockValue(jobAttributeValue);
           });
 
-      const toggleButtonElement =
-        this.createToggleButtonElement(jobAttributeValue);
-      this.#hnsElementToToggleButtonMap.set(hnsElement, toggleButtonElement);
-      toggleButtonElement.setAttribute("data-hns-attribute", this.jobAttribute);
+      const hnsToggle = ui.createElement(
+        "hns-toggle",
+        this.jobAttribute,
+        jobAttributeValue
+      );
 
-      this.updateToggleButton(toggleButtonElement, jobAttributeValue);
+      this.#hnsElementToToggleMap.set(hnsElement, hnsToggle);
+      hnsToggle.setAttribute("data-hns-attribute", this.jobAttribute);
 
-      toggleButtonElement.addEventListener("click", (event) => {
+      this.updateToggleButton(hnsToggle, jobAttributeValue);
+
+      hnsToggle.addEventListener("click", (event) => {
         event.stopPropagation();
-        if (this.jobAttributeValueIsBlocked(jobAttributeValue)) {
-          this.unblockJobAttributeValue(jobAttributeValue);
+        if (this.valueIsBlocked(jobAttributeValue)) {
+          this.unblockValue(jobAttributeValue);
         } else {
-          this.blockJobAttributeValue(jobAttributeValue);
+          this.blockValue(jobAttributeValue);
         }
       });
 
@@ -401,67 +373,47 @@
       blockedJobOverlay.addEventListener("click", (pointerEvent) =>
         pointerEvent.stopPropagation()
       );
-      blockedJobOverlay.prepend(toggleButtonElement);
+      blockedJobOverlay.prepend(hnsToggle);
     }
 
-    createToggleButtonElement(jobAttributeValue) {
-      const toggleButtonElement =
-        this.toggleButtonTemplate.content.firstElementChild.cloneNode(true);
-      toggleButtonElement.title = jobAttributeValue;
-      toggleButtonElement.setAttribute(
-        "data-hns-attribute-value",
-        jobAttributeValue
-      );
-      toggleButtonElement.querySelector(
-        ".hns-block-attribute-toggle-text"
-      ).textContent = jobAttributeValue;
-
-      return toggleButtonElement;
-    }
-
-    jobAttributeValueIsBlocked(jobAttributeValue) {
-      return this.blockedJobAttributeValues.has(jobAttributeValue);
+    valueIsBlocked(jobAttributeValue) {
+      return this.values.has(jobAttributeValue);
     }
 
     updateToggleButton(toggleButtonElement, jobAttributeValue) {
       toggleButtonElement.setAttribute(
         "data-hns-blocked-attribute",
-        this.jobAttributeValueIsBlocked(jobAttributeValue)
+        this.valueIsBlocked(jobAttributeValue)
       );
     }
 
-    blockJobAttributeValue(jobAttributeValue, updateStorage = true) {
-      if (this.blockedJobAttributeValues.has(jobAttributeValue)) return;
-      this.blockedJobAttributeValues.add(jobAttributeValue);
-      this.updateToggleButtonsWithJobAttributeValue(jobAttributeValue);
+    blockValue(jobAttributeValue, updateStorage = true) {
+      if (this.values.has(jobAttributeValue)) return;
+      this.values.add(jobAttributeValue);
+      this.updateTogglesWithValue(jobAttributeValue);
       if (!updateStorage) return;
       this.#changesPendingExport.set(jobAttributeValue, "block");
       this.exportBlockedJobAttributeValuesToStorage();
     }
 
-    unblockJobAttributeValue(jobAttributeValue, updateStorage = true) {
-      const jobAttributeWasBlocked =
-        this.blockedJobAttributeValues.delete(jobAttributeValue);
-      if (!jobAttributeWasBlocked) return;
-      this.updateToggleButtonsWithJobAttributeValue(jobAttributeValue);
+    unblockValue(value, updateStorage = true) {
+      const valueWasBlocked = this.values.delete(value);
+      if (!valueWasBlocked) return;
+      this.updateTogglesWithValue(value);
       if (!updateStorage) return;
-      this.#changesPendingExport.set(jobAttributeValue, "unblock");
+      this.#changesPendingExport.set(value, "unblock");
       this.exportBlockedJobAttributeValuesToStorage();
     }
 
-    updateToggleButtonsWithJobAttributeValue(jobAttributeValue) {
-      const toggleButtonsWithJobAttributeValue = document.querySelectorAll(
-        `.hns-element [data-hns-attribute-value="${jobAttributeValue}"]`
+    updateTogglesWithValue(value) {
+      const togglesWithValue = document.querySelectorAll(
+        `.hns-element [data-hns-attribute-value="${value}"]`
       );
 
-      if (!toggleButtonsWithJobAttributeValue.length) return;
+      if (!togglesWithValue.length) return;
 
-      toggleButtonsWithJobAttributeValue.forEach(
-        (toggleButtonWithJobAttributeValue) =>
-          this.updateToggleButton(
-            toggleButtonWithJobAttributeValue,
-            jobAttributeValue
-          )
+      togglesWithValue.forEach((toggleWithValue) =>
+        this.updateToggleButton(toggleWithValue, value)
       );
     }
 
@@ -477,9 +429,7 @@
 
       const storageChanges = Object.assign(
         {
-          [this.blockedJobAttributeValuesStorageKey]: [
-            ...this.blockedJobAttributeValues,
-          ],
+          [this.storageKey]: [...this.values],
         },
         clearedBackupProperties
       );
