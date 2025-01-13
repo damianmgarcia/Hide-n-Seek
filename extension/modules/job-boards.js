@@ -1,6 +1,6 @@
 const jobBoards = (() => {
   const trim = {
-    type: "replace",
+    process: "replace",
     pattern: "^\\s+|\\s+$",
     flags: "gm",
     replacement: "",
@@ -18,7 +18,8 @@ const jobBoards = (() => {
           id: "companyName",
           selector:
             ".EmployerProfile_compactEmployerName__LE242, .EmployerProfile_compactEmployerName__9MGcV",
-          processing: [trim],
+          processors: [trim],
+          default: "Unknown Company",
         },
       ],
     },
@@ -32,15 +33,16 @@ const jobBoards = (() => {
           name: "Company Name",
           id: "companyName",
           selector: ".companyName, [data-testid='company-name']",
-          processing: [trim],
+          processors: [trim],
+          default: "Unknown Company",
         },
         {
           name: "Promoted",
           id: "promotionalStatus",
           selector: ".sponsoredJob",
-          processing: [
+          processors: [
             {
-              type: "replace",
+              process: "replace",
               pattern: ".*",
               flags: "s",
               replacement: "Promoted",
@@ -61,25 +63,25 @@ const jobBoards = (() => {
           id: "companyName",
           selector:
             ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > span",
-          processing: [
+          processors: [
             trim,
             {
-              type: "replace",
+              process: "replace",
               pattern: "\\s·\\s.*$",
               flags: "gm",
               replacement: "",
             }, // test this to make sure it matches and removes the LinkedIn notation: [company name] · Something else
           ],
+          default: "Unknown Company",
         },
         {
           name: "Promoted",
           id: "promotionalStatus",
           selector:
             ".job-card-list__footer-wrapper, .job-card-container__footer-wrapper",
-          processing: [
-            trim,
+          processors: [
             {
-              type: "replace",
+              process: "match",
               pattern: [
                 "الترويج" /* Arabic */,
                 "প্রমোটেড" /* Bangla */,
@@ -116,7 +118,6 @@ const jobBoards = (() => {
                 "Просувається" /* Ukrainian */,
                 "Được quảng bá" /* Vietnamese */,
               ].join("|"),
-              replacement: "Promoted",
             },
           ],
         },

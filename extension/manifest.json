@@ -29,7 +29,16 @@
         "https://*.linkedin.com/*"
       ],
       "css": ["/content-script/css/content-script.css"],
-      "js": ["/content-script/js/ui.js", "/content-script/js/content-script.js"]
+      "js": [
+        "/content-script/js/ui/ui.js",
+        "/content-script/js/ui/hns-element.js",
+        "/content-script/js/ui/hns-toggle.js",
+        "/content-script/js/attribute-processor.js",
+        "/content-script/js/element-collector.js",
+        "/content-script/js/job-attribute-manager.js",
+        "/content-script/js/job-listing-manager.js",
+        "/content-script/js/content-script.js"
+      ]
     }
   ],
   "background": {
