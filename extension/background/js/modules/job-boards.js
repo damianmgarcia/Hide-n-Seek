@@ -157,4 +157,7 @@ const getJobBoardTabs = (() => {
   };
 })();
 
-export { getJobBoardByHostname, getJobBoardIds, getJobBoardTabs };
+const sendJobBoard = ({ message, sendResponse }) =>
+  sendResponse(getJobBoardByHostname(message.data));
+
+export { getJobBoardIds, getJobBoardTabs, sendJobBoard };

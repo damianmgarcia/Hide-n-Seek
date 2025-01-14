@@ -1,6 +1,3 @@
-import { updateBadge } from "./tabs.js";
-import { getJobBoardByHostname } from "./job-boards.js";
-
 const responsesTo = new Map();
 
 const addResponse = (responseTo, response) => {
@@ -11,14 +8,6 @@ const addResponse = (responseTo, response) => {
   }
 };
 
-["bfcache used", "hasHideNSeekUI changed", "new listings"].forEach((message) =>
-  addResponse(message, ({ sender }) => updateBadge(sender.tab))
-);
-
-addResponse("send job board", ({ message, sendResponse }) => {
-  sendResponse(getJobBoardByHostname(message.data));
-});
-
 const respond = (message, sender, sendResponse) => {
   const responses = responsesTo.get(message.body);
   if (responses)
@@ -28,4 +17,4 @@ const respond = (message, sender, sendResponse) => {
   return true;
 };
 
-export { respond };
+export { addResponse, respond };

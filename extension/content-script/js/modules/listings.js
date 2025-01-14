@@ -12,37 +12,22 @@ class JobListingManager {
       "data-hns-remove-hidden-jobs",
       storage[this.removeHiddenJobsStorageKey] || false
     );
-  }
-
-  start() {
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-      if (!message.to.includes("content script")) return;
-
-      if (message.body === "send status")
-        sendResponse({
-          hasContentScript: true,
-          hasHideNSeekUI: this.hasHideNSeekUI,
-          jobBoardId: this.jobBoardId,
-          blockedJobsCount: document.querySelectorAll(
-            `.hns-element:has([data-hns-blocked-attribute="true"])`
-          ).length,
-        });
-    });
 
     chrome.storage.local.onChanged.addListener((changes) => {
-      const containsChangesToRemoveHiddenJobs = Object.hasOwn(
+      const hasRemoveHiddenJobsChanges = Object.hasOwn(
         changes,
         this.removeHiddenJobsStorageKey
       );
-
-      if (!containsChangesToRemoveHiddenJobs) return;
+      if (!hasRemoveHiddenJobsChanges) return;
 
       document.documentElement.setAttribute(
         "data-hns-remove-hidden-jobs",
         changes[this.removeHiddenJobsStorageKey].newValue
       );
     });
+  }
 
+  start() {
     this.processJobListings();
 
     addEventListener("pageshow", (pageTransitionEvent) => {

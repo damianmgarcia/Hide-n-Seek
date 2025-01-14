@@ -30,13 +30,15 @@
       ],
       "css": ["/content-script/css/content-script.css"],
       "js": [
-        "/content-script/js/ui/ui.js",
-        "/content-script/js/ui/hns-element.js",
-        "/content-script/js/ui/hns-toggle.js",
-        "/content-script/js/attribute-processor.js",
-        "/content-script/js/element-collector.js",
-        "/content-script/js/job-attribute-manager.js",
-        "/content-script/js/job-listing-manager.js",
+        "/content-script/js/modules/ui/ui.js",
+        "/content-script/js/modules/ui/hns-element.js",
+        "/content-script/js/modules/ui/hns-toggle.js",
+        "/content-script/js/modules/attribute-processor.js",
+        "/content-script/js/modules/element-collector.js",
+        "/content-script/js/modules/job-attribute-manager.js",
+        "/content-script/js/modules/listings.js",
+        "/content-script/js/modules/messaging.js",
+        "/content-script/js/modules/status.js",
         "/content-script/js/content-script.js"
       ]
     }
