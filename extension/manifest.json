@@ -5,20 +5,20 @@
   "description": "View the jobs you seek. Hide the ones you don't. Easily hide promoted jobs and companies on LinkedIn, Indeed, and Glassdoor.",
   "version": "6.0.0",
   "icons": {
-    "16": "/images/hide-n-seek-icon-16.png",
-    "32": "/images/hide-n-seek-icon-32.png",
-    "48": "/images/hide-n-seek-icon-48.png",
-    "128": "/images/hide-n-seek-icon-128.png"
+    "16": "/assets/images/hide-n-seek-icon-16.png",
+    "32": "/assets/images/hide-n-seek-icon-32.png",
+    "48": "/assets/images/hide-n-seek-icon-48.png",
+    "128": "/assets/images/hide-n-seek-icon-128.png"
   },
   "permissions": ["storage", "tabs"],
   "action": {
     "default_title": "Hide n' Seek",
-    "default_popup": "/popup/html/popup.html",
+    "default_popup": "/popup/popup.html",
     "default_icon": {
-      "16": "/images/hide-n-seek-icon-16.png",
-      "32": "/images/hide-n-seek-icon-32.png",
-      "48": "/images/hide-n-seek-icon-48.png",
-      "128": "/images/hide-n-seek-icon-128.png"
+      "16": "/assets/images/hide-n-seek-icon-16.png",
+      "32": "/assets/images/hide-n-seek-icon-32.png",
+      "48": "/assets/images/hide-n-seek-icon-48.png",
+      "128": "/assets/images/hide-n-seek-icon-128.png"
     }
   },
   "content_scripts": [
@@ -28,23 +28,24 @@
         "https://*.indeed.com/*",
         "https://*.linkedin.com/*"
       ],
-      "css": ["/content-script/css/content-script.css"],
+      "css": ["/content/content.css"],
       "js": [
-        "/content-script/js/modules/ui/ui.js",
-        "/content-script/js/modules/ui/hns-element.js",
-        "/content-script/js/modules/ui/hns-toggle.js",
-        "/content-script/js/modules/attribute-processor.js",
-        "/content-script/js/modules/element-collector.js",
-        "/content-script/js/modules/job-attribute-manager.js",
-        "/content-script/js/modules/listings.js",
-        "/content-script/js/modules/messaging.js",
-        "/content-script/js/modules/status.js",
-        "/content-script/js/content-script.js"
+        "/content/classes/event-dispatcher.js",
+        "/content/classes/element-collector.js",
+        "/content/classes/attribute-blocker.js",
+        "/content/modules/ui/ui.js",
+        "/content/modules/ui/hns-container.js",
+        "/content/modules/ui/hns-toggle.js",
+        "/content/modules/attribute-processor.js",
+        "/content/modules/job-listings.js",
+        "/content/modules/messaging.js",
+        "/content/modules/status.js",
+        "/content/content.js"
       ]
     }
   ],
   "background": {
-    "service_worker": "/background/js/background.js",
+    "service_worker": "/background/background.js",
     "type": "module"
   }
 }

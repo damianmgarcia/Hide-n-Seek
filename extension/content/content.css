@@ -1,0 +1,256 @@
+html [data-hns-job-listing] {
+  position: relative !important;
+}
+
+html[data-hns-remove-hidden-jobs="true"]
+  [data-hns-job-listing]:has([data-hns-blocked-attribute="true"]) {
+  display: none !important;
+}
+
+.hns-container {
+  all: unset !important;
+  background: transparent !important;
+  display: none !important;
+  font-size: 16px !important;
+  height: 100% !important;
+  left: 0 !important;
+  line-height: 1.4 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  top: 0 !important;
+  width: 100% !important;
+}
+
+.hns-container:has(.hns-block-attribute-toggle) {
+  display: block !important;
+}
+
+.hns-container[data-hns-job-board-id="glassdoor"] {
+  z-index: 1 !important;
+}
+
+.hns-container[data-hns-job-board-id="indeed"] {
+  z-index: 1 !important;
+}
+
+.hns-container[data-hns-job-board-id="linkedIn"] {
+  z-index: 3 !important;
+}
+
+.hns-container * {
+  all: unset !important;
+}
+
+.hns-blocked-job-overlay,
+.hns-unblocked-job-overlay {
+  align-content: center !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  height: 100% !important;
+  justify-content: center !important;
+  left: 0 !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+  width: 100% !important;
+  z-index: 1 !important;
+}
+
+.hns-blocked-job-overlay {
+  backdrop-filter: blur(10px) !important;
+  background: hsl(0, 0%, 50%, 0.75) !important;
+  justify-content: center !important;
+}
+
+.hns-container:has([data-hns-blocked-attribute="true"])
+  .hns-blocked-job-overlay {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transition: opacity 200ms ease-out !important;
+  user-select: none !important;
+  z-index: 2 !important;
+}
+
+.hns-blocked-job-overlay {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 200ms ease-out 200ms !important;
+  z-index: 1 !important;
+}
+
+.hns-unblocked-job-overlay {
+  backdrop-filter: blur(0) !important;
+  background: hsl(0, 0%, 50%, 0) !important;
+  justify-content: end !important;
+}
+
+.hns-container:has([data-hns-blocked-attribute="true"])
+  .hns-unblocked-job-overlay {
+  opacity: 0 !important;
+  pointer-events: auto !important;
+  transition: opacity 200ms ease-out !important;
+  z-index: 1 !important;
+}
+
+.hns-unblocked-job-overlay {
+  opacity: 1 !important;
+  pointer-events: none !important;
+  transition: opacity 200ms ease-out 200ms !important;
+  z-index: 2 !important;
+}
+
+.hns-block-button {
+  background: hsl(0, 0%, 50%, 0.25) !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: grid !important;
+  height: 18px !important;
+  margin: 10px !important;
+  padding: 15px !important;
+  pointer-events: auto !important;
+  transition: background-color 200ms ease-out !important;
+  width: 18px !important;
+}
+
+.hns-block-button:hover {
+  background: hsl(0, 0%, 50%, 0.45) !important;
+}
+
+.hns-block-button:active {
+  background: hsl(0, 0%, 50%, 0.55) !important;
+}
+
+.hns-block-button path {
+  d: path(
+    "M 22.446 46.837 C 19.513 46.837 16.754 46.279 14.171 45.162 C 11.588 44.045 9.329 42.52 7.396 40.587 C 5.463 38.654 3.946 36.395 2.846 33.812 C 1.746 31.229 1.196 28.454 1.196 25.487 C 1.196 22.587 1.754 19.845 2.871 17.262 C 3.988 14.679 5.504 12.429 7.421 10.512 C 9.338 8.595 11.588 7.079 14.171 5.962 C 16.754 4.845 19.513 4.287 22.446 4.287 C 25.379 4.287 28.138 4.845 30.721 5.962 C 33.304 7.079 35.554 8.595 37.471 10.512 C 39.388 12.429 40.913 14.679 42.046 17.262 C 43.179 19.845 43.746 22.587 43.746 25.487 C 43.746 28.454 43.188 31.229 42.071 33.812 C 40.954 36.395 39.429 38.654 37.496 40.587 C 35.563 42.52 33.304 44.045 30.721 45.162 C 28.138 46.279 25.379 46.837 22.446 46.837 Z M 22.446 42.137 C 27.046 42.137 30.954 40.52 34.171 37.287 C 37.388 34.054 38.996 30.12 38.996 25.487 C 38.996 23.687 38.713 21.937 38.146 20.237 C 37.579 18.537 36.746 16.987 35.646 15.587 L 12.496 38.687 C 13.829 39.887 15.363 40.762 17.096 41.312 C 18.829 41.862 20.613 42.137 22.446 42.137 Z M 9.296 35.437 L 32.346 12.337 C 30.913 11.237 29.363 10.412 27.696 9.862 C 26.029 9.312 24.279 9.037 22.446 9.037 C 17.846 9.037 13.938 10.629 10.721 13.812 C 7.504 16.995 5.896 20.887 5.896 25.487 C 5.896 27.32 6.204 29.087 6.821 30.787 C 7.438 32.487 8.263 34.037 9.296 35.437 Z"
+  ) !important;
+  fill: hsl(0, 100%, 50%) !important;
+}
+
+.hns-block-attribute-toggle {
+  --gap: 2.4px !important;
+  --hidden-indicator-height: 20.4px !important;
+  align-items: center !important;
+  border: 1px hsl(0, 0%, 100%) solid !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 67px !important;
+  justify-content: center !important;
+  margin: 10px !important;
+  min-width: 64px !important;
+  padding: 0 20px !important;
+  position: relative !important;
+  transition: background-color 200ms ease-out, color 100ms ease-out !important;
+  user-select: none !important;
+  width: max-content !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="false"] {
+  background: hsl(0, 0%, 100%, 0) !important;
+  color: hsl(0, 0%, 100%) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="false"]:hover {
+  background: hsl(0, 0%, 100%, 0.2) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="false"]:active {
+  background: hsl(0, 0%, 100%, 0.3) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="true"] {
+  background: hsl(0, 0%, 100%, 1) !important;
+  color: hsl(0, 0%, 0%) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="true"]:hover {
+  background: hsl(0, 0%, 100%, 0.8) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="true"]:active {
+  background: hsl(0, 0%, 100%, 0.7) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-attribute="promotionalStatus"] {
+  border: 1px hsl(60, 50%, 80%, 1) solid !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="false"][data-hns-attribute="promotionalStatus"] {
+  background: hsl(60, 50%, 80%, 0) !important;
+  color: hsl(60, 50%, 80%, 1) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="false"][data-hns-attribute="promotionalStatus"]:hover {
+  background: hsl(60, 50%, 80%, 0.2) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="false"][data-hns-attribute="promotionalStatus"]:active {
+  background: hsl(60, 50%, 80%, 0.3) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="true"][data-hns-attribute="promotionalStatus"] {
+  background: hsl(60, 50%, 80%, 1) !important;
+  color: hsl(0, 0%, 0%) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="true"][data-hns-attribute="promotionalStatus"]:hover {
+  background: hsl(60, 50%, 80%, 0.8) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="true"][data-hns-attribute="promotionalStatus"]:active {
+  background: hsl(60, 50%, 80%, 0.7) !important;
+}
+
+.hns-block-attribute-toggle-text {
+  max-width: 25ch !important;
+  overflow: hidden !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  transition: transform 200ms ease-out !important;
+  white-space: nowrap !important;
+}
+
+.hns-block-attribute-toggle-hidden-indicator {
+  align-items: center !important;
+  background: hsl(0, 0%, 50%) !important;
+  border-radius: 12px !important;
+  color: hsl(0, 0%, 100%) !important;
+  display: grid !important;
+  font-size: 12px !important;
+  height: var(--hidden-indicator-height) !important;
+  position: absolute !important;
+  text-align: center !important;
+  top: calc(
+    50% + (var(--hidden-indicator-height) * 0.5) + var(--gap)
+  ) !important;
+  width: 53.4px !important;
+}
+
+.hns-container[data-hns-job-board-id="indeed"]
+  .hns-block-attribute-toggle-hidden-indicator {
+  line-height: 1 !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="true"]
+  .hns-block-attribute-toggle-hidden-indicator {
+  opacity: 1 !important;
+  transition: opacity 200ms ease-out 100ms, transform 200ms ease-out !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="false"]
+  .hns-block-attribute-toggle-hidden-indicator {
+  opacity: 0 !important;
+  transition: opacity 200ms ease-out, transform 200ms ease-out !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute="true"]
+  .hns-block-attribute-toggle-text,
+.hns-block-attribute-toggle[data-hns-blocked-attribute="true"]
+  .hns-block-attribute-toggle-hidden-indicator {
+  transform: translateY(
+    calc((var(--hidden-indicator-height) + var(--gap)) * -0.5)
+  ) !important;
+}
