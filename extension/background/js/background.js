@@ -442,7 +442,7 @@ chrome.storage.sync.onChanged.addListener(async (changes) => {
   if (syncError) return;
   if (hasOnlySyncIdOrOldSyncId(changes)) return;
   if (hasOnlyRemovals(changes)) {
-    const syncCleared = !(await chrome.storage.sync.getKeys()).length;
+    const syncCleared = !Object.keys(await chrome.storage.sync.get()).length;
     if (syncCleared) {
       const oldSync = Object.fromEntries(
         Object.entries(changes).map(([key, value]) => [key, value["oldValue"]])
