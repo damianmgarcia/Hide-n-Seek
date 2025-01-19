@@ -85,6 +85,7 @@ The promotional video was created with a combination of Adobe After Effects and 
     - 2024-12-20
   - Bug fix
     - Fixes maximum call stack issue with very large exports. Many thanks to [wchen342](https://github.com/wchen342) for discovering and contributing this fix!
+    - Fixed a compatibility issue with Firefox related to the Chrome API
   - Improvement
     - Improves compatibility with the inDoors extension. Many thanks to [wchen342](https://github.com/wchen342) for discovering and contributing this improvement!
 - 5.1.2
