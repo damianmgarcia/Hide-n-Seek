@@ -35,7 +35,7 @@
         "/content/classes/attribute-blocker.js",
         "/content/modules/ui/ui.js",
         "/content/modules/ui/hns-container.js",
-        "/content/modules/ui/hns-toggle.js",
+        "/content/modules/ui/hns-block-attribute-toggle.js",
         "/content/modules/attribute-processor.js",
         "/content/modules/job-listings.js",
         "/content/modules/messaging.js",

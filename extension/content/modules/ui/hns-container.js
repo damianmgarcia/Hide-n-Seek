@@ -3,22 +3,22 @@ const hnsContainer = {
 
   html: `
     <div class="hns-container">
-      <div class="hns-unblocked-job-overlay">
-        <div class="hns-block-button">
+      <div class="hns-unblocked-job">
+        <button class="hns-block-button">
           <svg viewBox="1.196 4.287 42.55 42.55">
             <path/>
           </svg>
-        </div>
+        </button>
       </div>
-      <div class="hns-blocked-job-overlay"></div>
+      <div class="hns-blocked-job"></div>
     </div>
   `,
 
   process(element, jobBoardId, toggles) {
     element.setAttribute("data-hns-job-board-id", jobBoardId);
     element.addEventListener("click", (event) => event.stopPropagation());
-    const toggleContainer = element.querySelector(".hns-blocked-job-overlay");
-    toggles.forEach((toggle) => toggleContainer.prepend(toggle));
+    const hnsBlockedJob = element.querySelector(".hns-blocked-job");
+    toggles.forEach((toggle) => hnsBlockedJob.prepend(toggle));
     element.querySelector(".hns-block-button").addEventListener("click", () => {
       const defaultToggle = element.querySelector(
         ".hns-block-attribute-toggle[data-hns-default-attribute]"
@@ -29,4 +29,4 @@ const hnsContainer = {
   },
 };
 
-ui.registerElement(hnsContainer.name, hnsContainer.html, hnsContainer.process);
+ui.registerTemplate(hnsContainer.name, hnsContainer.html, hnsContainer.process);

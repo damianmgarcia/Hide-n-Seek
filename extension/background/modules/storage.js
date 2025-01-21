@@ -167,7 +167,6 @@ const { getBlockedValues, getBackupValues } = (() => {
 
   const isForJobBoardId = (key, jobBoardId) => key.includes(jobBoardId);
 
-  // TBD check if async needed
   const getBackupValues = (jobBoardId, storage) =>
     getValues(
       ([key]) =>
@@ -176,7 +175,6 @@ const { getBlockedValues, getBackupValues } = (() => {
       storage
     );
 
-  // TBD check if async needed
   const getBlockedValues = (jobBoardId, storage) =>
     getValues(
       ([key]) =>

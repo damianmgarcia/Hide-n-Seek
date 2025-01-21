@@ -1,7 +1,7 @@
 const ui = (() => {
   const creatorFor = {};
 
-  const registerElement = (name, html, processor = (element) => element) => {
+  const registerTemplate = (name, html, processor = (element) => element) => {
     const template = document.createElement("template");
     template.innerHTML = html;
     creatorFor[name] = (...args) =>
@@ -10,5 +10,5 @@ const ui = (() => {
 
   const createElement = (name, ...args) => creatorFor[name](...args);
 
-  return { registerElement, createElement };
+  return { registerTemplate, createElement };
 })();

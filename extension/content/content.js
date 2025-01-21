@@ -7,7 +7,7 @@
   if (!jobBoard) return;
 
   const { addResponse, respond } = messaging;
-  const { sendStatus, checkPage, notifyRuntime } = hnsStatus(jobBoard.id);
+  const { sendStatus, checkPage, notifyRuntime } = hnsStatus(jobBoard);
   const { addHnsToListing, setDisplayPreference } = jobListings(jobBoard.id);
 
   addResponse("send status", sendStatus);

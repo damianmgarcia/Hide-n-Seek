@@ -55,7 +55,7 @@ class AttributeBlocker {
     if (!value) return;
 
     const hnsToggle = ui.createElement(
-      "hns-toggle",
+      "hns-block-attribute-toggle",
       this.attributeId,
       value,
       this.defaultAttribute
@@ -64,6 +64,7 @@ class AttributeBlocker {
     this.updateToggle(hnsToggle, value);
 
     hnsToggle.addEventListener("click", () => {
+      console.log("clicked")
       if (this.valueIsBlocked(value)) {
         this.unblockValue(value);
       } else {
@@ -79,10 +80,11 @@ class AttributeBlocker {
   }
 
   updateToggle(toggleElement, value) {
-    toggleElement.setAttribute(
-      "data-hns-blocked-attribute",
-      this.valueIsBlocked(value)
-    );
+    if (this.valueIsBlocked(value)) {
+      toggleElement.setAttribute("data-hns-blocked-attribute", "");
+    } else {
+      toggleElement.removeAttribute("data-hns-blocked-attribute");
+    }
   }
 
   blockValue(value, updateStorage = true) {

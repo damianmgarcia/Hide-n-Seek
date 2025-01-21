@@ -1,10 +1,15 @@
 import { download, upload } from "./files.js";
+import { isFirefox } from "../../modules/browser.js";
 
 const settingsManager = {};
 
 settingsManager.start = function () {
   if (this.started) return;
   this.started = true;
+
+  if (isFirefox())
+    // Hide backup/restore if Firefox. See https://github.com/damianmgarcia/Hide-n-Seek/issues/40
+    document.querySelector("#data-settings").style.display = "none";
 
   const settingsContainer = document.querySelector("#settings-container");
   const settingsToggle = document.querySelector("#settings-toggle");

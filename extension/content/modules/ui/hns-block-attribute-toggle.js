@@ -1,5 +1,5 @@
 const hnsToggle = {
-  name: "hns-toggle",
+  name: "hns-block-attribute-toggle",
 
   html: `
     <button class="hns-block-attribute-toggle">
@@ -19,4 +19,4 @@ const hnsToggle = {
   },
 };
 
-ui.registerElement(hnsToggle.name, hnsToggle.html, hnsToggle.process);
+ui.registerTemplate(hnsToggle.name, hnsToggle.html, hnsToggle.process);

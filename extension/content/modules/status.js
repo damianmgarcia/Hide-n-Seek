@@ -1,15 +1,13 @@
 const hnsStatus = (jobBoard) => {
-  const blockedJobsCount = () =>
-    document.querySelectorAll(
-      `.hns-container:has([data-hns-blocked-attribute="true"])`
-    ).length;
+  const getStatus = () => ({
+    jobBoard,
+    hasHideNSeekUI: Boolean(document.querySelector(".hns-container")),
+    blockedJobsCount: document.querySelectorAll(
+      `.hns-container:has([data-hns-blocked-attribute])`
+    ).length,
+  });
 
-  const sendStatus = ({ sendResponse }) =>
-    sendResponse({
-      jobBoard,
-      hasHideNSeekUI: Boolean(document.querySelector(".hns-container")),
-      blockedJobsCount: blockedJobsCount(),
-    });
+  const sendStatus = ({ sendResponse }) => sendResponse(getStatus());
 
   const checkPage = (pageTransitionEvent) => {
     if (pageTransitionEvent.persisted) notifyRuntime("bfcache used");
@@ -18,9 +16,7 @@ const hnsStatus = (jobBoard) => {
   const notifyRuntime = (message) =>
     chrome.runtime.sendMessage({
       body: message,
-      jobBoard,
-      hasHideNSeekUI: Boolean(document.querySelector(".hns-container")),
-      blockedJobsCount: blockedJobsCount(),
+      ...getStatus(),
     });
 
   return { checkPage, notifyRuntime, sendStatus };

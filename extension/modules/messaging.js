@@ -6,6 +6,7 @@ const addResponse = (responseTo, response) => {
   } else {
     responsesTo.set(responseTo, new Set([response]));
   }
+  console.log(responsesTo);
 };
 
 const respond = (message, sender, sendResponse) => {
