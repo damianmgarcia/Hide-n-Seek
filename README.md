@@ -80,6 +80,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 5.1.4
+  - Release date
+    - 2025-03-27
+  - Bug fix
+    - Updated company name detection for LinkedIn. Many thanks to [ert224](https://github.com/ert224) and [jogwuegbu](https://github.com/jogwuegbu) for discovering and contributing this fix!
 - 5.1.3
   - Release date
     - 2024-12-20
