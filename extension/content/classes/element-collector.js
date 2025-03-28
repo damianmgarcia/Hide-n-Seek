@@ -24,13 +24,13 @@ class ElementCollector {
       if (this.collection.size === 0) this.onEmptied.dispatchEvent();
     };
 
-    const updateCollection = (root, callback) => {
-      if (root.nodeType !== Node.ELEMENT_NODE) return;
+    const updateCollection = (node, callback) => {
+      if (node.nodeType !== Node.ELEMENT_NODE) return;
 
-      const closest = root.closest(selector);
+      const closest = node.closest(selector);
       if (closest) callback(closest);
 
-      root.querySelectorAll(selector).forEach(callback);
+      node.querySelectorAll(selector).forEach(callback);
     };
 
     updateCollection(document.documentElement, add);

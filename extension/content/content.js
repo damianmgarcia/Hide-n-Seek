@@ -22,6 +22,7 @@
 
   const listingCollector = new ElementCollector();
   listingCollector.onAdded.addListener((jobListing) => {
+    console.log("hns", listingCollector.collection.size);
     addHnsToListing(jobListing, attributeBlockers);
     notifyRuntime("new listing");
   });

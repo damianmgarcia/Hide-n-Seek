@@ -6,6 +6,11 @@ const jobBoards = (() => {
     replacement: "",
   };
 
+  const subtractHns = {
+    process: "subtract",
+    selector: ".hns-container",
+  };
+
   const replaceEmptyWith = (replacement) => ({
     process: "replace",
     pattern: "^\\s*$",
@@ -26,6 +31,7 @@ const jobBoards = (() => {
         {
           name: "Company Name",
           id: "companyName",
+          match: "exact",
           selector:
             ".EmployerProfile_compactEmployerName__LE242, .EmployerProfile_compactEmployerName__9MGcV",
           processors: [trim, replaceEmptyWith("Unknown Company")],
@@ -46,6 +52,7 @@ const jobBoards = (() => {
         {
           name: "Company Name",
           id: "companyName",
+          match: "exact",
           selector: ".companyName, [data-testid='company-name']",
           processors: [trim, replaceEmptyWith("Unknown Company")],
           default: true,
@@ -53,6 +60,7 @@ const jobBoards = (() => {
         {
           name: "Promoted",
           id: "promotionalStatus",
+          match: "exact",
           selector: ".sponsoredJob",
           processors: [
             {
@@ -81,6 +89,7 @@ const jobBoards = (() => {
           id: "companyName",
           selector:
             ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > span",
+          match: "exact",
           processors: [
             trim,
             {
@@ -98,6 +107,7 @@ const jobBoards = (() => {
           id: "promotionalStatus",
           selector:
             ".job-card-list__footer-wrapper, .job-card-container__footer-wrapper",
+          match: "exact",
           processors: [
             {
               process: "match",
@@ -139,6 +149,12 @@ const jobBoards = (() => {
               ].join("|"),
             },
           ],
+        },
+        {
+          name: "Keyword",
+          id: "keyword",
+          match: "pattern",
+          processors: [subtractHns],
         },
       ],
     },

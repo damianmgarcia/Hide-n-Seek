@@ -6,6 +6,21 @@ class AttributeBlocker {
   constructor(jobBoard, attribute, storage) {
     this.jobBoardId = jobBoard.id;
     this.attributeId = attribute.id;
+    this.match = attribute.match;
+    this.valueIsBlocked = (() => {
+      if (attribute.match === "exact") {
+        return (value) => this.values.has(value);
+      } else if (attribute.match === "pattern") {
+        return (value) => {
+          for (const pattern of this.values) {
+            if (new RegExp(pattern).test(value)) {
+              return pattern;
+            }
+          }
+          return false;
+        };
+      }
+    })();
     this.defaultAttribute = attribute.default;
     this.getValue = createAttributeProcessor(attribute);
     this.storageKey = `JobAttributeManager.${jobBoard.id}.${attribute.id}.blockedJobAttributeValues`;
@@ -51,8 +66,14 @@ class AttributeBlocker {
   }
 
   getToggle(jobListing) {
-    const value = this.getValue(jobListing);
+    let value = this.getValue(jobListing);
     if (!value) return;
+
+    const valueIsBlocked = this.valueIsBlocked(value);
+    if (this.match === "pattern") {
+      if (valueIsBlocked === false) return;
+      value = valueIsBlocked;
+    }
 
     const hnsToggle = ui.createElement(
       "hns-block-attribute-toggle",
@@ -64,7 +85,6 @@ class AttributeBlocker {
     this.updateToggle(hnsToggle, value);
 
     hnsToggle.addEventListener("click", () => {
-      console.log("clicked")
       if (this.valueIsBlocked(value)) {
         this.unblockValue(value);
       } else {
@@ -75,9 +95,11 @@ class AttributeBlocker {
     return hnsToggle;
   }
 
-  valueIsBlocked(value) {
-    return this.values.has(value);
-  }
+  // valueIsBlocked(value) {
+  //   if (this.match === "exact") {
+  //     return this.values.has(value);
+  //   }
+  // }
 
   updateToggle(toggleElement, value) {
     if (this.valueIsBlocked(value)) {
