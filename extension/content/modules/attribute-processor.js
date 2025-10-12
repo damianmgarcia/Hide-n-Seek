@@ -17,17 +17,15 @@ const createAttributeProcessor = (() => {
     },
   };
 
-  return (attribute) => {
-    return (jobListing) => {
-      const element = attribute.selector
-        ? jobListing.querySelector(attribute.selector)
-        : jobListing;
-      if (!element) return "";
-      return attribute.processors.reduce(
-        (value, processor) =>
-          processorFor[processor.process](value, processor, element),
-        element.textContent
-      );
-    };
+  return (attribute) => (jobListing) => {
+    const element = attribute.selector
+      ? jobListing.querySelector(attribute.selector)
+      : jobListing;
+    if (!element) return "";
+    return attribute.processors.reduce(
+      (value, processor) =>
+        processorFor[processor.process](value, processor, element),
+      element.textContent
+    );
   };
 })();

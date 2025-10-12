@@ -4,6 +4,7 @@ class AttributeBlocker {
   #changes = new Map();
 
   constructor(jobBoard, attribute, storage) {
+    console.log(attribute);
     this.jobBoardId = jobBoard.id;
     this.attributeId = attribute.id;
     this.match = attribute.match;
@@ -14,6 +15,7 @@ class AttributeBlocker {
         return (value) => {
           for (const pattern of this.values) {
             if (new RegExp(pattern).test(value)) {
+              // return true;
               return pattern;
             }
           }

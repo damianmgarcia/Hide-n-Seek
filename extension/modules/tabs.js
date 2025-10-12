@@ -12,12 +12,12 @@ const getActiveTab = async () => {
 const getContentStatus = async (tab) => {
   try {
     return await chrome.tabs.sendMessage(tab.id, {
-      body: "send status",
+      request: "get status",
     });
   } catch {
     return {
       blockedJobsCount: 0,
-      hasHideNSeekUI: false,
+      hasListings: false,
       jobBoard: false,
     };
   }
@@ -27,7 +27,7 @@ const updateBadge = async (tab) => {
   const contentStatus = await getContentStatus(tab);
   const title =
     "Hide n' Seek" +
-    (contentStatus.hasHideNSeekUI
+    (contentStatus.hasListings
       ? `\n\n${contentStatus.blockedJobsCount} job${
           contentStatus.blockedJobsCount === 1 ? "" : "s"
         } blocked on this page\n`
@@ -38,7 +38,7 @@ const updateBadge = async (tab) => {
   });
   chrome.action.setBadgeText({
     tabId: tab.id,
-    text: contentStatus.hasHideNSeekUI
+    text: contentStatus.hasListings
       ? contentStatus.blockedJobsCount.toString()
       : "",
   });

@@ -1,16 +1,16 @@
 const messaging = (() => {
-  const responsesTo = new Map();
+  const listeners = new Map();
 
-  const addResponse = (responseTo, response) => {
-    if (responsesTo.has(responseTo)) {
-      responsesTo.get(responseTo).add(response);
+  const addMessageListener = (message, listener) => {
+    if (listeners.has(message)) {
+      listeners.get(message).add(listener);
     } else {
-      responsesTo.set(responseTo, new Set([response]));
+      listeners.set(message, new Set([listener]));
     }
   };
 
-  const respond = (message, sender, sendResponse) => {
-    const responses = responsesTo.get(message.body);
+  const routeMessage = (message, sender, sendResponse) => {
+    const responses = listeners.get(message.request);
     if (responses)
       responses.forEach((response) =>
         response({ message, sender, sendResponse })
@@ -18,5 +18,5 @@ const messaging = (() => {
     return true;
   };
 
-  return { addResponse, respond };
+  return { addMessageListener, routeMessage };
 })();

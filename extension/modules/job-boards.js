@@ -1,21 +1,32 @@
 const jobBoards = (() => {
-  const trim = {
-    process: "replace",
-    pattern: "^\\s+|\\s+$",
-    flags: "gm",
-    replacement: "",
+  const commonProcessors = {
+    trim: {
+      process: "replace",
+      pattern: "^\\s+|\\s+$",
+      flags: "gm",
+      replacement: "",
+    },
+    subtractHnsText: {
+      process: "subtract",
+      selector: ".hns-container",
+    },
+    replaceEmptyWith(replacement) {
+      return {
+        process: "replace",
+        pattern: "^\\s*$",
+        replacement,
+      };
+    },
   };
 
-  const subtractHns = {
-    process: "subtract",
-    selector: ".hns-container",
+  const commonAttributes = {
+    keyword: {
+      name: "Keyword",
+      id: "keyword",
+      match: "pattern",
+      processors: [commonProcessors.subtractHnsText],
+    },
   };
-
-  const replaceEmptyWith = (replacement) => ({
-    process: "replace",
-    pattern: "^\\s*$",
-    replacement,
-  });
 
   return [
     {
@@ -28,13 +39,17 @@ const jobBoards = (() => {
         alt: "Glassdoor's logo",
       },
       attributes: [
+        commonAttributes.keyword,
         {
           name: "Company Name",
           id: "companyName",
           match: "exact",
           selector:
             ".EmployerProfile_compactEmployerName__LE242, .EmployerProfile_compactEmployerName__9MGcV",
-          processors: [trim, replaceEmptyWith("Unknown Company")],
+          processors: [
+            commonProcessors.trim,
+            commonProcessors.replaceEmptyWith("Unknown Company"),
+          ],
           default: true,
         },
       ],
@@ -49,12 +64,16 @@ const jobBoards = (() => {
         alt: "Indeed's logo",
       },
       attributes: [
+        commonAttributes.keyword,
         {
           name: "Company Name",
           id: "companyName",
           match: "exact",
           selector: ".companyName, [data-testid='company-name']",
-          processors: [trim, replaceEmptyWith("Unknown Company")],
+          processors: [
+            commonProcessors.trim,
+            commonProcessors.replaceEmptyWith("Unknown Company"),
+          ],
           default: true,
         },
         {
@@ -84,6 +103,7 @@ const jobBoards = (() => {
         alt: "LinkedIn's logo",
       },
       attributes: [
+        commonAttributes.keyword,
         {
           name: "Company Name",
           id: "companyName",
@@ -91,14 +111,14 @@ const jobBoards = (() => {
             ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > span",
           match: "exact",
           processors: [
-            trim,
+            commonProcessors.trim,
             {
               process: "replace",
               pattern: "\\s·\\s.*$",
               flags: "gm",
               replacement: "",
             }, // test this to make sure it matches and removes the LinkedIn notation: [company name] · Something else
-            replaceEmptyWith("Unknown Company"),
+            commonProcessors.replaceEmptyWith("Unknown Company"),
           ],
           default: true,
         },
@@ -150,12 +170,6 @@ const jobBoards = (() => {
             },
           ],
         },
-        {
-          name: "Keyword",
-          id: "keyword",
-          match: "pattern",
-          processors: [subtractHns],
-        },
       ],
     },
   ];
@@ -195,7 +209,7 @@ const getJobBoardTabs = (() => {
   };
 })();
 
-const sendJobBoard = ({ message, sendResponse }) =>
-  sendResponse(getJobBoardByHostname(message.hostname));
+const getJobBoard = ({ message, sendResponse }) =>
+  sendResponse(getJobBoardByHostname(message.data.hostname));
 
-export { getJobBoardById, getJobBoardIds, getJobBoardTabs, sendJobBoard };
+export { getJobBoardById, getJobBoardIds, getJobBoardTabs, getJobBoard };

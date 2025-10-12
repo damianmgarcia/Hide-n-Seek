@@ -1,18 +1,20 @@
 (async () => {
   const jobBoard = await chrome.runtime.sendMessage({
-    body: "send job board",
-    hostname: location.hostname,
+    request: "get job board",
+    data: {
+      hostname: location.hostname,
+    },
   });
 
   if (!jobBoard) return;
 
-  const { addResponse, respond } = messaging;
-  const { sendStatus, checkPage, notifyRuntime } = hnsStatus(jobBoard);
+  const { addMessageListener, routeMessage } = messaging;
+  const { getStatus, checkBfcache, sendStatus } = hnsStatus(jobBoard);
   const { addHnsToListing, setDisplayPreference } = jobListings(jobBoard.id);
 
-  addResponse("send status", sendStatus);
-  chrome.runtime.onMessage.addListener(respond);
-  window.addEventListener("pageshow", checkPage);
+  addMessageListener("get status", getStatus);
+  chrome.runtime.onMessage.addListener(routeMessage);
+  window.addEventListener("pageshow", checkBfcache);
 
   const userSettings = await chrome.storage.local.get();
   setDisplayPreference(userSettings);
@@ -24,14 +26,12 @@
   listingCollector.onAdded.addListener((jobListing) => {
     console.log("hns", listingCollector.collection.size);
     addHnsToListing(jobListing, attributeBlockers);
-    notifyRuntime("new listing");
+    sendStatus("listing added");
   });
-  listingCollector.onFilled.addListener(() =>
-    notifyRuntime("hasHideNSeekUI changed")
+  listingCollector.onNotEmpty.addListener(() =>
+    sendStatus("hasListings changed")
   );
-  listingCollector.onEmptied.addListener(() =>
-    notifyRuntime("hasHideNSeekUI changed")
-  );
+  listingCollector.onEmpty.addListener(() => sendStatus("hasListings changed"));
 
   listingCollector.collect(jobBoard.listingSelector);
 })();

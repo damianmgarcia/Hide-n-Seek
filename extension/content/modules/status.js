@@ -1,23 +1,23 @@
 const hnsStatus = (jobBoard) => {
-  const getStatus = () => ({
+  const status = () => ({
     jobBoard,
-    hasHideNSeekUI: Boolean(document.querySelector(".hns-container")),
+    hasListings: Boolean(document.querySelector(".hns-container")),
     blockedJobsCount: document.querySelectorAll(
       `.hns-container:has([data-hns-blocked-attribute])`
     ).length,
   });
 
-  const sendStatus = ({ sendResponse }) => sendResponse(getStatus());
+  const getStatus = ({ sendResponse }) => sendResponse(status());
 
-  const checkPage = (pageTransitionEvent) => {
-    if (pageTransitionEvent.persisted) notifyRuntime("bfcache used");
-  };
-
-  const notifyRuntime = (message) =>
+  const sendStatus = (message) =>
     chrome.runtime.sendMessage({
-      body: message,
-      ...getStatus(),
+      request: message,
+      data: status(),
     });
 
-  return { checkPage, notifyRuntime, sendStatus };
+  const checkBfcache = (pageTransitionEvent) => {
+    if (pageTransitionEvent.persisted) sendStatus("bfcache used");
+  };
+
+  return { checkBfcache, getStatus, sendStatus };
 };

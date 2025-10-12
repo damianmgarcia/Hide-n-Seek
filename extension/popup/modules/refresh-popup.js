@@ -11,9 +11,9 @@ const refreshPopup = async ({ message, sender }) => {
 
   if (!senderIsActiveTab) return;
 
-  if (message.hasHideNSeekUI === true) {
-    JobBoardPopup.start(message.jobBoard);
-  } else if (message.hasHideNSeekUI === false) {
+  if (message.data.hasListings === true) {
+    JobBoardPopup.start(message.data.jobBoard);
+  } else if (message.data.hasListings === false) {
     JobSearchPopup.start(activeTab);
   }
 };

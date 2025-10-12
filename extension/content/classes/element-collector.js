@@ -2,8 +2,8 @@ class ElementCollector {
   constructor() {
     this.onAdded = new EventDispatcher();
     this.onRemoved = new EventDispatcher();
-    this.onEmptied = new EventDispatcher();
-    this.onFilled = new EventDispatcher();
+    this.onEmpty = new EventDispatcher();
+    this.onNotEmpty = new EventDispatcher();
   }
 
   collect(selector) {
@@ -14,14 +14,14 @@ class ElementCollector {
       if (this.collection.has(element)) return;
       this.collection.add(element);
       this.onAdded.dispatchEvent(element);
-      if (this.collection.size === 1) this.onFilled.dispatchEvent();
+      if (this.collection.size === 1) this.onNotEmpty.dispatchEvent();
     };
 
     const remove = (element) => {
       if (!this.collection.has(element)) return;
       this.collection.delete(element);
       this.onRemoved.dispatchEvent(element);
-      if (this.collection.size === 0) this.onEmptied.dispatchEvent();
+      if (this.collection.size === 0) this.onEmpty.dispatchEvent();
     };
 
     const updateCollection = (node, callback) => {

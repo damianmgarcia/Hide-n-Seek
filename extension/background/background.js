@@ -1,16 +1,17 @@
 import { install } from "./modules/install.js";
-import { addResponse, respond } from "../modules/messaging.js";
+import { addMessageListener } from "../modules/messaging.js";
 import { updateBadge, updateBadges } from "../modules/tabs.js";
-import { sendJobBoard } from "../modules/job-boards.js";
+import { getJobBoard } from "../modules/job-boards.js";
 import { updateLocalStorage, updateSyncStorage } from "./modules/storage.js";
 
-addResponse("bfcache used", ({ sender }) => updateBadge(sender.tab));
-addResponse("hasHideNSeekUI changed", ({ sender }) => updateBadge(sender.tab));
-addResponse("new listing", ({ sender }) => updateBadge(sender.tab));
-addResponse("send job board", sendJobBoard);
+addMessageListener("bfcache used", ({ sender }) => updateBadge(sender.tab));
+addMessageListener("hasListings changed", ({ sender }) =>
+  updateBadge(sender.tab)
+);
+addMessageListener("listing added", ({ sender }) => updateBadge(sender.tab));
+addMessageListener("get job board", getJobBoard);
 
 chrome.runtime.onInstalled.addListener(install);
-chrome.runtime.onMessage.addListener(respond);
 chrome.storage.local.onChanged.addListener(updateBadges);
 chrome.storage.local.onChanged.addListener(updateSyncStorage);
 chrome.storage.sync.onChanged.addListener(updateLocalStorage);
