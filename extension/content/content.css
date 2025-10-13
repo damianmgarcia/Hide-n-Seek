@@ -135,6 +135,7 @@ html[data-hns-remove-hidden-jobs="true"]
   cursor: pointer !important;
   display: flex !important;
   flex-direction: column !important;
+  /* height: 67px !important; */
   height: 67px !important;
   justify-content: center !important;
   margin: 10px !important;
@@ -202,7 +203,19 @@ html[data-hns-remove-hidden-jobs="true"]
   background: hsl(60, 50%, 80%, 0.7) !important;
 }
 
+.hns-block-attribute-toggle-attribute {
+  font-size: 10px !important;
+  font-weight: bold !important;
+  max-width: 25ch !important;
+  overflow: hidden !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  transition: transform 200ms ease-out !important;
+  white-space: nowrap !important;
+}
+
 .hns-block-attribute-toggle-text {
+  font-size: 14px !important;
   max-width: 25ch !important;
   overflow: hidden !important;
   text-align: center !important;
@@ -217,12 +230,12 @@ html[data-hns-remove-hidden-jobs="true"]
   border-radius: 12px !important;
   color: hsl(0, 0%, 100%) !important;
   display: grid !important;
-  font-size: 12px !important;
+  font-size: 10px !important;
   height: var(--hidden-indicator-height) !important;
   position: absolute !important;
   text-align: center !important;
   top: calc(
-    50% + (var(--hidden-indicator-height) * 0.5) + var(--gap)
+    60% + (var(--hidden-indicator-height) * 0.5) + var(--gap)
   ) !important;
   width: 53.4px !important;
 }
@@ -243,6 +256,8 @@ html[data-hns-remove-hidden-jobs="true"]
   transition: opacity 200ms ease-out, transform 200ms ease-out !important;
 }
 
+.hns-block-attribute-toggle[data-hns-blocked-attribute]
+  .hns-block-attribute-toggle-attribute,
 .hns-block-attribute-toggle[data-hns-blocked-attribute]
   .hns-block-attribute-toggle-text,
 .hns-block-attribute-toggle[data-hns-blocked-attribute]

@@ -1,9 +1,9 @@
 import "../modules/ui/info-box.js";
-import { createElement } from "./ui/ui.js";
+import { createComponent } from "./ui/ui.js";
 
 const syncManager = {};
 
-syncManager.quotaWarningElement = createElement(
+syncManager.quotaWarningElement = createComponent(
   "info-box",
   "warning",
   "Impressive. You've reached the max number of blocked jobs that can sync across devices. Blocked jobs will no longer sync, but you can back them up to a file."

@@ -1,4 +1,6 @@
 const jobListings = (jobBoardId) => {
+  const hnsMap = new Map();
+
   const setDisplayPreference = (userSettings) => {
     const updateDOM = (displayPreference) => {
       document.documentElement.setAttribute(
@@ -17,14 +19,31 @@ const jobListings = (jobBoardId) => {
     });
   };
 
-  const addHnsToListing = (jobListing, attributeBlockers) => {
+  const addHns = (jobListing, attributeBlockers) => {
     jobListing.setAttribute("data-hns-job-listing", "");
-    const toggles = attributeBlockers
+    const hnsContainerComponent = ui.createComponent(
+      "hns-container",
+      jobBoardId
+    );
+
+    attributeBlockers
       .map((attributeBlocker) => attributeBlocker.getToggle(jobListing))
-      .filter((toggle) => toggle);
-    const hnsContainer = ui.createElement("hns-container", jobBoardId, toggles);
-    jobListing.append(hnsContainer);
+      .filter((toggle) => toggle)
+      .map((toggle) => hnsContainerComponent.addToggle(toggle));
+
+    hnsMap.set(jobListing, {
+      hnsContainer: hnsContainerComponent.element,
+      addToggle: hnsContainerComponent.addToggle,
+      removeToggle: hnsContainerComponent.removeToggle,
+    });
+    jobListing.append(hnsContainerComponent.element);
   };
 
-  return { addHnsToListing, setDisplayPreference };
+  const removeHns = (jobListing) => {
+    return hnsMap.delete(jobListing);
+  };
+
+  const getAllHns = () => hnsMap.entries();
+
+  return { addHns, getAllHns, removeHns, setDisplayPreference };
 };

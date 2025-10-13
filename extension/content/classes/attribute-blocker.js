@@ -3,10 +3,13 @@ class AttributeBlocker {
 
   #changes = new Map();
 
-  constructor(jobBoard, attribute, storage) {
+  constructor(jobBoard, attribute, storage, getAllHns) {
     console.log(attribute);
     this.jobBoardId = jobBoard.id;
+    this.attributeName = attribute.name;
     this.attributeId = attribute.id;
+    this.getAllHns = getAllHns;
+    this.removableValues = attribute.removableValues;
     this.match = attribute.match;
     this.valueIsBlocked = (() => {
       if (attribute.match === "exact") {
@@ -77,16 +80,17 @@ class AttributeBlocker {
       value = valueIsBlocked;
     }
 
-    const hnsToggle = ui.createElement(
+    const hnsToggle = ui.createComponent(
       "hns-block-attribute-toggle",
+      this.attributeName,
       this.attributeId,
       value,
       this.defaultAttribute
     );
 
-    this.updateToggle(hnsToggle, value);
+    this.updateToggle(hnsToggle.element, value);
 
-    hnsToggle.addEventListener("click", () => {
+    hnsToggle.element.addEventListener("click", () => {
       if (this.valueIsBlocked(value)) {
         this.unblockValue(value);
       } else {
@@ -114,6 +118,13 @@ class AttributeBlocker {
   blockValue(value, updateStorage = true) {
     if (this.values.has(value)) return;
     this.values.add(value);
+    if (this.removableValues) {
+      // need to rescan listings and add hns toggles as necessary
+      for (const [jobListing, hns] of this.getAllHns()) {
+        const toggle = this.getToggle(jobListing);
+        if (toggle) hns.addToggle(toggle);
+      }
+    }
     this.updateTogglesWithValue(value);
     if (!updateStorage) return;
     this.#changes.set(value, "block");
@@ -123,6 +134,12 @@ class AttributeBlocker {
   unblockValue(value, updateStorage = true) {
     const valueWasBlocked = this.values.delete(value);
     if (!valueWasBlocked) return;
+    if (this.removableValues) {
+      // need to rescan listings and add hns toggles as necessary
+      for (const [, hns] of this.getAllHns()) {
+        hns.removeToggle(this.attributeId, value);
+      }
+    }
     this.updateTogglesWithValue(value);
     if (!updateStorage) return;
     this.#changes.set(value, "unblock");

@@ -7,6 +7,6 @@ const registerTemplate = (name, html, processor = (element) => element) => {
     processor(template.content.firstElementChild.cloneNode(true), ...args);
 };
 
-const createElement = (name, ...args) => creatorFor[name](...args);
+const createComponent = (name, ...args) => creatorFor[name](...args);
 
-export { registerTemplate, createElement };
+export { registerTemplate, createComponent };

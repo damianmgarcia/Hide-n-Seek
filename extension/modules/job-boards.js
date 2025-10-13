@@ -23,6 +23,7 @@ const jobBoards = (() => {
     keyword: {
       name: "Keyword",
       id: "keyword",
+      removableValues: true,
       match: "pattern",
       processors: [commonProcessors.subtractHnsText],
     },
@@ -41,8 +42,9 @@ const jobBoards = (() => {
       attributes: [
         commonAttributes.keyword,
         {
-          name: "Company Name",
+          name: "Company",
           id: "companyName",
+          removableValues: false,
           match: "exact",
           selector:
             ".EmployerProfile_compactEmployerName__LE242, .EmployerProfile_compactEmployerName__9MGcV",
@@ -58,7 +60,7 @@ const jobBoards = (() => {
       hostname: "indeed.com",
       id: "indeed",
       name: "Indeed",
-      listingSelector: "li:has(.result)",
+      listingSelector: "li:has(.result:not([aria-hidden='true']))",
       logo: {
         src: "/assets/images/indeed-logo.svg",
         alt: "Indeed's logo",
@@ -66,8 +68,9 @@ const jobBoards = (() => {
       attributes: [
         commonAttributes.keyword,
         {
-          name: "Company Name",
+          name: "Company",
           id: "companyName",
+          removableValues: false,
           match: "exact",
           selector: ".companyName, [data-testid='company-name']",
           processors: [
@@ -77,8 +80,9 @@ const jobBoards = (() => {
           default: true,
         },
         {
-          name: "Promoted",
+          name: "Status",
           id: "promotionalStatus",
+          removableValues: false,
           match: "exact",
           selector: ".sponsoredJob",
           processors: [
@@ -105,8 +109,9 @@ const jobBoards = (() => {
       attributes: [
         commonAttributes.keyword,
         {
-          name: "Company Name",
+          name: "Company",
           id: "companyName",
+          removableValues: false,
           selector:
             ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > span",
           match: "exact",
@@ -123,8 +128,9 @@ const jobBoards = (() => {
           default: true,
         },
         {
-          name: "Promoted",
+          name: "Status",
           id: "promotionalStatus",
+          removableValues: false,
           selector:
             ".job-card-list__footer-wrapper, .job-card-container__footer-wrapper",
           match: "exact",

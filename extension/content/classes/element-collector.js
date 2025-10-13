@@ -1,5 +1,6 @@
 class ElementCollector {
   constructor() {
+    this.collection = new Set();
     this.onAdded = new EventDispatcher();
     this.onRemoved = new EventDispatcher();
     this.onEmpty = new EventDispatcher();
@@ -7,8 +8,8 @@ class ElementCollector {
   }
 
   collect(selector) {
-    if (this.collection) return this.collection;
-    this.collection = new Set();
+    if (this.started) return this.collection;
+    this.started = true;
 
     const add = (element) => {
       if (this.collection.has(element)) return;

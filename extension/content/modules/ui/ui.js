@@ -8,7 +8,7 @@ const ui = (() => {
       processor(template.content.firstElementChild.cloneNode(true), ...args);
   };
 
-  const createElement = (name, ...args) => creatorFor[name](...args);
+  const createComponent = (name, ...args) => creatorFor[name](...args);
 
-  return { registerTemplate, createElement };
+  return { registerTemplate, createComponent };
 })();
