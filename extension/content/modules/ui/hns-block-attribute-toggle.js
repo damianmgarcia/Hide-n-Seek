@@ -8,25 +8,66 @@ const hnsToggle = {
       <div class="hns-block-attribute-toggle-hidden-indicator">Hidden</div>
     </button>`,
 
-  process(
+  createComponent(
     element,
-    jobAttributeName,
     jobAttribute,
     jobAttributeValue,
-    defaultAttribute
+    jobAttributeName,
+    defaultAttribute,
+    removeOnToggleOff,
+    toggledOn,
+    onToggle
   ) {
-    const component = { element, jobAttribute, jobAttributeValue };
-    element.title = jobAttributeValue;
+    element.title = `${jobAttributeName}: ${jobAttributeValue}`;
     element.setAttribute("data-hns-attribute", jobAttribute);
     element.setAttribute("data-hns-attribute-value", jobAttributeValue);
     element.querySelector(".hns-block-attribute-toggle-attribute").textContent =
       jobAttributeName;
     element.querySelector(".hns-block-attribute-toggle-text").textContent =
       jobAttributeValue;
+    element.addEventListener("click", onToggle);
+
     if (defaultAttribute)
       element.setAttribute("data-hns-default-attribute", "");
-    return component;
+
+    const removeToggle = () => {
+      element.disabled = true;
+      setTimeout(() => element.remove(), 400); // TBD improve this
+    };
+
+    const toggleOn = () => {
+      element.setAttribute("data-hns-blocked-attribute", "");
+    };
+
+    const toggleOff = () => {
+      element.removeAttribute("data-hns-blocked-attribute");
+      if (removeOnToggleOff) removeToggle();
+    };
+
+    const toggle = () => {
+      const toggledOn = element.hasAttribute("data-hns-blocked-attribute");
+      if (toggledOn) {
+        toggleOff();
+      } else {
+        toggleOn();
+      }
+      return toggledOn;
+    };
+
+    if (toggledOn) toggleOn();
+
+    return {
+      element,
+      jobAttribute,
+      jobAttributeValue,
+      jobAttributeName,
+      defaultAttribute,
+      removeToggle,
+      toggleOn,
+      toggleOff,
+      toggle,
+    };
   },
 };
 
-ui.registerTemplate(hnsToggle.name, hnsToggle.html, hnsToggle.process);
+ui.registerTemplate(hnsToggle.name, hnsToggle.html, hnsToggle.createComponent);

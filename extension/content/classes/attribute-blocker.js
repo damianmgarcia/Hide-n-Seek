@@ -3,34 +3,25 @@ class AttributeBlocker {
 
   #changes = new Map();
 
-  constructor(jobBoard, attribute, storage, getAllHns) {
-    console.log(attribute);
-    this.jobBoardId = jobBoard.id;
-    this.attributeName = attribute.name;
-    this.attributeId = attribute.id;
-    this.getAllHns = getAllHns;
-    this.removableValues = attribute.removableValues;
-    this.match = attribute.match;
-    this.valueIsBlocked = (() => {
-      if (attribute.match === "exact") {
-        return (value) => this.values.has(value);
-      } else if (attribute.match === "pattern") {
-        return (value) => {
-          for (const pattern of this.values) {
-            if (new RegExp(pattern).test(value)) {
-              // return true;
-              return pattern;
-            }
-          }
-          return false;
-        };
-      }
-    })();
+  constructor(jobBoard, attribute, storage, hnsMap) {
+    this.jobBoard = jobBoard;
+    this.attribute = attribute;
     this.defaultAttribute = attribute.default;
+    this.hnsMap = hnsMap;
     this.getValue = createAttributeProcessor(attribute);
     this.storageKey = `JobAttributeManager.${jobBoard.id}.${attribute.id}.blockedJobAttributeValues`;
-    this.values = new Set(storage[this.storageKey]);
+    this.blockedValues = new Set(storage[this.storageKey]);
+    this.valueIsBlocked = (() => {
+      if (attribute.match === "exact") {
+        return (value) => this.blockedValues.has(value);
+      } else if (attribute.match === "pattern") {
+        return (value, pattern) =>
+          new RegExp("\\b" + pattern + "\\b", "i").test(value);
+      }
+    })();
+
     AttributeBlocker.valueStorageKeys.add(this.storageKey);
+
     const storagePropertiesToSet = [
       this.storageKey,
       `${this.storageKey}.backup`,
@@ -40,122 +31,102 @@ class AttributeBlocker {
 
     if (storagePropertiesToSet.length)
       chrome.storage.local.set(Object.fromEntries(storagePropertiesToSet));
-
-    chrome.storage.local.onChanged.addListener((changes) => {
-      const hasChangesToThisJobAttribute = Object.hasOwn(
-        changes,
-        this.storageKey
-      );
-      if (!hasChangesToThisJobAttribute) return;
-
-      const valuesFromStorage = new Set(changes[this.storageKey].newValue);
-
-      const mergedChanges = new Map([
-        ...[...valuesFromStorage]
-          .filter((valueFromStorage) => !this.values.has(valueFromStorage))
-          .map((value) => [value, "block"]),
-        ...[...this.values]
-          .filter((value) => !valuesFromStorage.has(value))
-          .map((value) => [value, "unblock"]),
-        ...this.#changes,
-      ]);
-
-      if (!mergedChanges.size) return;
-
-      mergedChanges.forEach((action, value) =>
-        action === "block"
-          ? this.blockValue(value, false)
-          : this.unblockValue(value, false)
-      );
-    });
   }
 
-  getToggle(jobListing) {
-    let value = this.getValue(jobListing);
+  handleStorageChanges(changes) {
+    const blockedValuesFromStorage = new Set(changes.newValue);
+
+    const mergedChanges = new Map([
+      ...[...blockedValuesFromStorage]
+        .filter(
+          (blockedValueFromStorage) =>
+            !this.blockedValues.has(blockedValueFromStorage)
+        )
+        .map((value) => [value, "block"]),
+      ...[...this.blockedValues]
+        .filter((value) => !blockedValuesFromStorage.has(value))
+        .map((value) => [value, "unblock"]),
+      ...this.#changes,
+    ]);
+
+    mergedChanges.forEach((action, value) =>
+      action === "block"
+        ? this.blockValue(value, false)
+        : this.unblockValue(value, false)
+    );
+  }
+
+  addToggles(hns) {
+    let value = this.getValue(hns.jobListing);
     if (!value) return;
 
-    const valueIsBlocked = this.valueIsBlocked(value);
-    if (this.match === "pattern") {
-      if (valueIsBlocked === false) return;
-      value = valueIsBlocked;
-    }
-
-    const hnsToggle = ui.createComponent(
-      "hns-block-attribute-toggle",
-      this.attributeName,
-      this.attributeId,
-      value,
-      this.defaultAttribute
-    );
-
-    this.updateToggle(hnsToggle.element, value);
-
-    hnsToggle.element.addEventListener("click", () => {
-      if (this.valueIsBlocked(value)) {
-        this.unblockValue(value);
-      } else {
-        this.blockValue(value);
+    if (this.attribute.removableValues) {
+      for (const blockedValue of this.blockedValues) {
+        hns.addToggle(
+          this.attribute.id,
+          blockedValue,
+          this.attribute.name,
+          this.defaultAttribute,
+          this.attribute.removableValues,
+          this.valueIsBlocked(value, blockedValue),
+          () => this.unblockValue(blockedValue)
+        );
       }
-    });
-
-    return hnsToggle;
-  }
-
-  // valueIsBlocked(value) {
-  //   if (this.match === "exact") {
-  //     return this.values.has(value);
-  //   }
-  // }
-
-  updateToggle(toggleElement, value) {
-    if (this.valueIsBlocked(value)) {
-      toggleElement.setAttribute("data-hns-blocked-attribute", "");
     } else {
-      toggleElement.removeAttribute("data-hns-blocked-attribute");
+      hns.addToggle(
+        this.attribute.id,
+        value,
+        this.attribute.name,
+        this.defaultAttribute,
+        this.attribute.removableValues,
+        this.valueIsBlocked(value),
+        () => {
+          if (this.valueIsBlocked(value)) {
+            this.unblockValue(value);
+          } else {
+            this.blockValue(value);
+          }
+        }
+      );
     }
   }
 
   blockValue(value, updateStorage = true) {
-    if (this.values.has(value)) return;
-    this.values.add(value);
-    if (this.removableValues) {
-      // need to rescan listings and add hns toggles as necessary
-      for (const [jobListing, hns] of this.getAllHns()) {
-        const toggle = this.getToggle(jobListing);
-        if (toggle) hns.addToggle(toggle);
-      }
-    }
-    this.updateTogglesWithValue(value);
+    if (this.blockedValues.has(value)) return;
+    this.blockedValues.add(value);
+    this.updateHnss(value, "block");
     if (!updateStorage) return;
     this.#changes.set(value, "block");
     this.updateLocalStorage();
   }
 
   unblockValue(value, updateStorage = true) {
-    const valueWasBlocked = this.values.delete(value);
+    const valueWasBlocked = this.blockedValues.delete(value);
     if (!valueWasBlocked) return;
-    if (this.removableValues) {
-      // need to rescan listings and add hns toggles as necessary
-      for (const [, hns] of this.getAllHns()) {
-        hns.removeToggle(this.attributeId, value);
-      }
-    }
-    this.updateTogglesWithValue(value);
+    this.updateHnss(value, "unblock");
     if (!updateStorage) return;
     this.#changes.set(value, "unblock");
     this.updateLocalStorage();
   }
 
-  updateTogglesWithValue(value) {
-    const togglesWithValue = document.querySelectorAll(
-      `.hns-container [data-hns-attribute-value="${value}"]`
-    );
-
-    if (!togglesWithValue.length) return;
-
-    togglesWithValue.forEach((toggleWithValue) =>
-      this.updateToggle(toggleWithValue, value)
-    );
+  updateHnss(value, action) {
+    for (const hns of this.hnsMap.values()) {
+      const toggle = hns.getToggle(this.attribute.id, value);
+      if (toggle) {
+        if (action === "block") {
+          toggle.toggleOn();
+        } else {
+          toggle.toggleOff();
+          if (this.attribute.removableValues)
+            hns.removeToggle(this.attribute.id, value);
+        }
+      } else if (this.attribute.removableValues && action == "block") {
+        this.addToggles(hns);
+      }
+    }
+    // document
+    //   .querySelectorAll(`.hns-container [data-hns-attribute-value="${value}"]`)
+    //   .forEach((toggleWithValue) => this.updateToggle(toggleWithValue, value));
   }
 
   updateLocalStorage() {
@@ -168,7 +139,7 @@ class AttributeBlocker {
 
     const changes = Object.assign(
       {
-        [this.storageKey]: [...this.values],
+        [this.storageKey]: [...this.blockedValues],
       },
       emptiedBackups
     );

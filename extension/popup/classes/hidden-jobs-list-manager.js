@@ -1,8 +1,7 @@
 class HiddenJobsListManager {
-  hiddenJobAttributeValuesContainer =
-    document.querySelector(".hidden-jobs-list");
-  jobAttributeValueSelector = ".hidden-job-container";
-  hiddenJobsMessageElement = document.querySelector(".nothing-hidden-message");
+  jobAttributeValuesContainer = document.querySelector(".hidden-jobs-list");
+  jobAttributeValueSelector = ".hidden-job-button";
+  nothingHiddenElement = document.querySelector(".nothing-hidden-message");
 
   constructor(jobBoard, storage) {
     this.jobBoardId = jobBoard.id;
@@ -16,14 +15,13 @@ class HiddenJobsListManager {
           key.includes("blockedJobAttributeValues") && !key.endsWith(".backup")
       );
 
-      if (changesIncludesBlockedJobAttributeValues)
-        this.updateHiddenJobsPopupList();
+      if (changesIncludesBlockedJobAttributeValues) this.updateJobsPopupList();
     });
 
-    this.updateHiddenJobsPopupList(storage);
+    this.updateJobsPopupList(storage);
   }
 
-  #getHiddenJobAttributeValuesFromStorage(jobAttribute, storage) {
+  getJobAttributeValuesFromStorage(jobAttribute, storage) {
     return Object.entries(storage)
       .filter(
         ([key]) =>
@@ -35,7 +33,7 @@ class HiddenJobsListManager {
       .flatMap(([, value]) => value);
   }
 
-  getHiddenJobAttributeValueElementsInPopupList() {
+  getJobAttributeValueElementsInPopupList() {
     return Array.from(
       document.querySelectorAll(
         `${this.jobAttributeValueSelector}:not(.removing)`
@@ -43,10 +41,16 @@ class HiddenJobsListManager {
     );
   }
 
-  getElementTextContentForJobAttribute(jobAttribute, elements) {
-    return elements
-      .filter((element) => element.dataset.jobAttribute === jobAttribute)
-      .map((element) => element.textContent.trim());
+  getElementJobAttributeValue(jobAttribute, elements) {
+    return (
+      elements
+        .filter(
+          (element) =>
+            element.getAttribute("data-job-attribute") === jobAttribute
+        )
+        // .map((element) => element.textContent.trim());
+        .map((element) => element.getAttribute("data-job-attribute-value"))
+    );
   }
 
   updatePopupListToReflectStorageForJobAttribute(
@@ -58,56 +62,51 @@ class HiddenJobsListManager {
       const valueIsInStorageButNotPopupList =
         !popupListValues.includes(storageValue);
       if (valueIsInStorageButNotPopupList)
-        this.addHiddenJobAttributeValueToList(storageValue, jobAttribute);
+        this.addJobAttributeValueToList(storageValue, jobAttribute);
     });
 
     popupListValues.forEach((popupListValue) => {
       const valueIsInPopupListButNotStorage =
         !storageValues.includes(popupListValue);
       if (valueIsInPopupListButNotStorage)
-        this.removeHiddenJobAttributeValueFromList(
-          popupListValue,
-          jobAttribute
-        );
+        this.removeJobAttributeValueFromList(popupListValue, jobAttribute);
     });
   }
 
-  updateHiddenJobsPopupListForJobAttribute(
+  updateJobsPopupListForJobAttribute(
     jobAttribute,
-    allHiddenJobAttributeValuesFromStorage,
-    hiddenJobAttributeValueElementsFromPopupList
+    allJobAttributeValuesFromStorage,
+    jobAttributeValueElementsFromPopupList
   ) {
-    const hiddenJobAttributeValuesFromStorage =
-      this.#getHiddenJobAttributeValuesFromStorage(
-        jobAttribute,
-        allHiddenJobAttributeValuesFromStorage
-      );
+    const jobAttributeValuesFromStorage = this.getJobAttributeValuesFromStorage(
+      jobAttribute,
+      allJobAttributeValuesFromStorage
+    );
 
-    const hiddenJobAttributeValuesFromPopupList =
-      this.getElementTextContentForJobAttribute(
-        jobAttribute,
-        hiddenJobAttributeValueElementsFromPopupList
-      );
+    const jobAttributeValuesFromPopupList = this.getElementJobAttributeValue(
+      jobAttribute,
+      jobAttributeValueElementsFromPopupList
+    );
 
     this.updatePopupListToReflectStorageForJobAttribute(
       jobAttribute,
-      hiddenJobAttributeValuesFromStorage,
-      hiddenJobAttributeValuesFromPopupList
+      jobAttributeValuesFromStorage,
+      jobAttributeValuesFromPopupList
     );
   }
 
-  async updateHiddenJobsPopupList(storage) {
-    const blockedJobAttributeValuesFromStorage =
+  async updateJobsPopupList(storage) {
+    const jobAttributeValuesFromStorage =
       await this.getBlockedJobAttributeValuesFromStorage(storage);
 
-    const hiddenJobAttributeValueElementsFromPopupList =
-      this.getHiddenJobAttributeValueElementsInPopupList();
+    const jobAttributeValueElementsFromPopupList =
+      this.getJobAttributeValueElementsInPopupList();
 
     this.jobAttributes.forEach((jobAttribute) =>
-      this.updateHiddenJobsPopupListForJobAttribute(
+      this.updateJobsPopupListForJobAttribute(
         jobAttribute,
-        blockedJobAttributeValuesFromStorage,
-        hiddenJobAttributeValueElementsFromPopupList
+        jobAttributeValuesFromStorage,
+        jobAttributeValueElementsFromPopupList
       )
     );
   }
@@ -123,12 +122,17 @@ class HiddenJobsListManager {
     );
   }
 
-  createElementForHiddenJobAttributeValue(itemName) {
-    const hiddenJobContainer = document.createElement("button");
-    hiddenJobContainer.classList.add("hidden-job-container");
-    const hiddenJobName = document.createElement("div");
-    hiddenJobName.classList.add("hidden-job-name");
-    hiddenJobName.textContent = itemName;
+  createElementForJobAttributeValue(jobAttribute, jobAttributeValue) {
+    const button = document.createElement("button");
+    button.classList.add("hidden-job-button");
+    button.setAttribute("data-job-attribute", jobAttribute);
+    button.setAttribute("data-job-attribute-value", jobAttributeValue);
+
+    const jobAttributeValueElement = document.createElement("div");
+    jobAttributeValueElement.classList.add("hidden-job-name");
+    jobAttributeValueElement.textContent = jobAttributeValue;
+    jobAttributeValueElement.setAttribute("title", jobAttributeValue);
+
     const removeIconSvg = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "svg"
@@ -141,11 +145,11 @@ class HiddenJobsListManager {
     removeIconUse.setAttribute("href", "#remove-icon");
     removeIconSvg.insertAdjacentElement("beforeend", removeIconUse);
 
-    [hiddenJobName, removeIconSvg].forEach((element) =>
-      hiddenJobContainer.insertAdjacentElement("beforeend", element)
+    [jobAttributeValueElement, removeIconSvg].forEach((element) =>
+      button.insertAdjacentElement("beforeend", element)
     );
 
-    return hiddenJobContainer;
+    return button;
   }
 
   getPopupListChangeAnimation(change) {
@@ -178,182 +182,122 @@ class HiddenJobsListManager {
       : [[expanded, collapsed], options];
   }
 
-  getLowerCased(array) {
-    return array.map((item) => item.toLowerCase());
-  }
+  async addJobAttributeValueToList(jobAttributeValue, jobAttribute) {
+    const listElements = this.getJobAttributeValueElementsInPopupList();
 
-  async addHiddenJobAttributeValueToList(
-    hiddenJobAttributeValue,
-    jobAttribute
-  ) {
-    const lowerCaseHiddenJobAttributeValue =
-      hiddenJobAttributeValue.toLowerCase();
+    const alreadyInList = listElements.find(
+      (listElement) =>
+        listElement.getAttribute("data-job-attribute") === jobAttribute &&
+        listElement.getAttribute("data-job-attribute-value") ===
+          jobAttributeValue
+    );
+    if (alreadyInList) return;
 
-    const hiddenJobAttributeValueElementsInPopupList =
-      this.getHiddenJobAttributeValueElementsInPopupList();
+    this.nothingHiddenElement.removeAttribute("data-list-is-empty");
 
-    const hiddenCompanyNamesInPopupList =
-      this.getElementTextContentForJobAttribute(
-        "companyName",
-        hiddenJobAttributeValueElementsInPopupList
-      );
-
-    const lowerCaseHiddenCompanyNamesInPopupList = this.getLowerCased(
-      hiddenCompanyNamesInPopupList
+    const jobAttributeValueElement = this.createElementForJobAttributeValue(
+      jobAttribute,
+      jobAttributeValue
     );
 
-    const companyNameIsInPopupList =
-      jobAttribute === "companyName" &&
-      lowerCaseHiddenCompanyNamesInPopupList.includes(
-        lowerCaseHiddenJobAttributeValue
-      );
-
-    if (companyNameIsInPopupList) return;
-
-    const hiddenPromotionalStatusesInPopupList =
-      this.getElementTextContentForJobAttribute(
-        "promotionalStatus",
-        hiddenJobAttributeValueElementsInPopupList
-      );
-
-    const lowerCaseHiddenPromotionalStatusesInPopupList = this.getLowerCased(
-      hiddenPromotionalStatusesInPopupList
-    );
-
-    const promotionalStatusIsInPopupList =
-      jobAttribute === "promotionalStatus" &&
-      lowerCaseHiddenPromotionalStatusesInPopupList.includes(
-        lowerCaseHiddenJobAttributeValue
-      );
-
-    if (promotionalStatusIsInPopupList) return;
-
-    this.hiddenJobsMessageElement.dataset.listIsEmpty = false;
-
-    const hiddenJobAttributeValueElement =
-      this.createElementForHiddenJobAttributeValue(hiddenJobAttributeValue);
-
-    hiddenJobAttributeValueElement.setAttribute(
-      "title",
-      hiddenJobAttributeValue
-    );
-
-    Object.assign(hiddenJobAttributeValueElement.dataset, { jobAttribute });
-
-    hiddenJobAttributeValueElement.addEventListener("click", async () => {
-      const entries = Object.entries(
+    jobAttributeValueElement.addEventListener("click", async () => {
+      const storageBlockedValues = Object.entries(
         await this.getBlockedJobAttributeValuesFromStorage()
       );
 
-      if (!entries.length) return;
+      if (!storageBlockedValues.length) return;
 
       const storageChangesToSet = Object.fromEntries([
-        ...entries.map(([key, value]) => {
-          const valueIsNotAnArray = !Array.isArray(value);
-          const keyDoesntMatchJobAttribute = !key.includes(jobAttribute);
-          if (valueIsNotAnArray || keyDoesntMatchJobAttribute)
-            return [key, value];
-          return [
-            key,
-            value.filter(
-              (valueItem) =>
-                valueItem !== hiddenJobAttributeValueElement.textContent.trim()
-            ),
-          ];
+        ...storageBlockedValues.map(([storageKey, blockedValues]) => {
+          const valueIsNotAnArray = !Array.isArray(blockedValues);
+          const keyDoesntMatchJobAttribute = !storageKey.includes(jobAttribute);
+          if (valueIsNotAnArray || keyDoesntMatchJobAttribute) {
+            return [storageKey, blockedValues];
+          } else {
+            return [
+              storageKey,
+              blockedValues.filter(
+                (blockedValue) => blockedValue !== jobAttributeValue
+                // blockedValue !== jobAttributeValueElement.textContent.trim()
+              ),
+            ];
+          }
         }),
       ]);
 
       chrome.storage.local.set(storageChangesToSet);
     });
 
-    const getInsertionData = () => {
-      if (jobAttribute === "promotionalStatus")
-        return {
-          insertionReferenceElement: this.hiddenJobAttributeValuesContainer,
-          insertionPoint: "afterbegin",
-        };
+    const listElementsValues = listElements.map((listElement) =>
+      listElement.getAttribute("data-job-attribute-value")
+    );
+    const insertPosition = listElementsValues.length
+      ? [...listElementsValues, jobAttributeValue]
+          .sort((a, b) => a.localeCompare(b))
+          .indexOf(jobAttributeValue)
+      : 0;
 
-      const insertPositionForHiddenCompanyName =
-        [
-          ...lowerCaseHiddenCompanyNamesInPopupList,
-          lowerCaseHiddenJobAttributeValue,
-        ]
-          .sort()
-          .indexOf(lowerCaseHiddenJobAttributeValue) +
-        (hiddenPromotionalStatusesInPopupList.length ? 1 : 0);
+    const isOnly = listElementsValues.length === 0;
+    const isFirst = insertPosition === 0;
+    const isLast = insertPosition === listElements.length;
 
-      const isOnly = lowerCaseHiddenCompanyNamesInPopupList.length === 0;
-      const isFirst = insertPositionForHiddenCompanyName === 0;
-      const isLast =
-        insertPositionForHiddenCompanyName ===
-        hiddenJobAttributeValueElementsInPopupList.length;
+    const insertionReferenceElement =
+      isOnly || isFirst || isLast
+        ? this.jobAttributeValuesContainer
+        : listElements[insertPosition];
 
-      const insertionReferenceElement =
-        isOnly || isFirst || isLast
-          ? this.hiddenJobAttributeValuesContainer
-          : hiddenJobAttributeValueElementsInPopupList[
-              insertPositionForHiddenCompanyName
-            ];
-
-      const insertionPoint =
-        isOnly || isFirst ? "afterbegin" : isLast ? "beforeend" : "beforebegin";
-
-      return { insertionReferenceElement, insertionPoint };
-    };
-
-    const { insertionReferenceElement, insertionPoint } = getInsertionData();
+    const insertionPoint =
+      isOnly || isFirst ? "afterbegin" : isLast ? "beforeend" : "beforebegin";
 
     insertionReferenceElement.insertAdjacentElement(
       insertionPoint,
-      hiddenJobAttributeValueElement
+      jobAttributeValueElement
     );
 
-    await hiddenJobAttributeValueElement.animate(
+    await jobAttributeValueElement.animate(
       ...this.getPopupListChangeAnimation("add")
     ).finished;
   }
 
-  async removeHiddenJobAttributeValueFromList(
-    hiddenJobAttributeValue,
-    jobAttribute
-  ) {
-    const hiddenJobAttributeValueElementsInPopupList =
-      this.getHiddenJobAttributeValueElementsInPopupList();
+  async removeJobAttributeValueFromList(jobAttributeValue, jobAttribute) {
+    const jobAttributeValueElementsInPopupList =
+      this.getJobAttributeValueElementsInPopupList();
 
-    if (!hiddenJobAttributeValueElementsInPopupList.length) return;
+    if (!jobAttributeValueElementsInPopupList.length) return;
 
-    const hiddenJobAttributeValuesInPopupList =
-      this.getElementTextContentForJobAttribute(
-        jobAttribute,
-        hiddenJobAttributeValueElementsInPopupList
-      );
+    const jobAttributeValuesInPopupList = this.getElementJobAttributeValue(
+      jobAttribute,
+      jobAttributeValueElementsInPopupList
+    );
 
     const jobAttributeValueIsNotInPopupList =
-      !hiddenJobAttributeValuesInPopupList.includes(hiddenJobAttributeValue);
+      !jobAttributeValuesInPopupList.includes(jobAttributeValue);
 
     if (jobAttributeValueIsNotInPopupList) return;
 
-    const hiddenJobAttributeValueElementToRemove =
-      hiddenJobAttributeValueElementsInPopupList.find(
+    const jobAttributeValueElementToRemove =
+      jobAttributeValueElementsInPopupList.find(
         (element) =>
-          element.dataset.jobAttribute === jobAttribute &&
-          element.textContent.trim() === hiddenJobAttributeValue
+          element.getAttribute("data-job-attribute") === jobAttribute &&
+          element.getAttribute("data-job-attribute-value") === jobAttributeValue
+        // element.textContent.trim() === jobAttributeValue
       );
 
-    if (!hiddenJobAttributeValueElementToRemove) return;
+    if (!jobAttributeValueElementToRemove) return;
 
-    hiddenJobAttributeValueElementToRemove.classList.add("removing");
-    await hiddenJobAttributeValueElementToRemove.animate(
+    jobAttributeValueElementToRemove.classList.add("removing");
+    await jobAttributeValueElementToRemove.animate(
       ...this.getPopupListChangeAnimation("remove")
     ).finished;
 
-    hiddenJobAttributeValueElementToRemove.remove();
+    jobAttributeValueElementToRemove.remove();
 
     const listIsEmpty = !document.querySelectorAll(
       this.jobAttributeValueSelector
     ).length;
 
-    if (listIsEmpty) this.hiddenJobsMessageElement.dataset.listIsEmpty = true;
+    if (listIsEmpty)
+      this.nothingHiddenElement.setAttribute("data-list-is-empty", "");
   }
 }
 

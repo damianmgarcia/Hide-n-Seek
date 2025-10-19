@@ -1,6 +1,5 @@
 import { addMessageListener } from "../modules/messaging.js";
 import { refreshPopup } from "./modules/refresh-popup.js";
-import { isFirefox } from "../modules/browser.js";
 import { getActiveTab, getContentStatus } from "../modules/tabs.js";
 import "./modules/sync-manager.js";
 import { JobSearchPopup } from "./classes/job-search-popup.js";

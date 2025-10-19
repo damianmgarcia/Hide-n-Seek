@@ -10,41 +10,66 @@ const hnsContainer = {
           </svg>
         </button>
       </div>
-      <div class="hns-blocked-job"></div>
-    </div>
-  `,
+      <div class="hns-blocked-job toggles"></div>
+    </div>`,
 
-  process(element, jobBoardId) {
-    const component = { element, jobBoardId };
-    const toggles = new Set();
+  createComponent(element, jobBoardId) {
     element.setAttribute("data-hns-job-board-id", jobBoardId);
     element.addEventListener("click", (event) => event.stopPropagation());
-    const hnsBlockedJob = element.querySelector(".hns-blocked-job");
-    component.toggles = toggles;
-    component.addToggle = (toggle) => {
-      hnsBlockedJob.prepend(toggle.element);
-      toggles.add(toggle);
-      return toggle;
-    };
-    component.removeToggle = (jobAttribute, jobAttributeValue) => {
-      const toggle = [...toggles].find(
-        (toggle) =>
-          toggle.jobAttribute === jobAttribute &&
-          toggle.jobAttributeValue === jobAttributeValue
-      );
-      if (toggle) {
-        toggle.element.remove();
-      }
-      return toggles.delete(toggle);
-    };
     element.querySelector(".hns-block-button").addEventListener("click", () => {
-      const defaultToggle = element.querySelector(
-        ".hns-block-attribute-toggle[data-hns-default-attribute]"
-      );
-      if (defaultToggle) defaultToggle.click();
+      if (defaultToggle) defaultToggle.element.click();
     });
-    return component;
+
+    const toggles = new Map();
+    const togglesContainer = element.querySelector(".toggles");
+    let defaultToggle;
+
+    const getToggleId = (jobAttribute, jobAttributeValue) =>
+      `${jobAttribute}__${jobAttributeValue}`;
+
+    const getToggle = (jobAttribute, jobAttributeValue) =>
+      toggles.get(getToggleId(jobAttribute, jobAttributeValue));
+
+    const addToggle = (
+      jobAttribute,
+      jobAttributeValue,
+      jobAttributeName,
+      defaultAttribute,
+      removeOnToggleOff,
+      toggledOn,
+      onToggle
+    ) => {
+      const toggleId = getToggleId(jobAttribute, jobAttributeValue);
+      if (toggles.has(toggleId) || (removeOnToggleOff && !toggledOn)) return;
+
+      const toggle = ui.createComponent(
+        "hns-block-attribute-toggle",
+        jobAttribute,
+        jobAttributeValue,
+        jobAttributeName,
+        defaultAttribute,
+        removeOnToggleOff,
+        toggledOn,
+        onToggle
+      );
+
+      if (defaultAttribute) defaultToggle = toggle;
+
+      togglesContainer.prepend(toggle.element);
+      toggles.set(toggleId, toggle);
+    };
+
+    const removeToggle = (jobAttribute, jobAttributeValue) => {
+      toggles.delete(getToggleId(jobAttribute, jobAttributeValue));
+      console.log(toggles);
+    };
+
+    return { element, addToggle, removeToggle, getToggle };
   },
 };
 
-ui.registerTemplate(hnsContainer.name, hnsContainer.html, hnsContainer.process);
+ui.registerTemplate(
+  hnsContainer.name,
+  hnsContainer.html,
+  hnsContainer.createComponent
+);

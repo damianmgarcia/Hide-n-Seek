@@ -1,4 +1,4 @@
-const jobListings = (jobBoardId) => {
+const jobListings = async (jobBoard) => {
   const hnsMap = new Map();
 
   const setDisplayPreference = (userSettings) => {
@@ -9,8 +9,7 @@ const jobListings = (jobBoardId) => {
       );
     };
 
-    const removeHiddenJobsStorageKey = `JobDisplayManager.${jobBoardId}.removeHiddenJobs`;
-
+    const removeHiddenJobsStorageKey = `JobDisplayManager.${jobBoard.id}.removeHiddenJobs`;
     updateDOM(userSettings[removeHiddenJobsStorageKey] || false);
 
     chrome.storage.local.onChanged.addListener((changes) => {
@@ -19,31 +18,40 @@ const jobListings = (jobBoardId) => {
     });
   };
 
-  const addHns = (jobListing, attributeBlockers) => {
+  const addHns = (jobListing) => {
     jobListing.setAttribute("data-hns-job-listing", "");
-    const hnsContainerComponent = ui.createComponent(
-      "hns-container",
-      jobBoardId
-    );
-
-    attributeBlockers
-      .map((attributeBlocker) => attributeBlocker.getToggle(jobListing))
-      .filter((toggle) => toggle)
-      .map((toggle) => hnsContainerComponent.addToggle(toggle));
-
-    hnsMap.set(jobListing, {
-      hnsContainer: hnsContainerComponent.element,
-      addToggle: hnsContainerComponent.addToggle,
-      removeToggle: hnsContainerComponent.removeToggle,
-    });
-    jobListing.append(hnsContainerComponent.element);
+    const hns = ui.createComponent("hns-container", jobBoard.id);
+    hns.jobListing = jobListing; // TBD
+    hns.attributeBlockers = attributeBlockers; // TBD
+    hnsMap.set(jobListing, hns);
+    for (const attributeBlocker of attributeBlockers)
+      attributeBlocker.addToggles(hns);
+    jobListing.append(hns.element);
   };
 
   const removeHns = (jobListing) => {
-    return hnsMap.delete(jobListing);
+    hnsMap.delete(jobListing);
   };
 
-  const getAllHns = () => hnsMap.entries();
+  const storage = await chrome.storage.local.get();
+  setDisplayPreference(storage);
 
-  return { addHns, getAllHns, removeHns, setDisplayPreference };
+  const attributeBlockers = jobBoard.attributes.map(
+    (attribute) => new AttributeBlocker(jobBoard, attribute, storage, hnsMap)
+  );
+
+  const attributeBlockerMap = new Map(
+    attributeBlockers.map((attributeBlocker) => [
+      attributeBlocker.storageKey,
+      attributeBlocker,
+    ])
+  );
+
+  chrome.storage.local.onChanged.addListener((changes) =>
+    Object.entries(changes).forEach(([storageKey, changes]) =>
+      attributeBlockerMap.get(storageKey)?.handleStorageChanges(changes)
+    )
+  );
+
+  return { addHns, removeHns, setDisplayPreference };
 };

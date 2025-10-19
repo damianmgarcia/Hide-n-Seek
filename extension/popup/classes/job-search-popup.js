@@ -78,14 +78,17 @@ class JobSearchPopup {
 
   static updateSelectedJobBoard() {
     this.jobBoardSelectorElements.forEach(({ label, input }) => {
-      label.dataset.checked = input.checked;
+      label.setAttribute("data-checked", input.checked);
       if (!input.checked) return;
-      this.recentSearchQueryJobBoardId = label.dataset.jobBoardId;
+      this.recentSearchQueryJobBoardId =
+        label.getAttribute("data-job-board-id");
       chrome.storage.local.set({
-        recentSearchQueryJobBoardId: label.dataset.jobBoardId,
+        recentSearchQueryJobBoardId: label.getAttribute("data-job-board-id"),
       });
       if (!navigator.onLine) return;
-      this.jobNameSearchContainerInput.placeholder = `Search ${label.dataset.jobBoardPlaceholderName}`;
+      this.jobNameSearchContainerInput.placeholder = `Search ${label.getAttribute(
+        "data-job-board-placeholder-name"
+      )}`;
       this.jobNameSearchContainerInput.focus();
     });
   }
@@ -234,7 +237,10 @@ class JobSearchPopup {
         localStorage.recentSearchQueryJobBoardId;
 
     this.jobBoardSelectorElements.forEach(({ label, input }) => {
-      if (label.dataset.jobBoardId === this.recentSearchQueryJobBoardId)
+      if (
+        label.getAttribute("data-job-board-id") ===
+        this.recentSearchQueryJobBoardId
+      )
         input.checked = true;
     });
 

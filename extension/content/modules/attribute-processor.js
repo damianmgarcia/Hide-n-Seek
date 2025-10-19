@@ -10,10 +10,7 @@ const createAttributeProcessor = (() => {
     },
 
     subtract(text, { selector }, element) {
-      return text.replace(
-        element.querySelector(selector)?.textContent || "",
-        ""
-      );
+      return text.replace(element.querySelector(selector)?.innerText || "", "");
     },
   };
 
@@ -25,7 +22,7 @@ const createAttributeProcessor = (() => {
     return attribute.processors.reduce(
       (value, processor) =>
         processorFor[processor.process](value, processor, element),
-      element.textContent
+      element.innerText
     );
   };
 })();

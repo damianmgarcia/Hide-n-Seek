@@ -15,11 +15,17 @@ class RemoveHiddenJobsManager {
 
       this.checkboxInput.checked =
         changes[this.removeHiddenJobsStorageKey].newValue;
-      this.checkboxLabel.dataset.checked = this.checkboxInput.checked;
+      this.checkboxLabel.setAttribute(
+        "data-checked",
+        this.checkboxInput.checked
+      );
     });
 
     this.checkboxInput.addEventListener("input", () => {
-      this.checkboxLabel.dataset.checked = this.checkboxInput.checked;
+      this.checkboxLabel.setAttribute(
+        "data-checked",
+        this.checkboxInput.checked
+      );
       chrome.storage.local.set({
         [this.removeHiddenJobsStorageKey]: this.checkboxInput.checked,
       });
@@ -42,7 +48,10 @@ class RemoveHiddenJobsManager {
       : false;
 
     this.checkboxInput.checked = initialRemoveHiddenJobsValue;
-    this.checkboxLabel.dataset.checked = initialRemoveHiddenJobsValue;
+    this.checkboxLabel.setAttribute(
+      "data-checked",
+      initialRemoveHiddenJobsValue
+    );
   }
 }
 

@@ -61,6 +61,15 @@ html[data-hns-remove-hidden-jobs="true"]
   backdrop-filter: blur(10px) !important;
   background: hsl(0, 0%, 50%, 0.75) !important;
   justify-content: center !important;
+
+  align-content: space-evenly !important;
+
+  border-bottom: 1px solid #000000 !important;
+  border-top: 1px solid #000000 !important;
+  box-sizing: border-box !important;
+
+  overflow-x: auto !important;
+  flex-direction: column !important;
 }
 
 .hns-container:has([data-hns-blocked-attribute]) .hns-blocked-job {
@@ -203,6 +212,36 @@ html[data-hns-remove-hidden-jobs="true"]
   background: hsl(60, 50%, 80%, 0.7) !important;
 }
 
+.hns-block-attribute-toggle[data-hns-attribute="keyword"] {
+  border: 1px hsl(120, 50%, 80%, 1) solid !important;
+}
+
+.hns-block-attribute-toggle[data-hns-attribute="keyword"] {
+  background: hsl(120, 50%, 80%, 0) !important;
+  color: hsl(120, 50%, 80%, 1) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-attribute="keyword"]:hover {
+  background: hsl(120, 50%, 80%, 0.2) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-attribute="keyword"]:active {
+  background: hsl(120, 50%, 80%, 0.3) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="keyword"] {
+  background: hsl(120, 50%, 80%, 1) !important;
+  color: hsl(0, 0%, 0%) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="keyword"]:hover {
+  background: hsl(120, 50%, 80%, 0.8) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="keyword"]:active {
+  background: hsl(120, 50%, 80%, 0.7) !important;
+}
+
 .hns-block-attribute-toggle-attribute {
   font-size: 10px !important;
   font-weight: bold !important;
@@ -216,7 +255,7 @@ html[data-hns-remove-hidden-jobs="true"]
 
 .hns-block-attribute-toggle-text {
   font-size: 14px !important;
-  max-width: 25ch !important;
+  max-width: 15ch !important;
   overflow: hidden !important;
   text-align: center !important;
   text-overflow: ellipsis !important;

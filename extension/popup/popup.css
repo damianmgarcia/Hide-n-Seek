@@ -107,7 +107,7 @@ header {
 
 #settings-toggle {
   aspect-ratio: 1;
-  background: hsl(0, 0%, 100%, 0.3);
+  /* background: hsl(0, 0%, 100%, 0.3); */
   border-radius: 50%;
   fill: hsl(0, 0%, 0%);
   grid-column: 2 / 3;
@@ -161,8 +161,16 @@ main:has(#settings-container:not(.invisible)) #settings-toggle:active {
   transition: transform 400ms ease-out;
 }
 
+#settings-toggle:hover svg {
+  transform: rotate(15deg);
+}
+
 main:has(#settings-container:not(.invisible)) #settings-toggle svg {
   transform: rotate(180deg);
+}
+
+main:has(#settings-container:not(.invisible)) #settings-toggle:hover svg {
+  transform: rotate(165deg);
 }
 
 .main-content {
@@ -370,6 +378,7 @@ html[data-tab-is-job-board="false"] .options-for-job-search {
   height: var(--height);
   left: calc(50% - var(--width) * 0.5 - var(--padding));
   line-height: 1;
+  opacity: 0;
   padding: var(--padding);
   pointer-events: none;
   position: absolute;
@@ -378,13 +387,9 @@ html[data-tab-is-job-board="false"] .options-for-job-search {
   width: var(--width);
 }
 
-.nothing-hidden-message[data-list-is-empty="true"] {
+.nothing-hidden-message[data-list-is-empty] {
   opacity: 1;
   transition: opacity 200ms ease;
-}
-
-.nothing-hidden-message[data-list-is-empty="false"] {
-  opacity: 0;
 }
 
 .hidden-jobs-list {
@@ -401,7 +406,7 @@ html[data-tab-is-job-board="false"] .options-for-job-search {
   scrollbar-width: thin;
 }
 
-.hidden-job-container {
+.hidden-job-button {
   align-items: start;
   background: hsl(0, 0%, 100%, 0.3);
   border-radius: 1rem;
@@ -420,39 +425,51 @@ html[data-tab-is-job-board="false"] .options-for-job-search {
   width: calc(100% - (1rem + 2rem));
 }
 
-.hidden-job-container:hover {
+.hidden-job-button:hover {
   background: hsl(0, 0%, 100%, 0.5);
 }
 
-.hidden-job-container:active {
+.hidden-job-button:active {
   background: hsl(0, 0%, 100%, 0.6);
 }
 
-.hidden-job-container[data-job-attribute="promotionalStatus"] {
+.hidden-job-button[data-job-attribute="promotionalStatus"] {
   background: hsl(60, 100%, 50%, 0.3);
 }
 
-.hidden-job-container[data-job-attribute="promotionalStatus"]:hover {
+.hidden-job-button[data-job-attribute="promotionalStatus"]:hover {
   background: hsl(60, 100%, 50%, 0.5);
 }
 
-.hidden-job-container[data-job-attribute="promotionalStatus"]:active {
+.hidden-job-button[data-job-attribute="promotionalStatus"]:active {
   background: hsl(60, 100%, 50%, 0.6);
 }
 
-.hidden-job-container:first-child {
+.hidden-job-button[data-job-attribute="keyword"] {
+  background: hsl(120, 100%, 50%, 0.3);
+}
+
+.hidden-job-button[data-job-attribute="keyword"]:hover {
+  background: hsl(120, 100%, 50%, 0.5);
+}
+
+.hidden-job-button[data-job-attribute="keyword"]:active {
+  background: hsl(120, 100%, 50%, 0.6);
+}
+
+.hidden-job-button:first-child {
   align-self: end;
 }
 
-.hidden-job-container:last-child {
+.hidden-job-button:last-child {
   align-self: start;
 }
 
-.hidden-job-container:only-child {
+.hidden-job-button:only-child {
   align-self: center;
 }
 
-.hidden-job-container.remove {
+.hidden-job-button.remove {
   height: 0;
   margin-bottom: 0;
   margin-top: 0;
@@ -473,7 +490,7 @@ html[data-tab-is-job-board="false"] .options-for-job-search {
   white-space: nowrap;
 }
 
-.hidden-job-container svg {
+.hidden-job-button svg {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   height: 19px;
@@ -482,11 +499,11 @@ html[data-tab-is-job-board="false"] .options-for-job-search {
   width: 19px;
 }
 
-.hidden-job-container:hover svg {
+.hidden-job-button:hover svg {
   fill: hsl(0, 100%, 40%);
 }
 
-.hidden-job-container:active svg {
+.hidden-job-button:active svg {
   fill: hsl(0, 100%, 45%);
 }
 

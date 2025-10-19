@@ -7,7 +7,7 @@ settingsManager.start = function () {
   if (this.started) return;
   this.started = true;
 
-  if (isFirefox())
+  if (isFirefox)
     // Hide backup/restore if Firefox. See https://github.com/damianmgarcia/Hide-n-Seek/issues/40
     document.querySelector("#data-settings").style.display = "none";
 
