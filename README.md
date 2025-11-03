@@ -18,7 +18,7 @@
 
 To hide promoted jobs, click the “block” button on any promoted listing and then activate the “Promoted” toggle.
 
-For easy management, you can view a list of everything you've hidden by clicking the Hide n’ Seek button on your browser’s toolbar.
+You can view a list of everything you've hidden, hide jobs by keyword, and backup and restore your data by clicking the Hide n’ Seek button on your browser’s toolbar.
 
 ## **Usage**
 
@@ -35,7 +35,7 @@ For easy management, you can view a list of everything you've hidden by clicking
 <img src="/images/usage-unhide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of unhiding a job' /><br><br>
 
 - Click the toolbar button for additional options:
-  - Block jobs by keyword (or a regular expression)
+  - Block jobs by keyword (or a regular expression as /pattern/flags format, for example /part[\s-]?time/i)
   - Scroll through your list of hidden jobs and click a hidden job's name to remove it
   - Click the "Unhide all jobs" button to reset your hidden jobs list. This action can be undone by clicking the "Undo" button
   - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays
@@ -86,10 +86,10 @@ The promotional video was created with a combination of Adobe After Effects and 
   - Release date
     - 2025-11-03
   - New features
-    - Block by keyword
-      - You can now block jobs by keyword. Just open the popup, enter a keyword, and press Enter! You can also block jobs with regular expressions. For example, you could block /part[\s-]?time/i to block many variations of part time: part-time, parttime, part time, Part-Time
-    - Donate to Charm
-      - If you're able to support Hide n' Seek by feeding Charm, that would be super appreciated!
+    - Block jobs by keyword
+      - You can now block jobs by keyword. Just open the popup, enter a keyword, and press Enter to add it to your list! You can also block jobs using regular expressions. For example, you could block /part[\s-]?time/i to block many variations of "part time" such as part-time, parttime, part time, Part-Time, etc.
+    - Feed Charm (Donate)
+      - Added a "Feed Charm?" button. If you're able to support Hide n' Seek by feeding Charm, that would be super appreciated! :3
 - 5.1.3
   - Release date
     - 2024-12-20
