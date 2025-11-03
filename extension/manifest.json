@@ -13,7 +13,7 @@
   "permissions": ["storage", "tabs"],
   "action": {
     "default_title": "Hide n' Seek",
-    "default_popup": "/popup/popup.html",
+    "default_popup": "/runtime/popup/popup.html",
     "default_icon": {
       "16": "/assets/images/hide-n-seek-icon-16.png",
       "32": "/assets/images/hide-n-seek-icon-32.png",
@@ -45,7 +45,7 @@
     }
   ],
   "background": {
-    "service_worker": "/background/background.js",
+    "service_worker": "/runtime/background/background.js",
     "type": "module"
   }
 }

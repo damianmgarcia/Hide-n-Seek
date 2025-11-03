@@ -38,6 +38,7 @@ const jobBoards = (() => {
       logo: {
         src: "/assets/images/glassdoor-logo.svg",
         alt: "Glassdoor's logo",
+        brandColor: "#00A264",
       },
       attributes: [
         commonAttributes.keyword,
@@ -47,7 +48,7 @@ const jobBoards = (() => {
           removableValues: false,
           match: "exact",
           selector:
-            ".EmployerProfile_compactEmployerName__LE242, .EmployerProfile_compactEmployerName__9MGcV",
+            ".EmployerProfile_compactEmployerName__LE242, .EmployerProfile_compactEmployerName__9MGcV, [class*=EmployerProfile_compactEmployerName__]",
           processors: [
             commonProcessors.trim,
             commonProcessors.replaceEmptyWith("Unknown Company"),
@@ -64,6 +65,7 @@ const jobBoards = (() => {
       logo: {
         src: "/assets/images/indeed-logo.svg",
         alt: "Indeed's logo",
+        brandColor: "#003A9B",
       },
       attributes: [
         commonAttributes.keyword,
@@ -105,6 +107,7 @@ const jobBoards = (() => {
       logo: {
         src: "/assets/images/linkedin-logo.svg",
         alt: "LinkedIn's logo",
+        brandColor: "#0a66c2",
       },
       attributes: [
         commonAttributes.keyword,
@@ -113,7 +116,7 @@ const jobBoards = (() => {
           id: "companyName",
           removableValues: false,
           selector:
-            ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > span",
+            ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > *",
           match: "exact",
           processors: [
             commonProcessors.trim,
@@ -122,7 +125,7 @@ const jobBoards = (() => {
               pattern: "\\s·\\s.*$",
               flags: "gm",
               replacement: "",
-            }, // test this to make sure it matches and removes the LinkedIn notation: [company name] · Something else
+            },
             commonProcessors.replaceEmptyWith("Unknown Company"),
           ],
           default: true,

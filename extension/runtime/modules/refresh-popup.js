@@ -1,6 +1,6 @@
-import { getActiveTab } from "../../modules/tabs.js";
-import { JobBoardPopup } from "../classes/job-board-popup.js";
-import { JobSearchPopup } from "../classes/job-search-popup.js";
+import { getActiveTab } from "./tabs.js";
+import { JobBoardPopup } from "../popup/classes/job-board-popup.js";
+import { JobSearchPopup } from "../popup/classes/job-search-popup.js";
 
 const refreshPopup = async ({ message, sender }) => {
   const activeTab = await getActiveTab();

@@ -1,7 +1,4 @@
-import {
-  getBackupValues,
-  getBlockedValues,
-} from "../../background/modules/storage.js";
+import { getBackupValues, getBlockedValues } from "../../modules/storage.js";
 
 class UnblockAllJobsManager {
   jobBoardLogo = document.querySelector(
@@ -11,11 +8,12 @@ class UnblockAllJobsManager {
   undoButton = document.querySelector("#undo-unhide-all-jobs");
 
   constructor(jobBoard, storage) {
-    this.jobBoardId = jobBoard.id;
+    this.jobBoard = jobBoard;
     this.unblockButton.addEventListener("click", () => this.unblock());
     this.undoButton.addEventListener("click", () => this.undoUnblock());
     this.jobBoardLogo.setAttribute("src", jobBoard.logo.src);
     this.jobBoardLogo.setAttribute("alt", jobBoard.logo.alt);
+    this.jobBoardLogo.style.setProperty("background", jobBoard.logo.brandColor);
     this.updateButtons(storage);
 
     chrome.storage.local.onChanged.addListener((changes) => {
@@ -30,8 +28,8 @@ class UnblockAllJobsManager {
     storage = storage || (await chrome.storage.local.get());
 
     const [allBlockedValues, allBackupValues] = await Promise.all([
-      getBlockedValues(this.jobBoardId, storage),
-      getBackupValues(this.jobBoardId, storage),
+      getBlockedValues(this.jobBoard.id, storage),
+      getBackupValues(this.jobBoard.id, storage),
     ]);
 
     const hasBlockedValues = Object.values(allBlockedValues).some(
@@ -58,7 +56,7 @@ class UnblockAllJobsManager {
     this.unblockButton.disabled = true;
 
     const allBlockedValues = Object.entries(
-      await getBlockedValues(this.jobBoardId)
+      await getBlockedValues(this.jobBoard.id)
     );
 
     if (!allBlockedValues.length) return;
@@ -75,7 +73,7 @@ class UnblockAllJobsManager {
     this.undoButton.disabled = true;
 
     const allBackupValues = Object.entries(
-      await getBackupValues(this.jobBoardId)
+      await getBackupValues(this.jobBoard.id)
     );
 
     if (!allBackupValues.length) return;

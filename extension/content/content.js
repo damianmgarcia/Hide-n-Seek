@@ -17,6 +17,7 @@
   window.addEventListener("pageshow", checkBfcache);
 
   const listingCollector = new ElementCollector();
+  window.listingCollector = listingCollector;
   listingCollector.onAdded.addListener((jobListing) => {
     addHns(jobListing);
     sendStatus("listing added");

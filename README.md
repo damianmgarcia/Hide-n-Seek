@@ -35,9 +35,11 @@ For easy management, you can view a list of everything you've hidden by clicking
 <img src="/images/usage-unhide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of unhiding a job' /><br><br>
 
 - Click the toolbar button for additional options:
-  - Scroll through your list of hidden jobs and click a hidden job's name to remove it.
-  - Click the "Unhide all jobs" button to reset your hidden jobs list. This action can be undone by clicking the "Undo" button.
-  - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays.
+  - Block jobs by keyword (or a regular expression)
+  - Scroll through your list of hidden jobs and click a hidden job's name to remove it
+  - Click the "Unhide all jobs" button to reset your hidden jobs list. This action can be undone by clicking the "Undo" button
+  - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays
+  - Click the settings button where you can backup and restore your data
 
 <img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of the extension's toolbar button, along with the options panel, shows a list of hidden jobs and controls for managing the list." /><br><br>
 
@@ -80,6 +82,14 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 6.0.0
+  - Release date
+    - 2025-11-03
+  - New features
+    - Block by keyword
+      - You can now block jobs by keyword. Just open the popup, enter a keyword, and press Enter! You can also block jobs with regular expressions. For example, you could block /part[\s-]?time/i to block many variations of part time: part-time, parttime, part time, Part-Time
+    - Donate to Charm
+      - If you're able to support Hide n' Seek by feeding Charm, that would be super appreciated!
 - 5.1.3
   - Release date
     - 2024-12-20

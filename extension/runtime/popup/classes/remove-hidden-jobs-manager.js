@@ -43,15 +43,12 @@ class RemoveHiddenJobsManager {
       this.removeHiddenJobsStorageKey
     );
 
-    const initialRemoveHiddenJobsValue = removeHiddenJobsStorageKeyFound
+    const removeHiddenJobs = removeHiddenJobsStorageKeyFound
       ? storage[this.removeHiddenJobsStorageKey]
       : false;
 
-    this.checkboxInput.checked = initialRemoveHiddenJobsValue;
-    this.checkboxLabel.setAttribute(
-      "data-checked",
-      initialRemoveHiddenJobsValue
-    );
+    this.checkboxInput.checked = removeHiddenJobs;
+    this.checkboxLabel.setAttribute("data-checked", removeHiddenJobs);
   }
 }
 

@@ -6,7 +6,6 @@ const addMessageListener = (message, listener) => {
   } else {
     listeners.set(message, new Set([listener]));
   }
-  console.log(listeners);
 };
 
 const routeMessage = (message, sender, sendResponse) => {

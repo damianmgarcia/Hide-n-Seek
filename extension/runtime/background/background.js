@@ -1,8 +1,8 @@
-import { install } from "./modules/install.js";
+import { install } from "../modules/install.js";
 import { addMessageListener } from "../modules/messaging.js";
 import { updateBadge, updateBadges } from "../modules/tabs.js";
 import { getJobBoard } from "../modules/job-boards.js";
-import { updateLocalStorage, updateSyncStorage } from "./modules/storage.js";
+import { updateLocalStorage, updateSyncStorage } from "../modules/storage.js";
 
 addMessageListener("bfcache used", ({ sender }) => updateBadge(sender.tab));
 addMessageListener("hasListings changed", ({ sender }) =>

@@ -1,5 +1,5 @@
 import { download, upload } from "./files.js";
-import { isFirefox } from "../../modules/browser.js";
+import { isFirefox } from "./browser.js";
 
 const settingsManager = {};
 
@@ -7,20 +7,17 @@ settingsManager.start = function () {
   if (this.started) return;
   this.started = true;
 
-  if (isFirefox)
+  if (isFirefox) {
     // Hide backup/restore if Firefox. See https://github.com/damianmgarcia/Hide-n-Seek/issues/40
     document.querySelector("#data-settings").style.display = "none";
+  }
 
-  const settingsContainer = document.querySelector("#settings-container");
+  const settingsContainers = document.querySelectorAll(".main-content > *");
   const settingsToggle = document.querySelector("#settings-toggle");
   settingsToggle.addEventListener("click", () => {
-    const settingsInvisible = settingsContainer.classList.toggle("invisible");
-    settingsContainer
-      .querySelectorAll("button")
-      .forEach((button) => (button.tabIndex = settingsInvisible ? -1 : 0));
-    document
-      .querySelectorAll(".options-container :is(button, input)")
-      .forEach((button) => (button.tabIndex = settingsInvisible ? 0 : -1));
+    settingsContainers.forEach((settingsContainer) =>
+      settingsContainer.classList.toggle("invisible")
+    );
   });
 
   const backupButton = document.querySelector("#backup-button");
@@ -29,6 +26,11 @@ settingsManager.start = function () {
   const restoreButton = document.querySelector("#restore-button");
   restoreButton.addEventListener("click", () =>
     upload(this.restore.bind(this))
+  );
+
+  const feedCharmButton = document.querySelector(".feed-charm-button");
+  feedCharmButton.addEventListener("click", () =>
+    chrome.tabs.create({ url: "https://buymeacoffee.com/hide.n.seek" })
   );
 };
 

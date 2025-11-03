@@ -61,7 +61,6 @@ const hnsContainer = {
 
     const removeToggle = (jobAttribute, jobAttributeValue) => {
       toggles.delete(getToggleId(jobAttribute, jobAttributeValue));
-      console.log(toggles);
     };
 
     return { element, addToggle, removeToggle, getToggle };

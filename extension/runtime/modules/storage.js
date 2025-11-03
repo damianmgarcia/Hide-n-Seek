@@ -1,4 +1,4 @@
-import { chunk, debounce, difference } from "../../modules/utilities.js";
+import { chunk, debounce, difference } from "./utilities.js";
 
 const chunkStorage = (() => {
   const CHUNK_SIZE = 100;

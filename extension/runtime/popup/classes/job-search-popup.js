@@ -1,4 +1,4 @@
-import { settingsManager } from "../modules/settings-manager.js";
+import { settingsManager } from "../../modules/settings-manager.js";
 import { safeAwait } from "../../modules/utilities.js";
 
 class JobSearchPopup {
@@ -180,7 +180,7 @@ class JobSearchPopup {
 
     const jobBoardResponse = await safeAwait(fetch, defaultOrigin);
 
-    if (!jobBoardResponse || !jobBoardResponse.ok) {
+    if (!jobBoardResponse) {
       return this.flashError(`Can't connect to ${jobBoardName}`);
     }
 
@@ -196,8 +196,6 @@ class JobSearchPopup {
 
   static started = false;
   static async start(activeTab) {
-    document.documentElement.setAttribute("data-tab-is-job-board", "false");
-
     if (this.started) return this.updateInputsBasedOnConnectivity();
     this.started = true;
 

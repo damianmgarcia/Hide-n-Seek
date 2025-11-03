@@ -1,4 +1,4 @@
-import "../modules/ui/info-box.js";
+import "./ui/info-box.js";
 import { createComponent } from "./ui/ui.js";
 
 const syncManager = {};

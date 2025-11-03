@@ -1,4 +1,4 @@
-import { getJobBoardTabs } from "../../modules/job-boards.js";
+import { getJobBoardTabs } from "./job-boards.js";
 import { deChunkStorage } from "./storage.js";
 
 const install = async (details) => {

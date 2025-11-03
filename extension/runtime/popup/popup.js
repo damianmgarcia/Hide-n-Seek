@@ -1,7 +1,7 @@
 import { addMessageListener } from "../modules/messaging.js";
-import { refreshPopup } from "./modules/refresh-popup.js";
+import { refreshPopup } from "../modules/refresh-popup.js";
 import { getActiveTab, getContentStatus } from "../modules/tabs.js";
-import "./modules/sync-manager.js";
+import "../modules/sync-manager.js";
 import { JobSearchPopup } from "./classes/job-search-popup.js";
 import { JobBoardPopup } from "./classes/job-board-popup.js";
 

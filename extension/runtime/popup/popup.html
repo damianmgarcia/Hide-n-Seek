@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-tab-is-job-board="checking">
+<html>
   <head>
     <script type="module" src="popup.js"></script>
     <link rel="stylesheet" href="popup.css" />
@@ -17,18 +17,30 @@
       type="font/woff2"
       crossorigin
     />
+    <link
+      rel="preload"
+      href="/assets/fonts/Fredoka-Bold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/Schoolbell-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
   </head>
   <body>
     <main>
       <header>
-        <div class="brand-container">
-          <img
-            alt="The Hide n' Seek logo: A cartoon briefcase, bisected diagonally, one side black and the other side light brown. The face of a black cat with yellow eyes is partially visible as it peeks around the center of the bisection."
-            draggable="false"
-            src="/assets/images/hide-n-seek-icon.svg"
-          />
-          <h1 class="hide-n-seek-title">Hide n' Seek</h1>
-        </div>
+        <img
+          alt="The Hide n' Seek logo: A cartoon briefcase, bisected diagonally, one side black and the other side light brown. The face of a black cat with yellow eyes is partially visible as it peeks around the center of the bisection."
+          draggable="false"
+          src="/assets/images/hide-n-seek-icon.svg"
+        />
+        <h1 class="hide-n-seek-title fredoka">Hide n' Seek</h1>
         <button id="settings-toggle">
           <svg viewBox="0 0 761.6 800">
             <path
@@ -140,6 +152,15 @@
               <div class="nothing-hidden-message" data-list-is-empty>
                 No hidden jobs
               </div>
+
+              <div class="add-keyword-container">
+                <input
+                  name="add-keyword"
+                  type="text"
+                  placeholder="Block by keyword"
+                />
+              </div>
+
               <div class="hidden-jobs-list"></div>
             </div>
             <div class="unhide-all-and-undo-buttons">
@@ -200,6 +221,35 @@
           </div>
         </div>
       </div>
+      <footer>
+        <button class="feed-charm-button">
+          <div class="feed-charm-text">Feed Charm?</div>
+          <img
+            alt="Empty cat food bowl"
+            class="feed-charm-bowl"
+            draggable="false"
+            src="/assets/images/feed-charm-bowl.png"
+          />
+          <img
+            alt="Red heart"
+            class="feed-charm-heart left-heart"
+            draggable="false"
+            src="/assets/images/feed-charm-heart.png"
+          />
+          <img
+            alt="Charm's face"
+            class="feed-charm-face"
+            draggable="false"
+            src="/assets/images/feed-charm-face.png"
+          />
+          <img
+            alt="Red heart"
+            class="feed-charm-heart right-heart"
+            draggable="false"
+            src="/assets/images/feed-charm-heart.png"
+          />
+        </button>
+      </footer>
     </main>
   </body>
 </html>

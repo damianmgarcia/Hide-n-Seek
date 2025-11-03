@@ -30,9 +30,14 @@ const hnsToggle = {
     if (defaultAttribute)
       element.setAttribute("data-hns-default-attribute", "");
 
-    const removeToggle = () => {
+    const removeToggle = async () => {
       element.disabled = true;
-      setTimeout(() => element.remove(), 400); // TBD improve this
+      const animationsFinished = Promise.all(
+        element.getAnimations().map((animation) => animation.finished)
+      );
+      const fallbackTimer = new Promise((resolve) => setTimeout(resolve, 400));
+      await Promise.race([animationsFinished, fallbackTimer]);
+      element.remove();
     };
 
     const toggleOn = () => {

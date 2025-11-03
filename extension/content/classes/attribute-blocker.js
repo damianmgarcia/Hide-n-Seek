@@ -15,8 +15,19 @@ class AttributeBlocker {
       if (attribute.match === "exact") {
         return (value) => this.blockedValues.has(value);
       } else if (attribute.match === "pattern") {
-        return (value, pattern) =>
-          new RegExp("\\b" + pattern + "\\b", "i").test(value);
+        return (value, pattern) => {
+          const regexMatch = /^\/(?<pattern>.+)\/(?<flags>[dgimsuy]*)$/.exec(
+            pattern
+          );
+          if (regexMatch) {
+            return new RegExp(
+              regexMatch.groups.pattern,
+              [...new Set(regexMatch.groups.flags.split(""))].join("")
+            ).test(value);
+          } else {
+            return new RegExp("\\b" + pattern + "\\b", "i").test(value);
+          }
+        };
       }
     })();
 
@@ -124,9 +135,6 @@ class AttributeBlocker {
         this.addToggles(hns);
       }
     }
-    // document
-    //   .querySelectorAll(`.hns-container [data-hns-attribute-value="${value}"]`)
-    //   .forEach((toggleWithValue) => this.updateToggle(toggleWithValue, value));
   }
 
   updateLocalStorage() {
