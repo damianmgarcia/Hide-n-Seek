@@ -90,11 +90,17 @@ The promotional video was created with a combination of Adobe After Effects and 
       - You can now block jobs by keyword. Just open the popup, enter a keyword, and press Enter to add it to your list! You can also block jobs using regular expressions. For example, you could block /part[\s-]?time/i to block many variations of "part time" such as part-time, parttime, part time, Part-Time, etc.
     - Feed Charm (Donate)
       - Added a "Feed Charm?" button. If you're able to support Hide n' Seek by feeding Charm, that would be super appreciated! :3
+- 5.1.4
+  - Release date
+    - 2025-03-27
+  - Bug fix
+    - Updated company name detection for LinkedIn. Many thanks to [ert224](https://github.com/ert224) and [jogwuegbu](https://github.com/jogwuegbu) for discovering and contributing this fix!
 - 5.1.3
   - Release date
     - 2024-12-20
   - Bug fix
     - Fixes maximum call stack issue with very large exports. Many thanks to [wchen342](https://github.com/wchen342) for discovering and contributing this fix!
+    - Fixed a compatibility issue with Firefox related to the Chrome API
   - Improvement
     - Improves compatibility with the inDoors extension. Many thanks to [wchen342](https://github.com/wchen342) for discovering and contributing this improvement!
 - 5.1.2
