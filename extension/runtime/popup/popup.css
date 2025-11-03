@@ -1,0 +1,908 @@
+@font-face {
+  font-display: swap;
+  font-family: "Schoolbell";
+  font-style: normal;
+  font-weight: 400;
+  src: url(/assets/fonts/Schoolbell-Regular.ttf) format("TrueType");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Fredoka-Bold";
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  font-weight: 700;
+  src: url(/assets/fonts/Fredoka-Bold.ttf) format("TrueType");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  src: url(/assets/fonts/open-sans-wght-400.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  src: url(/assets/fonts/open-sans-wght-700.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+* {
+  user-select: none;
+}
+
+html {
+  --document-width: 21rem;
+  --scrollbar-width: 10px;
+  width: var(--document-width);
+}
+
+html[data-job-board-id] {
+  height: 37.5rem;
+}
+
+html:not([data-job-board-id]) {
+  height: 13rem;
+}
+
+html:has(#settings-container:not(#settings-container.invisible)) {
+  height: 37.5rem;
+}
+
+body {
+  --body-margin: 0.5rem;
+  background: hsl(0, 0%, 0%);
+  color: hsl(0, 0%, 0%);
+  font-family: "Open Sans", sans-serif;
+  font-size: 100%;
+  font-synthesis: none;
+  height: calc(100% - 1rem);
+  line-height: 1.4;
+  margin: var(--body-margin);
+  width: calc(var(--document-width) - var(--body-margin) * 2);
+}
+
+main {
+  --main-padding: 1rem;
+  background: hsl(39, 77%, 83%);
+  border-radius: 1rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-rows: 2rem 1fr;
+  height: calc(100% - 2rem);
+  padding: var(--main-padding);
+}
+
+header {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1.5rem 1fr 1.5rem;
+  width: 100%;
+}
+
+html:not([data-job-board-id]) footer {
+  display: none;
+}
+
+.hide-n-seek-title {
+  color: hsl(0, 0%, 0%);
+  font: 1.55rem "Fredoka-Bold";
+  line-height: 1;
+  margin: 4px 0 0 0;
+  text-align: center;
+}
+
+#settings-toggle {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  fill: hsl(0, 0%, 0%);
+  height: 1.75rem;
+  justify-self: end;
+  margin-top: 4px;
+  position: relative;
+  transition: background-color 200ms ease-out;
+  z-index: 1;
+}
+
+main:has(.warning) #settings-toggle::after {
+  --size: 0.8rem;
+  background: hsl(60, 100%, 50%);
+  border-radius: 50%;
+  content: "!";
+  display: grid;
+  font-size: calc(var(--size) / 1.5);
+  font-weight: bold;
+  height: var(--size);
+  left: calc(0px + 50% - (var(--size) / 2) + (cos(45deg) * 50%));
+  place-content: center;
+  position: absolute;
+  top: calc(0px + 50% - (var(--size) / 2) - (cos(45deg) * 50%));
+  width: var(--size);
+}
+
+#settings-toggle:hover {
+  background: hsl(0, 0%, 100%, 0.5);
+  fill: hsl(0, 0%, 20%);
+}
+
+#settings-toggle:active {
+  background: hsl(0, 0%, 100%, 0.6);
+}
+
+main:has(#settings-container:not(#settings-container.invisible))
+  #settings-toggle {
+  background: hsl(0, 0%, 100%, 0.6);
+}
+
+main:has(#settings-container:not(#settings-container.invisible))
+  #settings-toggle:hover {
+  background: hsl(0, 0%, 100%, 0.5);
+}
+
+main:has(#settings-container:not(#settings-container.invisible))
+  #settings-toggle:active {
+  background: hsl(0, 0%, 100%, 0.3);
+}
+
+#settings-toggle svg {
+  transition: transform 400ms ease-out;
+}
+
+#settings-toggle:hover svg {
+  transform: rotate(15deg);
+}
+
+main:has(#settings-container:not(#settings-container.invisible))
+  #settings-toggle
+  svg {
+  transform: rotate(180deg);
+}
+
+main:has(#settings-container:not(#settings-container.invisible))
+  #settings-toggle:hover
+  svg {
+  transform: rotate(165deg);
+}
+
+.main-content {
+  position: relative;
+}
+
+.main-content > * {
+  display: flex;
+  height: calc(100% - 2rem);
+  inset: 0;
+  position: absolute;
+  transition: 200ms ease-out;
+  transition-property: opacity, visibility;
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.options-container {
+  align-items: center;
+  background: hsl(30, 56.6%, 65.7%);
+  border-radius: 1rem;
+  display: none;
+  flex: 1 0 auto;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  justify-items: center;
+  padding: 1rem;
+  width: calc(100% - 2rem);
+}
+
+html[data-job-board-id] .options-for-job-board,
+html:not([data-job-board-id]) .options-for-job-search {
+  display: flex;
+}
+
+.job-board-search-options-container {
+  align-items: center;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+}
+
+.job-board-search-option-container {
+  border-radius: 0.5rem;
+  height: 1rem;
+  display: grid;
+  padding: 0.5rem;
+  place-items: center;
+  transition: background-color 200ms ease-out;
+  width: calc(100% - 1rem);
+}
+
+.job-board-search-option-container[data-job-board-id="glassdoor"][data-checked="true"] {
+  background: hsl(157, 100%, 32%);
+}
+
+.job-board-search-option-container[data-job-board-id="indeed"][data-checked="true"] {
+  background: hsl(218, 100%, 30%);
+}
+
+.job-board-search-option-container[data-job-board-id="linkedIn"][data-checked="true"] {
+  background: hsl(210, 90%, 40%);
+}
+
+.job-board-search-option-container[data-checked="false"] {
+  background: hsl(0, 0%, 100%, 0);
+  cursor: pointer;
+}
+
+.job-board-search-option-container[data-checked="false"]:hover {
+  background: hsl(0, 0%, 100%, 0.2);
+}
+
+.job-board-search-option-container[data-checked="false"]:active {
+  background: hsl(0, 0%, 100%, 0.3);
+}
+
+.job-board-search-option-container * {
+  transition: fill 200ms ease-out;
+}
+
+.job-board-search-option-container[data-checked="true"] * {
+  fill: hsl(0, 0%, 100%);
+}
+
+.job-board-search-option-container[data-checked="false"] * {
+  fill: hsl(0, 0%, 50%);
+}
+
+.job-board-search-option-container:has(:disabled) {
+  pointer-events: none;
+}
+
+.job-board-search-option-container > input {
+  position: absolute;
+}
+
+.options-for-job-search .job-board-name {
+  width: 100%;
+}
+
+.options-for-job-board .job-board-name {
+  border-radius: calc(1px / 0);
+  margin-top: -1.5rem;
+  max-height: 0.8rem;
+  padding: 0.4rem 0.8rem;
+}
+
+.job-name-search-container {
+  border-radius: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 30px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.job-name-search-container > input {
+  grid-column: 1 / 3;
+  grid-row: 1 / 1;
+  width: 100%;
+}
+
+.job-name-search-container > button {
+  background: hsl(0, 0%, 0%, 0.1);
+  grid-column: 2 / 3;
+  grid-row: 1 / 1;
+  height: auto;
+  position: relative;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
+  width: 30px;
+}
+
+.job-name-search-container > button:disabled {
+  transition-delay: 200ms;
+}
+
+.job-name-search-container > button:hover {
+  background: hsl(0, 0%, 0%, 0.2);
+}
+
+.job-name-search-container > button:active {
+  background: hsl(0, 0%, 0%, 0.3);
+}
+
+.job-name-search-container > button > img {
+  z-index: 1;
+}
+
+.job-name-search-container > button > .glass {
+  backdrop-filter: blur(1.2px) brightness(1.1) contrast(1.2);
+  background: hsl(0, 0%, 0%, 0);
+  border-radius: 50%;
+  height: 11.3px;
+  left: 7.1px;
+  position: absolute;
+  top: 7.9px;
+  transition: background-color 200ms ease-out;
+  transition-delay: 200ms;
+  width: 11.3px;
+  z-index: 0;
+}
+
+.job-name-search-container > button:disabled > .glass {
+  background: hsl(0, 0%, 0%, 1);
+  backdrop-filter: blur(0) brightness(1) contrast(1);
+  transition-delay: 0ms;
+}
+
+.hidden-jobs-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 1rem;
+  margin-top: -0.5rem;
+  width: 100%;
+}
+
+.hidden-jobs-list-container {
+  align-content: start;
+  background: hsl(0, 0%, 100%, 0.1);
+  border-radius: 1rem;
+  display: grid;
+  flex: 1 0 121px;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  position: relative;
+  transition: background-color 200ms ease-out;
+}
+
+.hidden-jobs-list-container:hover {
+  background: hsl(0, 0%, 100%, 0.15);
+}
+
+.nothing-hidden-message {
+  --height: 1rem;
+  --padding: 0.5rem;
+  --width: 111px;
+  align-items: center;
+  background: hsl(0, 0%, 100%, 0.3);
+  border-radius: 0.5rem;
+  display: grid;
+  font-size: calc(40px / 3);
+  height: var(--height);
+  left: calc(50% - var(--width) * 0.5 - var(--padding));
+  line-height: 1;
+  opacity: 0;
+  padding: var(--padding);
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  top: calc(50% - var(--height) * 0.5 - var(--padding) + 1rem);
+  width: var(--width);
+}
+
+.nothing-hidden-message[data-list-is-empty] {
+  opacity: 1;
+  transition: opacity 200ms ease;
+}
+
+.hidden-jobs-list {
+  align-content: start;
+  display: grid;
+  gap: 0.5rem;
+  grid-auto-flow: row;
+  justify-items: center;
+  overflow-y: auto;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  scrollbar-color: hsl(0, 0%, 0%, 0.5) hsl(0, 0%, 0%, 0.2);
+  scrollbar-gutter: stable both-edges;
+  scrollbar-width: thin;
+}
+
+.hidden-job-button {
+  align-items: start;
+  background: hsl(0, 0%, 100%, 0.3);
+  border-radius: 1rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  height: 35px;
+  justify-items: center;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  overflow: hidden;
+  padding: 0.5rem;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
+  width: calc(100% - (1rem + 2rem));
+}
+
+.hidden-job-button:hover {
+  background: hsl(0, 0%, 100%, 0.5);
+}
+
+.hidden-job-button:active {
+  background: hsl(0, 0%, 100%, 0.6);
+}
+
+.hidden-job-button[data-job-attribute="promotionalStatus"] {
+  background: hsl(60, 100%, 50%, 0.3);
+}
+
+.hidden-job-button[data-job-attribute="promotionalStatus"]:hover {
+  background: hsl(60, 100%, 50%, 0.5);
+}
+
+.hidden-job-button[data-job-attribute="promotionalStatus"]:active {
+  background: hsl(60, 100%, 50%, 0.6);
+}
+
+.hidden-job-button[data-job-attribute="keyword"] {
+  background: hsl(150, 100%, 90%, 0.5);
+}
+
+.hidden-job-button[data-job-attribute="keyword"]:hover {
+  background: hsl(150, 100%, 90%, 0.7);
+}
+
+.hidden-job-button[data-job-attribute="keyword"]:active {
+  background: hsl(150, 100%, 90%, 0.8);
+}
+
+.hidden-job-button.remove {
+  height: 0;
+  margin-bottom: 0;
+  margin-top: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.hidden-job-name {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  max-width: 15ch;
+  overflow: clip visible;
+  position: relative;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hidden-job-button svg {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  height: 19px;
+  transition: 200ms ease-out;
+  transition-property: fill;
+  width: 19px;
+}
+
+.hidden-job-button:hover svg {
+  fill: hsl(0, 100%, 40%);
+}
+
+.hidden-job-button:active svg {
+  fill: hsl(0, 100%, 45%);
+}
+
+.unhide-all-and-undo-buttons {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: row;
+  grid-template-columns: 2fr 1fr;
+}
+
+.feed-charm-button {
+  background: hsl(48, 99%, 64%);
+  box-shadow: 0px 2px 2px 1px hsl(0, 0%, 0%, 0.6),
+    inset 0px 2px 2px 1px hsl(60, 100%, 80%, 0.7);
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr auto auto auto;
+  height: 40px;
+  padding: 0 2rem;
+  position: relative;
+  width: 100%;
+}
+
+.feed-charm-text {
+  font: 1.1rem "Schoolbell";
+  position: absolute;
+  transform: translate(-23px, -6px);
+}
+
+.feed-charm-bowl {
+  --scale: 0.3;
+  --translateX: -28px;
+  --translateY: 11px;
+  position: absolute;
+  filter: hue-rotate(180deg) brightness(2.5);
+  transform: translate(var(--translateX), var(--translateY)) scale(var(--scale));
+}
+
+.feed-charm-face {
+  position: absolute;
+  transform: translate(66px, 1px) scale(0.7);
+}
+
+.feed-charm-heart {
+  position: absolute;
+}
+
+.feed-charm-heart.left-heart {
+  --brightness: 2;
+  --hue-rotate: -45deg;
+  --rotateY: -180deg;
+  --scale: 0.25;
+  --translateX: 35px;
+  --translateY: 15px;
+  --multiplier: 0.9;
+  filter: brightness(var(--brightness)) hue-rotate(var(--hue-rotate));
+  transform: translate(var(--translateX), var(--translateY))
+    rotateY(var(--rotateY)) rotate(0deg) scale(var(--scale));
+}
+
+.feed-charm-heart.right-heart {
+  --brightness: 1.4;
+  --hue-rotate: 0deg;
+  --rotateY: 20deg;
+  --scale: 0.4;
+  --translateX: 100px;
+  --translateY: -13px;
+  --multiplier: 1.2;
+  filter: brightness(var(--brightness)) hue-rotate(var(--hue-rotate));
+  transform: translate(var(--translateX), var(--translateY))
+    rotateY(var(--rotateY)) rotate(0deg) scale(var(--scale));
+}
+
+.feed-charm-button:hover .feed-charm-heart.left-heart {
+  animation: 800ms heartbeat normal ease-out infinite;
+}
+
+.feed-charm-button:hover .feed-charm-heart.right-heart {
+  animation: 1800ms heartbeat normal ease-out infinite;
+}
+
+@keyframes heartbeat {
+  0% {
+    filter: brightness(var(--brightness)) hue-rotate(var(--hue-rotate));
+    transform: translate(var(--translateX), var(--translateY))
+      rotateY(var(--rotateY)) rotate(0deg) scale(var(--scale));
+  }
+  25% {
+    filter: brightness(calc(var(--multiplier) * var(--brightness)))
+      hue-rotate(calc(var(--multiplier) * var(--hue-rotate)));
+    transform: translate(var(--translateX), var(--translateY))
+      rotateY(var(--rotateY)) rotate(calc(var(--multiplier) * -25deg))
+      scale(calc(1.5 * var(--multiplier) * var(--scale)));
+  }
+  50% {
+    filter: brightness(var(--brightness)) hue-rotate(var(--hue-rotate));
+    transform: translate(var(--translateX), var(--translateY))
+      rotateY(var(--rotateY)) rotate(0deg) scale(var(--scale));
+  }
+  75% {
+    filter: brightness(calc(var(--multiplier) * var(--brightness)))
+      hue-rotate(calc(var(--multiplier) * var(--hue-rotate)));
+    transform: translate(var(--translateX), var(--translateY))
+      rotateY(var(--rotateY)) rotate(calc(var(--multiplier) * 25deg))
+      scale(calc(1.5 * var(--multiplier) * var(--scale)));
+  }
+  100% {
+    filter: brightness(var(--brightness)) hue-rotate(var(--hue-rotate));
+    transform: translate(var(--translateX), var(--translateY))
+      rotateY(var(--rotateY)) rotate(0deg) scale(var(--scale));
+  }
+}
+
+.feed-charm-button:hover .feed-charm-bowl {
+  animation: bowl-rattle 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes bowl-rattle {
+  0% {
+    transform: translate(var(--translateX), var(--translateY)) rotate(0deg)
+      scale(var(--scale));
+  }
+  20% {
+    transform: translate(calc(var(--translateX) - 2px), var(--translateY))
+      rotate(-3deg) scale(var(--scale));
+  }
+  40% {
+    transform: translate(calc(var(--translateX) + 2px), var(--translateY))
+      rotate(3deg) scale(var(--scale));
+  }
+  60% {
+    transform: translate(calc(var(--translateX) - 1px), var(--translateY))
+      rotate(-2deg) scale(var(--scale));
+  }
+  80% {
+    transform: translate(calc(var(--translateX) + 1px), var(--translateY))
+      rotate(2deg) scale(var(--scale));
+  }
+  100% {
+    transform: translate(var(--translateX), var(--translateY)) rotate(0deg)
+      scale(var(--scale));
+  }
+}
+
+button {
+  background: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: grid;
+  font-family: inherit;
+  font-size: calc(40px / 3);
+  font-weight: inherit;
+  place-items: center;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
+}
+
+:disabled {
+  opacity: 0.1;
+  pointer-events: none;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
+}
+
+.text-button {
+  border: none;
+  color: hsl(0, 0%, 100%);
+  height: 40px;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
+}
+
+.red-button {
+  background: hsl(0, 100%, 30%);
+}
+
+.red-button:hover {
+  background: hsl(0, 100%, 40%);
+}
+
+.red-button:active {
+  background: hsl(0, 100%, 45%);
+}
+
+.gray-button {
+  background: hsl(0, 0%, 30%);
+}
+
+.gray-button:hover {
+  background: hsl(0, 0%, 40%);
+}
+
+.gray-button:active {
+  background: hsl(0, 0%, 45%);
+}
+
+.black-button {
+  background: hsl(0, 0%, 0%);
+}
+
+.black-button:hover {
+  background: hsl(0, 0%, 20%);
+}
+
+.black-button:active {
+  background: hsl(0, 0%, 30%);
+}
+
+.toggle-container {
+  align-items: center;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: grid;
+  font-size: calc(40px / 3);
+  gap: 1rem;
+  grid-auto-flow: column;
+  height: 40px;
+  justify-content: center;
+  transition: 200ms ease-out;
+  transition-property: background-color, color;
+  width: 100%;
+}
+
+.toggle-container[data-checked="false"] {
+  background: hsl(0, 0%, 100%, 0.3);
+  color: hsl(0, 0%, 0%);
+}
+
+.toggle-container[data-checked="false"]:hover {
+  background: hsl(0, 0%, 100%, 0.5);
+}
+
+.toggle-container[data-checked="false"]:active {
+  background: hsl(0, 0%, 100%, 0.6);
+}
+
+.toggle-container[data-checked="true"] {
+  background: hsl(0, 100%, 30%);
+  color: hsl(0, 0%, 100%);
+}
+
+.toggle-container[data-checked="true"]:hover {
+  background: hsl(0, 100%, 40%);
+}
+
+.toggle-container[data-checked="true"]:active {
+  background: hsl(0, 100%, 45%);
+}
+
+:focus-visible,
+.focus-visible-within:has(:focus-visible) {
+  outline: 4px solid hsl(0, 0%, 0%, 0.5);
+}
+
+.focus-visible-within * {
+  outline: none;
+}
+
+input[type="checkbox"] {
+  height: 12px;
+  margin: 0;
+  width: 12px;
+}
+
+input[type="radio"] {
+  appearance: none;
+  margin: 0;
+}
+
+input[type="text"] {
+  background: hsl(0, 0%, 100%, 1);
+  border: none;
+  font-family: "Open Sans", sans-serif;
+  height: 2rem;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  transition: 200ms ease-out;
+  transition-property: background-color, opacity;
+  width: 100%;
+}
+
+input[type="text"]:disabled {
+  background: hsl(0, 0%, 100%, 0.3);
+  opacity: 1;
+}
+
+.add-keyword-container {
+  background: hsl(0, 0%, 100%, 0.1);
+  box-shadow: 0 5px 10px 0px hsl(0, 0%, 0%, 0.05),
+    0 1px 2px 1px hsl(0, 0%, 0%, 0.05);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  place-items: center;
+  width: 100%;
+  z-index: 1;
+}
+
+input[name="add-keyword"] {
+  border: 0;
+  border-radius: 0.5rem;
+  margin: 0.5rem auto;
+  width: calc(100% - 1rem);
+}
+
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(0, 0%, 0%, 0.2);
+  border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-track:hover {
+  background: hsl(0, 0%, 0%, 0.25);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(0, 0%, 0%, 0.5);
+  border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(0, 0%, 0%, 1);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+body::-webkit-scrollbar-track {
+  background: hsl(0, 0%, 100%, 0.5);
+}
+
+body::-webkit-scrollbar-track:hover {
+  background: hsl(0, 0%, 100%, 0.55);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: hsl(0, 0%, 100%, 0.5);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: hsl(0, 0%, 100%, 1);
+}
+
+#settings-container {
+  background: hsl(30, 56.6%, 65.7%);
+  border-radius: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: auto;
+  padding: 1rem;
+  width: calc(100% - 2rem);
+  z-index: 2;
+}
+
+#settings-container.invisible {
+  overflow: hidden;
+}
+
+.setting-group {
+  background: hsl(0, 0%, 100%, 0.3);
+  border-radius: 1rem;
+  display: grid;
+  font-size: 0.8em;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.info-box {
+  align-items: baseline;
+  border-radius: 1rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1rem 1fr;
+  padding: 1rem;
+  width: calc(100% - 2rem);
+}
+
+.info-box.warning {
+  background: hsl(60, 100%, 60%, 0.2);
+}
+
+.info-box.warning .info-box-icon {
+  --size: 1rem;
+  background: hsl(60, 100%, 50%);
+  border-radius: 50%;
+  display: grid;
+  font-size: calc(var(--size) / 1.5);
+  font-weight: bold;
+  height: var(--size);
+  left: calc(0px + 50% - (var(--size) / 2) + (cos(45deg) * 50%));
+  place-content: center;
+  top: calc(0px + 50% - (var(--size) / 2) - (cos(45deg) * 50%));
+  width: var(--size);
+}
+
+a,
+a:link,
+a:visited {
+  color: hsl(240, 100%, 50%);
+  text-decoration: none;
+}

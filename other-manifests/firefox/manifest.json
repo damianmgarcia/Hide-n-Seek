@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "Hide n' Seek: Hide Promoted Jobs & Companies",
   "short_name": "Hide n' Seek",
-  "description": "View the jobs you seek. Hide the ones you don't. Easily hide promoted jobs and companies on LinkedIn, Indeed, and Glassdoor.",
-  "version": "5.1.4",
+  "description": "View the jobs you seek. Hide the ones you don't. Easily hide promoted jobs, companies, and more on LinkedIn, Indeed, and Glassdoor.",
+  "version": "6.0.0",
   "icons": {
     "16": "/images/hide-n-seek-icon-16.png",
     "32": "/images/hide-n-seek-icon-32.png",
@@ -13,7 +13,7 @@
   "permissions": ["storage", "tabs"],
   "action": {
     "default_title": "Hide n' Seek",
-    "default_popup": "/popup/html/popup.html",
+    "default_popup": "/popup/popup.html",
     "default_icon": {
       "16": "/images/hide-n-seek-icon-16.png",
       "32": "/images/hide-n-seek-icon-32.png",
@@ -28,12 +28,12 @@
         "https://*.indeed.com/*",
         "https://*.linkedin.com/*"
       ],
-      "css": ["/content-script/css/content-script.css"],
-      "js": ["/content-script/js/content-script.js"]
+      "css": ["/content/content.css"],
+      "js": ["/content/content.js"]
     }
   ],
   "background": {
-    "scripts": ["/background/js/background.js"]
+    "scripts": ["/background/background.js"]
   },
   "browser_specific_settings": {
     "gecko": {
