@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Hide n' Seek: Hide Promoted Jobs & Companies",
   "short_name": "Hide n' Seek",
-  "description": "View the jobs you seek. Hide the ones you don't. Easily hide promoted jobs and companies on LinkedIn, Indeed, and Glassdoor.",
+  "description": "View the jobs you seek. Hide the ones you don't. Easily hide promoted jobs, companies, and more on LinkedIn, Indeed, and Glassdoor.",
   "version": "6.0.0",
   "icons": {
     "16": "/assets/images/hide-n-seek-icon-16.png",
