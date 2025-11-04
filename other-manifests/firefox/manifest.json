@@ -5,20 +5,20 @@
   "description": "View the jobs you seek. Hide the ones you don't. Easily hide promoted jobs, companies, and more on LinkedIn, Indeed, and Glassdoor.",
   "version": "6.0.0",
   "icons": {
-    "16": "/images/hide-n-seek-icon-16.png",
-    "32": "/images/hide-n-seek-icon-32.png",
-    "48": "/images/hide-n-seek-icon-48.png",
-    "128": "/images/hide-n-seek-icon-128.png"
+    "16": "/assets/images/hide-n-seek-icon-16.png",
+    "32": "/assets/images/hide-n-seek-icon-32.png",
+    "48": "/assets/images/hide-n-seek-icon-48.png",
+    "128": "/assets/images/hide-n-seek-icon-128.png"
   },
   "permissions": ["storage", "tabs"],
   "action": {
     "default_title": "Hide n' Seek",
-    "default_popup": "/popup/popup.html",
+    "default_popup": "/runtime/popup/popup.html",
     "default_icon": {
-      "16": "/images/hide-n-seek-icon-16.png",
-      "32": "/images/hide-n-seek-icon-32.png",
-      "48": "/images/hide-n-seek-icon-48.png",
-      "128": "/images/hide-n-seek-icon-128.png"
+      "16": "/assets/images/hide-n-seek-icon-16.png",
+      "32": "/assets/images/hide-n-seek-icon-32.png",
+      "48": "/assets/images/hide-n-seek-icon-48.png",
+      "128": "/assets/images/hide-n-seek-icon-128.png"
     }
   },
   "content_scripts": [
@@ -29,11 +29,24 @@
         "https://*.linkedin.com/*"
       ],
       "css": ["/content/content.css"],
-      "js": ["/content/content.js"]
+      "js": [
+        "/content/classes/event-dispatcher.js",
+        "/content/classes/element-collector.js",
+        "/content/classes/attribute-blocker.js",
+        "/content/modules/ui/ui.js",
+        "/content/modules/ui/hns-container.js",
+        "/content/modules/ui/hns-block-attribute-toggle.js",
+        "/content/modules/attribute-processor.js",
+        "/content/modules/job-listings.js",
+        "/content/modules/messaging.js",
+        "/content/modules/status.js",
+        "/content/content.js"
+      ]
     }
   ],
   "background": {
-    "scripts": ["/background/background.js"]
+    "scripts": ["/runtime/background/background.js"],
+    "type": "module"
   },
   "browser_specific_settings": {
     "gecko": {
