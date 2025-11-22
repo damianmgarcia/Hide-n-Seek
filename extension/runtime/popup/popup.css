@@ -702,6 +702,18 @@ button {
   background: hsl(0, 100%, 45%);
 }
 
+.green-button {
+  background: hsl(120, 100%, 25%);
+}
+
+.green-button:hover {
+  background: hsl(120, 100%, 27%);
+}
+
+.green-button:active {
+  background: hsl(120, 100%, 30%);
+}
+
 .gray-button {
   background: hsl(0, 0%, 30%);
 }
