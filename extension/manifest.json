@@ -3,14 +3,20 @@
   "name": "Hide n' Seek: Hide Promoted Jobs & Companies",
   "short_name": "Hide n' Seek",
   "description": "View the jobs you seek. Hide the ones you don't. Easily hide promoted jobs, companies, and more on LinkedIn, Indeed, and Glassdoor.",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "icons": {
     "16": "/assets/images/hide-n-seek-icon-16.png",
     "32": "/assets/images/hide-n-seek-icon-32.png",
     "48": "/assets/images/hide-n-seek-icon-48.png",
     "128": "/assets/images/hide-n-seek-icon-128.png"
   },
-  "permissions": ["storage", "tabs"],
+  "permissions": ["scripting", "storage", "tabs"],
+  "optional_host_permissions": [
+    "https://*.glassdoor.com.au/*",
+    "https://*.glassdoor.com/*",
+    "https://*.indeed.com/*",
+    "https://*.linkedin.com/*"
+  ],
   "action": {
     "default_title": "Hide n' Seek",
     "default_popup": "/runtime/popup/popup.html",
@@ -21,29 +27,6 @@
       "128": "/assets/images/hide-n-seek-icon-128.png"
     }
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "https://*.glassdoor.com/*",
-        "https://*.indeed.com/*",
-        "https://*.linkedin.com/*"
-      ],
-      "css": ["/content/content.css"],
-      "js": [
-        "/content/classes/event-dispatcher.js",
-        "/content/classes/element-collector.js",
-        "/content/classes/attribute-blocker.js",
-        "/content/modules/ui/ui.js",
-        "/content/modules/ui/hns-container.js",
-        "/content/modules/ui/hns-block-attribute-toggle.js",
-        "/content/modules/attribute-processor.js",
-        "/content/modules/job-listings.js",
-        "/content/modules/messaging.js",
-        "/content/modules/status.js",
-        "/content/content.js"
-      ]
-    }
-  ],
   "background": {
     "service_worker": "/runtime/background/background.js",
     "type": "module"
