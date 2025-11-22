@@ -31,7 +31,7 @@ const jobBoards = (() => {
 
   return [
     {
-      hostname: "glassdoor.com",
+      domains: ["glassdoor.com", "glassdoor.com.au"],
       id: "glassdoor",
       name: "Glassdoor",
       listingSelector: "li[data-test='jobListing']",
@@ -58,7 +58,7 @@ const jobBoards = (() => {
       ],
     },
     {
-      hostname: "indeed.com",
+      domains: ["indeed.com"],
       id: "indeed",
       name: "Indeed",
       listingSelector: "li:has(.result:not([aria-hidden='true']))",
@@ -99,7 +99,7 @@ const jobBoards = (() => {
       ],
     },
     {
-      hostname: "linkedin.com",
+      domains: ["linkedin.com"],
       id: "linkedIn",
       name: "LinkedIn",
       listingSelector:
@@ -181,44 +181,52 @@ const jobBoards = (() => {
         },
       ],
     },
-  ];
+  ].map((jobBoard) => ({
+    ...jobBoard,
+    origins: jobBoard.domains.map((domain) => `https://*.${domain}/*`),
+  }));
 })();
 
-const getJobBoardByHostname = (hostname) =>
-  jobBoards.find(
-    (jobBoard) =>
-      hostname.endsWith(`.${jobBoard.hostname}`) ||
-      hostname === jobBoard.hostname
-  );
-
-const getJobBoardById = (id) =>
-  jobBoards.find((jobBoard) => id === jobBoard.id);
-
-const getJobBoardIds = () => {
-  return jobBoards.map((jobBoard) => jobBoard.id);
+const getJobBoardByHostname = (hostname) => {
+  for (const jobBoard of jobBoards) {
+    for (const domain of jobBoard.domains) {
+      if (hostname.endsWith(`.${domain}`) || hostname === domain)
+        return jobBoard;
+    }
+  }
 };
 
-const getJobBoardTabs = (() => {
+const getJobBoardById = (id) =>
+  jobBoards.find((jobBoard) => jobBoard.id === id);
+
+const jobBoardIds = jobBoards.map((jobBoard) => jobBoard.id);
+
+const getJobBoardTabs = async (filters = {}) => {
   const urlMatchPatterns =
-    chrome.runtime.getManifest().content_scripts[0].matches;
+    filters.origins || (await chrome.permissions.getAll()).origins;
 
-  return async (forJobBoardId = "") => {
-    const tabs = await chrome.tabs.query({
-      url: urlMatchPatterns,
-      windowType: "normal",
-    });
+  const tabs = await chrome.tabs.query({
+    url: urlMatchPatterns,
+    windowType: "normal",
+  });
 
-    return tabs.filter((tab) =>
-      jobBoards.some(
-        (jobBoard) =>
-          tab.url.includes(jobBoard.hostname) &&
-          (!forJobBoardId || jobBoard.id === forJobBoardId)
+  return tabs.filter((tab) =>
+    jobBoards.some((jobBoard) =>
+      jobBoard.domains.some(
+        (domain) =>
+          tab.url.includes(domain) &&
+          (!filters.jobBoardId || jobBoard.id === filters.jobBoardId)
       )
-    );
-  };
-})();
+    )
+  );
+};
 
-const getJobBoard = ({ message, sendResponse }) =>
-  sendResponse(getJobBoardByHostname(message.data.hostname));
+const jobBoardOrigins = jobBoards.flatMap((jobBoard) => jobBoard.origins);
 
-export { getJobBoardById, getJobBoardIds, getJobBoardTabs, getJobBoard };
+export {
+  getJobBoardByHostname,
+  getJobBoardById,
+  jobBoardIds,
+  getJobBoardTabs,
+  jobBoardOrigins,
+};

@@ -1,4 +1,4 @@
-import { getJobBoardIds, getJobBoardTabs } from "./job-boards.js";
+import { jobBoardIds, getJobBoardTabs } from "./job-boards.js";
 
 const getActiveTab = async () => {
   const [activeTab] = await chrome.tabs.query({
@@ -9,10 +9,10 @@ const getActiveTab = async () => {
   return activeTab;
 };
 
-const getContentStatus = async (tab) => {
+const getTabStatus = async (tab) => {
   try {
     return await chrome.tabs.sendMessage(tab.id, {
-      request: "get status",
+      request: "get tab status",
     });
   } catch {
     return {
@@ -24,12 +24,12 @@ const getContentStatus = async (tab) => {
 };
 
 const updateBadge = async (tab) => {
-  const contentStatus = await getContentStatus(tab);
+  const tabStatus = await getTabStatus(tab);
   const title =
     "Hide n' Seek" +
-    (contentStatus.hasListings
-      ? `\n\n${contentStatus.blockedJobsCount} job${
-          contentStatus.blockedJobsCount === 1 ? "" : "s"
+    (tabStatus.hasListings
+      ? `\n\n${tabStatus.blockedJobsCount} job${
+          tabStatus.blockedJobsCount === 1 ? "" : "s"
         } blocked on this page\n`
       : "");
   chrome.action.setTitle({
@@ -38,9 +38,7 @@ const updateBadge = async (tab) => {
   });
   chrome.action.setBadgeText({
     tabId: tab.id,
-    text: contentStatus.hasListings
-      ? contentStatus.blockedJobsCount.toString()
-      : "",
+    text: tabStatus.hasListings ? tabStatus.blockedJobsCount.toString() : "",
   });
   chrome.action.setBadgeBackgroundColor({
     tabId: tab.id,
@@ -49,7 +47,7 @@ const updateBadge = async (tab) => {
 };
 
 const updateBadges = (changes) =>
-  getJobBoardIds()
+  jobBoardIds
     .filter((jobBoardId) =>
       Object.keys(changes).some(
         (key) =>
@@ -58,7 +56,7 @@ const updateBadges = (changes) =>
           !key.endsWith(".backup")
       )
     )
-    .map(getJobBoardTabs)
+    .map((jobBoardId) => getJobBoardTabs({ jobBoardId }))
     .forEach(async (tabs) => (await tabs).forEach(updateBadge));
 
-export { getActiveTab, getContentStatus, updateBadge, updateBadges };
+export { getActiveTab, getTabStatus, updateBadge, updateBadges };

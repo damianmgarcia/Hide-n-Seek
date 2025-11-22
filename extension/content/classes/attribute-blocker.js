@@ -131,7 +131,7 @@ class AttributeBlocker {
           if (this.attribute.removableValues)
             hns.removeToggle(this.attribute.id, value);
         }
-      } else if (this.attribute.removableValues && action == "block") {
+      } else if (this.attribute.removableValues && action === "block") {
         this.addToggles(hns);
       }
     }

@@ -214,6 +214,23 @@ html:not([data-job-board-id]) .options-for-job-search {
   display: flex;
 }
 
+#request-permissions {
+  display: none;
+}
+
+#request-permissions[data-permissions-needed] {
+  display: block;
+}
+
+html:has(#request-permissions[data-permissions-needed])
+  .options-for-job-search {
+  display: none;
+}
+
+html:has(#request-permissions[data-permissions-needed]) {
+  height: 8.5rem;
+}
+
 .job-board-search-options-container {
   align-items: center;
   display: grid;

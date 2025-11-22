@@ -1,5 +1,7 @@
 import { settingsManager } from "../../modules/settings-manager.js";
 import { safeAwait } from "../../modules/utilities.js";
+import { getJobBoardById } from "../../modules/job-boards.js";
+import { hasOriginPermissions } from "../../modules/permissions.js";
 
 class JobSearchPopup {
   static jobBoardSelectorElements = [
@@ -41,9 +43,6 @@ class JobSearchPopup {
 
   static jobBoardSearch = {
     glassdoor: {
-      defaultOrigin: "https://glassdoor.com",
-      originMatchPattern: "https://*.glassdoor.com/*",
-      jobBoardName: "Glassdoor",
       getUrl(responseUrl, searchQuery) {
         const encodedSearchQuery = searchQuery.trim().replace(/\s+/g, "-");
         const url = new URL(responseUrl);
@@ -51,9 +50,6 @@ class JobSearchPopup {
       },
     },
     indeed: {
-      defaultOrigin: "https://indeed.com",
-      originMatchPattern: "https://*.indeed.com/*",
-      jobBoardName: "Indeed",
       getUrl(responseUrl, searchQuery) {
         const queryString = new URLSearchParams([
           ["q", searchQuery],
@@ -63,9 +59,6 @@ class JobSearchPopup {
       },
     },
     linkedIn: {
-      defaultOrigin: "https://linkedin.com",
-      originMatchPattern: "https://*.linkedin.com/*",
-      jobBoardName: "LinkedIn",
       getUrl(responseUrl, searchQuery) {
         const queryString = new URLSearchParams([
           ["keywords", searchQuery],
@@ -132,12 +125,8 @@ class JobSearchPopup {
     this.jobNameSearchContainerInput.placeholder = errorMessage;
 
     const keyframes = [
-      {
-        backgroundColor: "hsl(0, 0%, 100%, 0.3)",
-      },
-      {
-        backgroundColor: "hsl(0, 100%, 85%, 0.9)",
-      },
+      { backgroundColor: "hsl(0, 0%, 100%, 0.3)" },
+      { backgroundColor: "hsl(0, 100%, 85%, 0.9)" },
     ];
 
     const options = {
@@ -156,36 +145,29 @@ class JobSearchPopup {
     if (this.jobNameSearchContainerButton.disabled) return;
 
     const searchQuery = this.jobNameSearchContainerInput.value;
+    const jobBoard = getJobBoardById(this.recentSearchQueryJobBoardId);
+    const originPermissions = await hasOriginPermissions(jobBoard.origins);
+    const { getUrl } = this.jobBoardSearch[this.recentSearchQueryJobBoardId];
 
-    const { defaultOrigin, originMatchPattern, jobBoardName, getUrl } =
-      this.jobBoardSearch[this.recentSearchQueryJobBoardId];
-
-    const hasPermission = await chrome.permissions.contains({
-      origins: [originMatchPattern],
-    });
-
-    if (!hasPermission) {
+    if (!originPermissions) {
       this.disableInputs("Requesting permission...");
-      try {
-        const permissionGranted = await chrome.permissions.request({
-          origins: [originMatchPattern],
-        });
-        if (!permissionGranted) return this.flashError("Permission required");
-      } catch {
-        return this.flashError("Permission required");
-      }
+      chrome.runtime.sendMessage({
+        request: "request origin permissions",
+        data: { origins: jobBoard.origins },
+      });
+      return;
     }
 
     this.disableInputs("Searching...");
-
-    const jobBoardResponse = await safeAwait(fetch, defaultOrigin);
-
+    const jobBoardResponse = await safeAwait(
+      fetch,
+      `https://${jobBoard.domains[0]}`
+    );
     if (!jobBoardResponse) {
-      return this.flashError(`Can't connect to ${jobBoardName}`);
+      return this.flashError(`Can't connect to ${jobBoard.name}`);
     }
 
     const url = getUrl(jobBoardResponse.url, searchQuery);
-
     try {
       await chrome.tabs.update(activeTabInCurrentWindow.id, { url });
     } catch (error) {
@@ -229,7 +211,6 @@ class JobSearchPopup {
       localStorage,
       "recentSearchQueryJobBoardId"
     );
-
     if (storageIncludesRecentSearchQueryJobBoardId)
       this.recentSearchQueryJobBoardId =
         localStorage.recentSearchQueryJobBoardId;

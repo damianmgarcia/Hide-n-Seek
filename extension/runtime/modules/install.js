@@ -1,5 +1,5 @@
-import { getJobBoardTabs } from "./job-boards.js";
 import { deChunkStorage } from "./storage.js";
+import { updateContentScriptRegistrations } from "./permissions.js";
 
 const install = async (details) => {
   if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
@@ -8,13 +8,7 @@ const install = async (details) => {
       await chrome.storage.local.set(syncStorage);
     }
   }
-
-  const jobBoardTabs = await getJobBoardTabs();
-  jobBoardTabs.forEach((jobBoardTab) =>
-    chrome.tabs.reload(jobBoardTab.id, {
-      bypassCache: true,
-    })
-  );
+  updateContentScriptRegistrations();
 };
 
 export { install };
