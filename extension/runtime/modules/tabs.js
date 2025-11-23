@@ -28,7 +28,7 @@ const getTabStatus = async (tab) => {
   }
 };
 
-const updateBadge = async (tab, { title, text, color } = {}) => {
+const updateBadge = async (tab, { title, text, backgroundColor } = {}) => {
   const tabStatus = await getTabStatus(tab);
   title =
     title ||
@@ -50,7 +50,7 @@ const updateBadge = async (tab, { title, text, color } = {}) => {
   });
   chrome.action.setBadgeBackgroundColor({
     tabId: tab.id,
-    color: color || [255, 0, 0, 255],
+    color: backgroundColor || [220, 0, 0, 255],
   });
 };
 
@@ -85,7 +85,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     updateBadge(tab, {
       title: `Hide n' Seek needs to be enabled on ${jobBoard.name}`,
       text: "!",
-      color: [255, 255, 0, 255],
+      backgroundColor: [255, 255, 0, 255],
     });
   }
 });
