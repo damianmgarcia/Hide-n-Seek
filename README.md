@@ -82,6 +82,15 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 7.0.0
+  - Release date
+    - 2025-11-23
+  - New features
+    - Add support for all Glassdoor sites
+      - Previously, only the ".com" version of Glassdoor was supported, but now all of Glassdoor's sites are. For example, glassdoor.ca, glassdoor.com.au, glassdoor.co.uk, etc. all work with Hide n' Seek now.
+  - Improvements
+    - Optional instead of required permissions
+      - Previously, Hide n' Seek required permissions to be granted for LinkedIn, Indeed, and Glassdoor on installation, even if you only used one of those sites. Now all permissions are optional and asked for when you visit one of the supported sites. After permissions have been granted the first time they will be permanent unless you revoke the permissions in extension's management page.
 - 6.0.0
   - Release date
     - 2025-11-03
