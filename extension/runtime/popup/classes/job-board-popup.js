@@ -1,7 +1,6 @@
 import { RemoveHiddenJobsManager } from "./remove-hidden-jobs-manager.js";
 import { HiddenJobsListManager } from "./hidden-jobs-list-manager.js";
 import { UnblockAllJobsManager } from "./unblock-all-jobs-manager.js";
-import { settingsManager } from "../../modules/settings-manager.js";
 
 class JobBoardPopup {
   static started = false;
@@ -15,7 +14,6 @@ class JobBoardPopup {
     new UnblockAllJobsManager(jobBoard, localStorage);
     new RemoveHiddenJobsManager(jobBoard, localStorage);
     new HiddenJobsListManager(jobBoard, localStorage);
-    settingsManager.start();
   }
 }
 

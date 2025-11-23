@@ -8,7 +8,7 @@ const install = async (details) => {
       await chrome.storage.local.set(syncStorage);
     }
   }
-  updateContentScriptRegistrations();
+  updateContentScriptRegistrations({ reloadAllTabs: true });
 };
 
 export { install };

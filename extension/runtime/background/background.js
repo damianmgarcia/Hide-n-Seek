@@ -9,9 +9,6 @@ addMessageListener("refresh popup", ({ sender }) => updateBadge(sender.tab));
 addMessageListener("get job board", ({ message, sendResponse }) =>
   sendResponse(getJobBoardByHostname(message.data.hostname))
 );
-addMessageListener("request origin permissions", ({ message }) =>
-  chrome.permissions.request(message.data)
-);
 
 chrome.runtime.onInstalled.addListener(install);
 chrome.storage.local.onChanged.addListener(updateBadges);

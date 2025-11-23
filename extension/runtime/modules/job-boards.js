@@ -187,6 +187,10 @@ const jobBoards = (() => {
   }));
 })();
 
+const jobBoardIds = jobBoards.map((jobBoard) => jobBoard.id);
+
+const jobBoardOrigins = jobBoards.flatMap((jobBoard) => jobBoard.origins);
+
 const getJobBoardByHostname = (hostname) => {
   for (const jobBoard of jobBoards) {
     for (const domain of jobBoard.domains) {
@@ -199,11 +203,8 @@ const getJobBoardByHostname = (hostname) => {
 const getJobBoardById = (id) =>
   jobBoards.find((jobBoard) => jobBoard.id === id);
 
-const jobBoardIds = jobBoards.map((jobBoard) => jobBoard.id);
-
 const getJobBoardTabs = async (filters = {}) => {
-  const urlMatchPatterns =
-    filters.origins || (await chrome.permissions.getAll()).origins;
+  const urlMatchPatterns = filters.origins || jobBoardOrigins;
 
   const tabs = await chrome.tabs.query({
     url: urlMatchPatterns,
@@ -221,12 +222,10 @@ const getJobBoardTabs = async (filters = {}) => {
   );
 };
 
-const jobBoardOrigins = jobBoards.flatMap((jobBoard) => jobBoard.origins);
-
 export {
+  jobBoardIds,
+  jobBoardOrigins,
   getJobBoardByHostname,
   getJobBoardById,
-  jobBoardIds,
   getJobBoardTabs,
-  jobBoardOrigins,
 };

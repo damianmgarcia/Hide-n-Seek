@@ -8,12 +8,11 @@
 
   if (!jobBoard) return;
 
-  const { addMessageListener, routeMessage } = messaging;
+  const { addMessageListener } = messaging;
   const { checkBfcache, getTabStatus, sendTabStatus } = hnsStatus(jobBoard);
   const { addHns, removeHns } = await jobListings(jobBoard);
 
   addMessageListener("get tab status", getTabStatus);
-  chrome.runtime.onMessage.addListener(routeMessage);
   window.addEventListener("pageshow", checkBfcache);
 
   const listingCollector = new ElementCollector();

@@ -1,4 +1,9 @@
-import { jobBoardIds, getJobBoardTabs } from "./job-boards.js";
+import {
+  jobBoardIds,
+  getJobBoardTabs,
+  getJobBoardByHostname,
+} from "./job-boards.js";
+import { hasOriginPermissions } from "./permissions.js";
 
 const getActiveTab = async () => {
   const [activeTab] = await chrome.tabs.query({
@@ -23,7 +28,7 @@ const getTabStatus = async (tab) => {
   }
 };
 
-const updateBadge = async (tab) => {
+const updateBadge = async (tab, { text, color } = {}) => {
   const tabStatus = await getTabStatus(tab);
   const title =
     "Hide n' Seek" +
@@ -38,11 +43,13 @@ const updateBadge = async (tab) => {
   });
   chrome.action.setBadgeText({
     tabId: tab.id,
-    text: tabStatus.hasListings ? tabStatus.blockedJobsCount.toString() : "",
+    text:
+      text ||
+      (tabStatus.hasListings ? tabStatus.blockedJobsCount.toString() : ""),
   });
   chrome.action.setBadgeBackgroundColor({
     tabId: tab.id,
-    color: [255, 128, 128, 255],
+    color: color || [255, 0, 0, 255],
   });
 };
 
@@ -59,4 +66,22 @@ const updateBadges = (changes) =>
     .map((jobBoardId) => getJobBoardTabs({ jobBoardId }))
     .forEach(async (tabs) => (await tabs).forEach(updateBadge));
 
-export { getActiveTab, getTabStatus, updateBadge, updateBadges };
+const reloadTabs = async (tabs) =>
+  Promise.all(
+    tabs.map((tab) =>
+      chrome.tabs.reload(tab.id, {
+        bypassCache: true,
+      })
+    )
+  );
+
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  const jobBoard = getJobBoardByHostname(new URL(tab.url).hostname);
+  if (!jobBoard) return;
+  const originPermissions = await hasOriginPermissions(jobBoard.origins);
+  if (!originPermissions) {
+    updateBadge(tab, { text: "!", color: [255, 255, 0, 255] });
+  }
+});
+
+export { getActiveTab, getTabStatus, updateBadge, updateBadges, reloadTabs };

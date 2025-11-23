@@ -1,11 +1,15 @@
 import { addMessageListener } from "../modules/messaging.js";
 import { refreshPopup } from "../modules/refresh-popup.js";
-import { hasOriginPermissions } from "../modules/permissions.js";
+import {
+  hasOriginPermissions,
+  requestOriginPermissions,
+} from "../modules/permissions.js";
 import { getActiveTab, getTabStatus } from "../modules/tabs.js";
+import { getJobBoardByHostname } from "../modules/job-boards.js";
 import "../modules/sync-manager.js";
+import "../modules/settings-manager.js";
 import { JobSearchPopup } from "./classes/job-search-popup.js";
 import { JobBoardPopup } from "./classes/job-board-popup.js";
-import { getJobBoardByHostname } from "../modules/job-boards.js";
 
 (async () => {
   addMessageListener("refresh popup", refreshPopup);
@@ -25,12 +29,9 @@ import { getJobBoardByHostname } from "../modules/job-boards.js";
   } else if (originPermissions === false) {
     const permissionsButton = document.querySelector("#request-permissions");
     permissionsButton.setAttribute("data-permissions-needed", "");
-    permissionsButton.textContent = `Enable Hide n' Seek for ${jobBoard.name}`;
+    permissionsButton.textContent = `Enable Hide n' Seek on ${jobBoard.name}`;
     permissionsButton.addEventListener("click", () =>
-      chrome.runtime.sendMessage({
-        request: "request origin permissions",
-        data: { origins: jobBoard.origins },
-      })
+      requestOriginPermissions(jobBoard.origins)
     );
   }
 })();

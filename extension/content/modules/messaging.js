@@ -18,5 +18,7 @@ const messaging = (() => {
     return true;
   };
 
-  return { addMessageListener, routeMessage };
+  chrome.runtime.onMessage.addListener(routeMessage);
+
+  return { addMessageListener };
 })();

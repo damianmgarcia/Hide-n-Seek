@@ -1,7 +1,9 @@
-import { settingsManager } from "../../modules/settings-manager.js";
 import { safeAwait } from "../../modules/utilities.js";
 import { getJobBoardById } from "../../modules/job-boards.js";
-import { hasOriginPermissions } from "../../modules/permissions.js";
+import {
+  hasOriginPermissions,
+  requestOriginPermissions,
+} from "../../modules/permissions.js";
 
 class JobSearchPopup {
   static jobBoardSelectorElements = [
@@ -75,6 +77,10 @@ class JobSearchPopup {
       if (!input.checked) return;
       this.recentSearchQueryJobBoardId =
         label.getAttribute("data-job-board-id");
+      const jobBoard = getJobBoardById(this.recentSearchQueryJobBoardId);
+      hasOriginPermissions(jobBoard.origins).then(
+        (result) => (this.hasOriginPermissions = result)
+      );
       chrome.storage.local.set({
         recentSearchQueryJobBoardId: label.getAttribute("data-job-board-id"),
       });
@@ -144,18 +150,13 @@ class JobSearchPopup {
   static async search(activeTabInCurrentWindow) {
     if (this.jobNameSearchContainerButton.disabled) return;
 
-    const searchQuery = this.jobNameSearchContainerInput.value;
     const jobBoard = getJobBoardById(this.recentSearchQueryJobBoardId);
-    const originPermissions = await hasOriginPermissions(jobBoard.origins);
-    const { getUrl } = this.jobBoardSearch[this.recentSearchQueryJobBoardId];
-
-    if (!originPermissions) {
-      this.disableInputs("Requesting permission...");
-      chrome.runtime.sendMessage({
-        request: "request origin permissions",
-        data: { origins: jobBoard.origins },
-      });
-      return;
+    if (!this.hasOriginPermissions) {
+      this.disableInputs("Requesting permissions...");
+      const permissionsGranted = await requestOriginPermissions(
+        jobBoard.origins
+      );
+      if (!permissionsGranted) return this.flashError("Permissions required");
     }
 
     this.disableInputs("Searching...");
@@ -167,6 +168,8 @@ class JobSearchPopup {
       return this.flashError(`Can't connect to ${jobBoard.name}`);
     }
 
+    const { getUrl } = this.jobBoardSearch[this.recentSearchQueryJobBoardId];
+    const searchQuery = this.jobNameSearchContainerInput.value;
     const url = getUrl(jobBoardResponse.url, searchQuery);
     try {
       await chrome.tabs.update(activeTabInCurrentWindow.id, { url });
@@ -204,8 +207,6 @@ class JobSearchPopup {
     this.jobNameSearchContainerInput.focus();
 
     const localStorage = await chrome.storage.local.get();
-
-    settingsManager.start();
 
     const storageIncludesRecentSearchQueryJobBoardId = Object.hasOwn(
       localStorage,

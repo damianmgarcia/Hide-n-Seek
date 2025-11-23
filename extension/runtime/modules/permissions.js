@@ -1,14 +1,16 @@
 import { getJobBoardTabs, jobBoardOrigins } from "./job-boards.js";
+import { reloadTabs } from "./tabs.js";
 
 const hasOriginPermissions = async (origins) =>
   chrome.permissions.contains({ origins });
 
-const updateContentScriptRegistrations = async () => {
+const requestOriginPermissions = (origins) =>
+  chrome.permissions.request({ origins });
+
+const updateContentScriptRegistrations = async ({ reloadAllTabs } = {}) => {
   const permittedOrigins = (await chrome.permissions.getAll()).origins;
   const registeredContentScripts = (
-    await chrome.scripting.getRegisteredContentScripts({
-      ids: jobBoardOrigins,
-    })
+    await chrome.scripting.getRegisteredContentScripts({ ids: jobBoardOrigins })
   ).map((registeredContentScript) => registeredContentScript.id);
 
   const contentScriptsToRegister = permittedOrigins.filter(
@@ -19,9 +21,9 @@ const updateContentScriptRegistrations = async () => {
       !permittedOrigins.includes(registeredContentScript)
   );
 
-  const promises = [];
+  const registrationPromises = [];
   if (contentScriptsToRegister.length) {
-    promises.push(
+    registrationPromises.push(
       chrome.scripting.registerContentScripts(
         contentScriptsToRegister.map((permittedOrigin) => ({
           id: permittedOrigin,
@@ -46,29 +48,30 @@ const updateContentScriptRegistrations = async () => {
   }
 
   if (contentScriptsToUnregister.length) {
-    promises.push(
+    registrationPromises.push(
       chrome.scripting.unregisterContentScripts({
         ids: contentScriptsToUnregister,
       })
     );
   }
 
-  if (!promises.length) return;
+  if (!registrationPromises.length && !reloadAllTabs) return;
 
-  await Promise.all(promises);
+  await Promise.all(registrationPromises);
 
-  const jobBoardTabs = await getJobBoardTabs({
-    origins: [
-      ...new Set([...contentScriptsToRegister, ...contentScriptsToUnregister]),
-    ],
-  });
-  await Promise.all(
-    jobBoardTabs.map((jobBoardTab) =>
-      chrome.tabs.reload(jobBoardTab.id, {
-        bypassCache: true,
-      })
-    )
+  const jobBoardTabs = await getJobBoardTabs(
+    reloadAllTabs
+      ? {}
+      : {
+          origins: [
+            ...new Set([
+              ...contentScriptsToRegister,
+              ...contentScriptsToUnregister,
+            ]),
+          ],
+        }
   );
+  await reloadTabs(jobBoardTabs);
 
   try {
     await chrome.runtime.sendMessage({
@@ -77,4 +80,8 @@ const updateContentScriptRegistrations = async () => {
   } catch {}
 };
 
-export { hasOriginPermissions, updateContentScriptRegistrations };
+export {
+  hasOriginPermissions,
+  requestOriginPermissions,
+  updateContentScriptRegistrations,
+};
