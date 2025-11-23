@@ -28,15 +28,16 @@ const getTabStatus = async (tab) => {
   }
 };
 
-const updateBadge = async (tab, { text, color } = {}) => {
+const updateBadge = async (tab, { title, text, color } = {}) => {
   const tabStatus = await getTabStatus(tab);
-  const title =
+  title =
+    title ||
     "Hide n' Seek" +
-    (tabStatus.hasListings
-      ? `\n\n${tabStatus.blockedJobsCount} job${
-          tabStatus.blockedJobsCount === 1 ? "" : "s"
-        } blocked on this page\n`
-      : "");
+      (tabStatus.hasListings
+        ? `\n\n${tabStatus.blockedJobsCount} job${
+            tabStatus.blockedJobsCount === 1 ? "" : "s"
+          } blocked on this page\n`
+        : "");
   chrome.action.setTitle({
     tabId: tab.id,
     title: title,
@@ -81,7 +82,11 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (!jobBoard) return;
   const originPermissions = await hasOriginPermissions(jobBoard.origins);
   if (!originPermissions) {
-    updateBadge(tab, { text: "!", color: [255, 255, 0, 255] });
+    updateBadge(tab, {
+      title: `Hide n' Seek needs to be enabled on ${jobBoard.name}`,
+      text: "!",
+      color: [255, 255, 0, 255],
+    });
   }
 });
 
