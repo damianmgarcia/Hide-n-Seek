@@ -87,6 +87,11 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       text: "!",
       backgroundColor: [255, 255, 0, 255],
     });
+  } else {
+    const jobBoardStatus = await getTabStatus(tab);
+    if (!jobBoardStatus.hasListings) {
+      updateBadge(tab, { title: "", text: "" });
+    }
   }
 });
 
