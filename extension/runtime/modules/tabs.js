@@ -76,6 +76,7 @@ const reloadTabs = async (tabs) =>
   );
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  if (!tab || !tab.url) return;
   const jobBoard = getJobBoardByHostname(new URL(tab.url).hostname);
   if (!jobBoard) return;
   const originPermissions = await hasOriginPermissions(jobBoard.origins);
