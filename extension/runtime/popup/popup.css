@@ -214,6 +214,23 @@ html:not([data-job-board-id]) .options-for-job-search {
   display: flex;
 }
 
+#request-permissions {
+  display: none;
+}
+
+#request-permissions[data-permissions-needed] {
+  display: block;
+}
+
+html:has(#request-permissions[data-permissions-needed])
+  .options-for-job-search {
+  display: none;
+}
+
+html:has(#request-permissions[data-permissions-needed]) {
+  height: 8.5rem;
+}
+
 .job-board-search-options-container {
   align-items: center;
   display: grid;
@@ -683,6 +700,18 @@ button {
 
 .red-button:active {
   background: hsl(0, 100%, 45%);
+}
+
+.green-button {
+  background: hsl(120, 100%, 25%);
+}
+
+.green-button:hover {
+  background: hsl(120, 100%, 27%);
+}
+
+.green-button:active {
+  background: hsl(120, 100%, 30%);
 }
 
 .gray-button {

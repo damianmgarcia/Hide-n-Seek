@@ -1,5 +1,5 @@
 const hnsStatus = (jobBoard) => {
-  const status = () => ({
+  const tabStatus = () => ({
     jobBoard,
     hasListings: Boolean(document.querySelector(".hns-container")),
     blockedJobsCount: document.querySelectorAll(
@@ -7,17 +7,17 @@ const hnsStatus = (jobBoard) => {
     ).length,
   });
 
-  const getStatus = ({ sendResponse }) => sendResponse(status());
+  const getTabStatus = ({ sendResponse }) => sendResponse(tabStatus());
 
-  const sendStatus = (message) =>
+  const sendTabStatus = () =>
     chrome.runtime.sendMessage({
-      request: message,
-      data: status(),
+      request: "refresh popup",
+      data: tabStatus(),
     });
 
   const checkBfcache = (pageTransitionEvent) => {
-    if (pageTransitionEvent.persisted) sendStatus("bfcache used");
+    if (pageTransitionEvent.persisted) sendTabStatus();
   };
 
-  return { checkBfcache, getStatus, sendStatus };
+  return { checkBfcache, getTabStatus, sendTabStatus };
 };

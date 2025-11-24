@@ -8,24 +8,20 @@
 
   if (!jobBoard) return;
 
-  const { addMessageListener, routeMessage } = messaging;
-  const { checkBfcache, getStatus, sendStatus } = hnsStatus(jobBoard);
+  const { addMessageListener } = messaging;
+  const { checkBfcache, getTabStatus, sendTabStatus } = hnsStatus(jobBoard);
   const { addHns, removeHns } = await jobListings(jobBoard);
 
-  addMessageListener("get status", getStatus);
-  chrome.runtime.onMessage.addListener(routeMessage);
+  addMessageListener("get tab status", getTabStatus);
   window.addEventListener("pageshow", checkBfcache);
 
   const listingCollector = new ElementCollector();
-  window.listingCollector = listingCollector;
   listingCollector.onAdded.addListener((jobListing) => {
     addHns(jobListing);
-    sendStatus("listing added");
+    sendTabStatus();
   });
   listingCollector.onRemoved.addListener(removeHns);
-  listingCollector.onNotEmpty.addListener(() =>
-    sendStatus("hasListings changed")
-  );
-  listingCollector.onEmpty.addListener(() => sendStatus("hasListings changed"));
+  listingCollector.onNotEmpty.addListener(sendTabStatus);
+  listingCollector.onEmpty.addListener(sendTabStatus);
   listingCollector.collect(jobBoard.listingSelector);
 })();

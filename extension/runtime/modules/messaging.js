@@ -19,4 +19,4 @@ const routeMessage = (message, sender, sendResponse) => {
 
 chrome.runtime.onMessage.addListener(routeMessage);
 
-export { addMessageListener, routeMessage };
+export { addMessageListener };
