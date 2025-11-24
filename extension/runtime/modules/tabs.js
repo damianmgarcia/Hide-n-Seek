@@ -29,29 +29,38 @@ const getTabStatus = async (tab) => {
 };
 
 const updateBadge = async (tab, { title, text, backgroundColor } = {}) => {
-  const tabStatus = await getTabStatus(tab);
-  title =
-    title ||
-    "Hide n' Seek" +
-      (tabStatus.hasListings
-        ? `\n\n${tabStatus.blockedJobsCount} job${
-            tabStatus.blockedJobsCount === 1 ? "" : "s"
-          } blocked on this page\n`
-        : "");
-  chrome.action.setTitle({
-    tabId: tab.id,
-    title: title,
-  });
-  chrome.action.setBadgeText({
-    tabId: tab.id,
-    text:
+  try {
+    const tabStatus = await getTabStatus(tab);
+
+    title =
+      title ||
+      "Hide n' Seek" +
+        (tabStatus.hasListings
+          ? `\n\n${tabStatus.blockedJobsCount} job${
+              tabStatus.blockedJobsCount === 1 ? "" : "s"
+            } blocked on this page\n`
+          : "");
+    text =
       text ||
-      (tabStatus.hasListings ? tabStatus.blockedJobsCount.toString() : ""),
-  });
-  chrome.action.setBadgeBackgroundColor({
-    tabId: tab.id,
-    color: backgroundColor || [220, 0, 0, 255],
-  });
+      (tabStatus.hasListings ? tabStatus.blockedJobsCount.toString() : "");
+
+    backgroundColor = backgroundColor || [220, 0, 0, 255];
+
+    await Promise.all([
+      chrome.action.setTitle({
+        tabId: tab.id,
+        title: title,
+      }),
+      chrome.action.setBadgeText({
+        tabId: tab.id,
+        text: text,
+      }),
+      chrome.action.setBadgeBackgroundColor({
+        tabId: tab.id,
+        color: backgroundColor,
+      }),
+    ]);
+  } catch {}
 };
 
 const updateBadges = (changes) =>
