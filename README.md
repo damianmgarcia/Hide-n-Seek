@@ -82,6 +82,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 7.0.1
+  - Release date
+    - 2025-11-23
+  - Bug fix
+    - Fixed a minor issue with the extension trying to update a tab's badge after a tab has closed
 - 7.0.0
   - Release date
     - 2025-11-23
