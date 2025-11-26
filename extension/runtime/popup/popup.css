@@ -294,6 +294,19 @@ html:has(#request-permissions[data-permissions-needed]) {
   position: absolute;
 }
 
+#request-permissions-search {
+  width: 100%;
+}
+
+.options-for-job-search #request-permissions-search,
+.options-for-job-search[data-permissions-needed] .job-name-search-container {
+  display: none;
+}
+
+.options-for-job-search[data-permissions-needed] #request-permissions-search {
+  display: block;
+}
+
 .options-for-job-search .job-board-name {
   width: 100%;
 }

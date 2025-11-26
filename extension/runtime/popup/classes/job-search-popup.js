@@ -35,12 +35,18 @@ class JobSearchPopup {
 
   static recentSearchQueryJobBoardId = "linkedIn";
 
+  static jobSearchContainer = document.querySelector(".options-for-job-search");
+
   static jobNameSearchContainerInput = document.querySelector(
     ".job-name-search-container > input"
   );
 
   static jobNameSearchContainerButton = document.querySelector(
     ".job-name-search-container > button"
+  );
+
+  static requestPermissionsButton = document.querySelector(
+    "#request-permissions-search"
   );
 
   static jobBoardSearch = {
@@ -78,9 +84,16 @@ class JobSearchPopup {
       this.recentSearchQueryJobBoardId =
         label.getAttribute("data-job-board-id");
       const jobBoard = getJobBoardById(this.recentSearchQueryJobBoardId);
-      hasOriginPermissions(jobBoard.origins).then(
-        (result) => (this.hasOriginPermissions = result)
-      );
+      this.jobBoard = jobBoard;
+      hasOriginPermissions(jobBoard.origins).then((result) => {
+        this.hasOriginPermissions = result;
+        if (!this.hasOriginPermissions) {
+          this.requestPermissionsButton.textContent = `Enable Hide n' Seek on ${jobBoard.name}`;
+          this.jobSearchContainer.setAttribute("data-permissions-needed", "");
+        } else {
+          this.jobSearchContainer.removeAttribute("data-permissions-needed");
+        }
+      });
       chrome.storage.local.set({
         recentSearchQueryJobBoardId: label.getAttribute("data-job-board-id"),
       });
@@ -202,6 +215,10 @@ class JobSearchPopup {
 
     this.jobNameSearchContainerButton.addEventListener("click", () =>
       this.search(activeTab)
+    );
+
+    this.requestPermissionsButton.addEventListener("click", () =>
+      requestOriginPermissions(this.jobBoard.origins)
     );
 
     this.jobNameSearchContainerInput.focus();
