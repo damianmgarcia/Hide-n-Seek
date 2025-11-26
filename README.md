@@ -88,6 +88,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 7.1.0
+  - Release date
+    - 2025-11-25
+  - Improvements
+    - Added "Enable Hide n' Seek" buttons to the job search popup when permissions are required to search a job board
 - 7.0.1
   - Release date
     - 2025-11-23
