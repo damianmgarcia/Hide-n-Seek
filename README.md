@@ -55,14 +55,20 @@ Your data remains completely private and is never shared. All data is stored loc
 
 ## **Permissions**
 
-The following permissions are required:
+When you visit one of the supported job boards, Hide n' Seek will check whether it has the permissions required to function. If it doesn't, you will see a yellow notification dot next to the Hide n' Seek button as an alert that permissions need to be granted. You can grant permissions by clicking the button and then clicking the green "Enable Hide n' Seek on {Job Board}" button. Afterward, your browser will present you with a list of the required permissions, which will look something like the following:
 
-- "Read and change your data on all indeed.com sites and all linkedin.com sites"
+- "Read and change your data on all {Job Board} sites"
   - Enables the addition of "Block" buttons and other UI elements to listings.
 - "Read your browsing history"
   - Enables the detection of LinkedIn, Indeed, and Glassdoor so the extension can look for listings.
 
-Note that the above permissions are written exactly as Chrome displays them to the user during installation. Other browsers will ask for the same permissions, but the wording may vary.
+After you've granted permissions, your browser will save them so that you won't need to be asked the next time you visit the job board.
+
+Permissions are granted for a specific job board, so if you use multiple job boards, such as LinkedIn and Indeed, you'll need to grant permissions for each one individually.
+
+Some job boards, such as Glassdoor, use many country-specific domains (for example glassdoor.com, glassdoor.co.uk, glassdoor.ca), and in these cases Hide n' Seek will ask for permissions for all the domains used by the job board.
+
+Lastly, your browser will also present you with a permissions request if you try to search a job board using the Hide n' Seek search popup if Hide n' Seek hasn't yet been granted permisisons to use the job board.
 
 ## **Download**
 
