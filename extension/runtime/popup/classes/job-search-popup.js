@@ -162,6 +162,7 @@ class JobSearchPopup {
 
   static async search(activeTabInCurrentWindow) {
     if (this.jobNameSearchContainerButton.disabled) return;
+    const searchQuery = this.jobNameSearchContainerInput.value;
 
     const jobBoard = getJobBoardById(this.recentSearchQueryJobBoardId);
     if (!this.hasOriginPermissions) {
@@ -182,7 +183,6 @@ class JobSearchPopup {
     }
 
     const { getUrl } = this.jobBoardSearch[this.recentSearchQueryJobBoardId];
-    const searchQuery = this.jobNameSearchContainerInput.value;
     const url = getUrl(jobBoardResponse.url, searchQuery);
     try {
       await chrome.tabs.update(activeTabInCurrentWindow.id, { url });
