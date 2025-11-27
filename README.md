@@ -88,6 +88,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 7.1.1
+  - Release date
+    - 2025-11-26
+  - Bug fix
+    - Fixed a bug that was resulting in the search popup's job search query not being searched
 - 7.1.0
   - Release date
     - 2025-11-25
