@@ -32,11 +32,11 @@ const hnsToggle = {
 
     const removeToggle = async () => {
       element.disabled = true;
-      const animationsFinished = Promise.all(
+      const animationsFinished = Promise.allSettled(
         element.getAnimations().map((animation) => animation.finished)
       );
       const fallbackTimer = new Promise((resolve) => setTimeout(resolve, 400));
-      await Promise.race([animationsFinished, fallbackTimer]);
+      await Promise.any([animationsFinished, fallbackTimer]);
       element.remove();
     };
 
