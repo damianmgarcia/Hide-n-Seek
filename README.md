@@ -88,6 +88,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 7.1.2
+  - Release date
+    - 2025-11-28
+  - Bug fix
+    - Fixed a bug that was resulting in old keyword toggles not being removed from listings
 - 7.1.1
   - Release date
     - 2025-11-26
