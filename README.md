@@ -4,7 +4,7 @@
 
 ## **Description**
 
-**Hide n' Seek** lets you easily remove promoted job postings and companies from your search results on LinkedIn, Indeed, and Glassdoor.
+**Hide n' Seek** lets you easily remove promoted job postings and companies from your search results on LinkedIn, Indeed, and Glassdoor. You can also block job listings by keyword.
 
 [**Check it out on YouTube**](https://youtu.be/zhh7mI7bgRg)
 
@@ -18,7 +18,9 @@
 
 To hide promoted jobs, click the “block” button on any promoted listing and then activate the “Promoted” toggle.
 
-You can view a list of everything you've hidden, hide jobs by keyword, and backup and restore your data by clicking the Hide n’ Seek button on your browser’s toolbar.
+To hide jobs by keyword, visit one of the supported job boards, click the Hide n' Seek button on your browser's toolbar, and then add keywords using the "Block by keyword" field.
+
+You can also view a list of everything you've hidden, and backup and restore your data by clicking the Hide n’ Seek button on your browser’s toolbar.
 
 ## **Usage**
 
@@ -55,20 +57,17 @@ Your data remains completely private and is never shared. All data is stored loc
 
 ## **Permissions**
 
-When you visit one of the supported job boards, Hide n' Seek will check whether it has the permissions required to function. If it doesn't, you will see a yellow notification dot next to the Hide n' Seek button as an alert that permissions need to be granted. You can grant permissions by clicking the button and then clicking the green "Enable Hide n' Seek on {Job Board}" button. Afterward, your browser will present you with a list of the required permissions, which will look something like the following:
+Hide n' Seek requires browser permissions to function. When you first try to use it on a job board, you'll be asked to grant permissions.
 
-- "Read and change your data on all {Job Board} sites"
-  - Enables the addition of "Block" buttons and other UI elements to listings.
-- "Read your browsing history"
-  - Enables the detection of LinkedIn, Indeed, and Glassdoor so the extension can look for listings.
+"Read and change your data on all {Job Board} sites"
+This permission allows the addition of "Block" buttons and other UI elements to listings.
 
-After you've granted permissions, your browser will save them so that you won't need to be asked the next time you visit the job board.
+"Read your browsing history"
+This permission enables the detection of LinkedIn, Indeed, and Glassdoor so the extension knows when to look for listings.
 
 Permissions are granted for a specific job board, so if you use multiple job boards, such as LinkedIn and Indeed, you'll need to grant permissions for each one individually.
 
 Some job boards, such as Glassdoor, use many country-specific domains (for example glassdoor.com, glassdoor.co.uk, glassdoor.ca), and in these cases Hide n' Seek will ask for permissions for all the domains used by the job board.
-
-Lastly, your browser will also present you with a permissions request if you try to search a job board using the Hide n' Seek search popup if Hide n' Seek hasn't yet been granted permisisons to use the job board.
 
 ## **Download**
 
