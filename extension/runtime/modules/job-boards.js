@@ -137,7 +137,7 @@ const jobBoards = (() => {
           id: "companyName",
           removableValues: false,
           selector:
-            ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > *",
+            ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > *:not(.visually-hidden)",
           match: "exact",
           processors: [
             commonProcessors.trim,

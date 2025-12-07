@@ -87,6 +87,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 7.1.3
+  - Release date
+    - 2025-12-07
+  - Bug fix
+    - Adjust company name detection to correctly detect the company name on listings in the jobs tab of LinkedIn company pages
 - 7.1.2
   - Release date
     - 2025-11-28
