@@ -14,17 +14,20 @@ const getActiveTab = async () => {
   return activeTab;
 };
 
+const defaultTabStatus = {
+  blockedJobsCount: 0,
+  hasListings: false,
+  jobBoard: false,
+};
+
 const getTabStatus = async (tab) => {
   try {
-    return await chrome.tabs.sendMessage(tab.id, {
+    const tabStatus = await chrome.tabs.sendMessage(tab.id, {
       request: "get tab status",
     });
+    return tabStatus || defaultTabStatus;
   } catch {
-    return {
-      blockedJobsCount: 0,
-      hasListings: false,
-      jobBoard: false,
-    };
+    return defaultTabStatus;
   }
 };
 
