@@ -15,7 +15,10 @@ const hnsContainer = {
 
   createComponent(element, jobBoardId) {
     element.setAttribute("data-hns-job-board-id", jobBoardId);
-    element.addEventListener("click", (event) => event.stopPropagation());
+    element.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
     element.querySelector(".hns-block-button").addEventListener("click", () => {
       if (defaultToggle) defaultToggle.element.click();
     });
