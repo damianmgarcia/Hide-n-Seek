@@ -12,23 +12,15 @@
  <img src="images/hide-n-seek-youtube-thumbnail-github-readme-normalized.svg" alt="Check it out on YouTube" width="50%" />
 </a>
 
-## **How It Works**
-
-“Block” buttons are added next to every listing. If you see a listing you don’t like, simply click the button to hide it. By default, the listing will be hidden under an overlay. Alternatively, you can completely eliminate it from search results by enabling the “Do not display hidden jobs” option.
-
-To hide promoted jobs, click the “block” button on any promoted listing and then activate the “Promoted” toggle.
-
-To hide jobs by keyword, visit one of the supported job boards, click the Hide n' Seek button on your browser's toolbar, and then add keywords using the "Block by keyword" field.
-
-You can also view a list of everything you've hidden, and backup and restore your data by clicking the Hide n’ Seek button on your browser’s toolbar.
-
 ## **Usage**
 
-- Get started by clicking the Hide n' Seek button on the browser's toolbar. Select a job board, enter a job name, and then click the search button. You may also go directly to a supported job board's website to perform your search if you prefer.
+- ❗IMPORTANT: The first time you use Hide n' Seek on a job board you'll need to grant permissions in order for it to work, otherwise you won't see the block buttons on the listings. You'll know if you need to grant permissions if you see a yellow alert notification bubble next to the Hide n' Seek button on your browser's toolbar. You can grant permissions by clicking the Hide n' Seek button and then clicking the "Enable Hide n' Seek on {Job Board}" button.
+
+- You can search for a job by clicking the Hide n' Seek button on the browser's toolbar or you can go directly to a supported job board's website to perform your search if you prefer.
 
 <img src="/images/usage-job-search-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram that shows a job search in the extension's popup" /><br><br>
 
-- The first time that you use Hide n' Seek on a job board you'll need to grant permissions in order for it to work, otherwise you won't see the block buttons on the listings. You'll know if you need to grant permissions if you see a yellow alert notification bubble next to the Hide n' Seek button in your browser's toolbar. You can grant permissions by clicking the Hide n' Seek button and then clicking the "Enable Hide n' Seek on {Job Board}" button.
+- “Block” buttons are added next to every listing. If you see a listing you don’t like, simply click the button to hide it. By default, the listing will be hidden under an overlay. Alternatively, you can completely eliminate it from search results by enabling the “Do not display hidden jobs” option.
 
 - Click a job's "block" button and all jobs by that company will be hidden behind an overlay.
 
