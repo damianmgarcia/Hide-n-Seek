@@ -9,6 +9,7 @@ const install = async (details) => {
     }
   }
   updateContentScriptRegistrations({ reloadAllTabs: true });
+  chrome.tabs.create({ url: "update.html" });
 };
 
 export { install };

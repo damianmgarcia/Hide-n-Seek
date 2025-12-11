@@ -81,6 +81,13 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 8.0.0
+  - Release date
+    - 2025-12-11
+  - Improvements
+    - Show Hide n' Seek info (version, what's new, permissions) in a popup when it's installed or updated
+    - Adjust listing detection for LinkedIn jobs collections
+    - Reload page when a LinkedIn job collection iframe is detected so that listings load in the regular page where Hide n' Seek can detect them (Hide n' Seek doesn't currently support iframes).
 - 7.1.3
   - Release date
     - 2025-12-07
