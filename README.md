@@ -28,6 +28,8 @@ You can also view a list of everything you've hidden, and backup and restore you
 
 <img src="/images/usage-job-search-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram that shows a job search in the extension's popup" /><br><br>
 
+- The first time that you use Hide n' Seek on a job board you'll need to grant permissions in order for it to work, otherwise you won't see the block buttons on the listings. You'll know if you need to grant permissions if you see a yellow alert notification bubble next to the Hide n' Seek button in your browser's toolbar. You can grant permissions by clicking the Hide n' Seek button and then clicking the "Enable Hide n' Seek on {Job Board}" button.
+
 - Click a job's "block" button and all jobs by that company will be hidden behind an overlay.
 
 <img src="/images/usage-hide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of hiding a job' /><br><br>
