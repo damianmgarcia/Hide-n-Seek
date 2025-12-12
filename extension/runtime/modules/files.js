@@ -8,15 +8,20 @@ const download = (url, fileName) => {
   tempAnchor.remove();
 };
 
-const upload = (handler) => {
-  const tempFileInput = document.createElement("input");
-  tempFileInput.type = "file";
-  tempFileInput.accept = ".json";
-  tempFileInput.addEventListener("change", () => handler(tempFileInput.files), {
-    once: true,
+const upload = () => {
+  return new Promise((resolve, reject) => {
+    const tempFileInput = document.createElement("input");
+    tempFileInput.type = "file";
+    tempFileInput.accept = ".json";
+    tempFileInput.addEventListener(
+      "change",
+      () => resolve(tempFileInput.files),
+      { once: true }
+    );
+    tempFileInput.addEventListener("cancel", reject, { once: true });
+    tempFileInput.click();
+    tempFileInput.remove();
   });
-  tempFileInput.click();
-  tempFileInput.remove();
 };
 
 export { download, upload };
