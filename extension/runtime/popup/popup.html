@@ -196,7 +196,7 @@
           </label>
         </div>
         <div id="settings-container" class="invisible">
-          <div id="data-settings" class="setting-group">
+          <div data-hide-if-firefox id="data-settings" class="setting-group">
             <button
               id="backup-button"
               class="text-button black-button"
@@ -214,11 +214,20 @@
             </button>
           </div>
           <div id="help-settings" class="setting-group">
+            <div data-hide-if-not-firefox>
+              <a href="/status.html" target="_blank">Backup and restore</a>
+            </div>
+            <div>
+              <a href="/status.html" target="_blank">Permissions</a>
+            </div>
+            <div>
+              <a href="/status.html" target="_blank">What's new</a>
+            </div>
             <div>
               <a
                 href="https://github.com/damianmgarcia/Hide-n-Seek"
                 target="_blank"
-                >About Hide n' Seek</a
+                >Source code</a
               >
             </div>
             <div>
