@@ -81,7 +81,7 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
-- 8.0.1
+- 8.1.0
   - Release date
     - 2025-12-12
   - Improvements
