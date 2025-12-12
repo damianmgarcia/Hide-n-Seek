@@ -35,7 +35,7 @@
   - Scroll through your list of hidden jobs and click a hidden job's name to remove it
   - Click the "Unhide all jobs" button to reset your hidden jobs list. This action can be undone by clicking the "Undo" button
   - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays
-  - Click the settings button where you can backup and restore your data
+  - Click the settings button where you can find options to backup and restore your data, manage job board permissions, see what's new, or report issues.
 
 <img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of the extension's toolbar button, along with the options panel, shows a list of hidden jobs and controls for managing the list." /><br><br>
 
@@ -81,6 +81,12 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 8.1.0
+  - Release date
+    - 2025-12-12
+  - Improvements
+    - Backup and restore functionality is now available for Firefox
+    - Settings now has links to the Hide n' Seek status page, which includes information on job board permissions, what's new, and data management
 - 8.0.0
   - Release date
     - 2025-12-11
