@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hide n' Seek</title>
+    <link rel="stylesheet" href="status.css" />
+    <script type="module" src="status.js"></script>
+  </head>
+  <body>
+    <div class="status-container">
+      <header>
+        <img src="assets/images/hide-n-seek-icon.svg" />
+        <h1>Hide n' Seek</h1>
+      </header>
+
+      <section class="version-info">
+        <h2>Version <span class="version"></span></h2>
+        <p class="release-date">December 12, 2025</p>
+      </section>
+
+      <section class="permissions">
+        <h3>Permissions</h3>
+        <div class="buttons-container permissions-buttons"></div>
+      </section>
+
+      <section class="changelog">
+        <h3>What's New</h3>
+        <ul>
+          <li>
+            <b>Improved job board permission controls</b>
+            <p>
+              Control where Hide n' Seek is enabled: Instead of being enabled
+              for all job boards upon install, you can now choose the job boards
+              where you want Hide n' Seek enabled.
+            </p>
+          </li>
+          <li>
+            <b>See what's new</b>
+            <p>
+              You'll now see what's new with each update, including new features
+              and bug fixes, in a Hide n' Seek status page. You can open this
+              page at any time to see what version you're running, which job
+              boards have Hide n' Seek enabled, and even backup and restore your
+              data.
+            </p>
+          </li>
+          <li>
+            <b>Improved listing detection on LinkedIn</b>
+            <p>
+              You can now block listings on LinkedIn's job feed page
+              (https://www.linkedin.com/jobs/)
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="data">
+        <h3>Data</h3>
+        <div class="buttons-container">
+          <button
+            id="backup-button"
+            class="text-button black-button"
+            title="Backup your settings and hidden jobs to a file on your device"
+          >
+            Backup data to file</button
+          ><button
+            id="restore-button"
+            class="text-button black-button"
+            tabindex="0"
+            title="Restore your settings and hidden jobs from a backup file"
+          >
+            Restore data from file
+          </button>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
