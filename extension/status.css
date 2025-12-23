@@ -88,6 +88,19 @@ button {
   transition-property: background-color, opacity;
 }
 
+button.enabled::before {
+  border-bottom: 2px solid hsl(0, 0%, 20%);
+  border-left: 2px solid hsl(0, 0%, 20%);
+  box-sizing: border-box;
+  content: "";
+  display: inline-block;
+  height: 0.3rem;
+  margin-bottom: 0.25rem;
+  margin-right: 0.5rem;
+  transform: rotate(-45deg);
+  width: 0.6rem;
+}
+
 .text-button {
   border: none;
   color: hsl(0, 0%, 0%);
@@ -198,6 +211,11 @@ input[type="checkbox"]:checked::after {
 
   button {
     background: hsl(0, 0%, calc(100% - 90%));
+  }
+
+  button.enabled::before {
+    border-bottom: 2px solid hsl(0, 0%, calc(100% - 20%));
+    border-left: 2px solid hsl(0, 0%, calc(100% - 20%));
   }
 
   .text-button {

@@ -36,7 +36,8 @@ restoreButton.addEventListener("click", async () => {
 });
 
 const disableButton = (button, jobBoard) => {
-  button.innerHTML = `✓ Hide n' Seek is enabled on <b>${jobBoard.name}</b>`;
+  button.innerHTML = `Hide n' Seek is enabled on <b>${jobBoard.name}</b>`;
+  button.classList.add("enabled");
   button.classList.remove("green-button");
   button.disabled = true;
 };
