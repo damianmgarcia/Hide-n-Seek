@@ -812,6 +812,44 @@ input[type="radio"] {
   margin: 0;
 }
 
+input[type="checkbox"] {
+  align-content: center;
+  appearance: none;
+  background: hsl(0, 0%, 100%);
+  cursor: pointer;
+  border-radius: 0.25rem;
+  display: inline-grid;
+  height: 1rem;
+  justify-items: center;
+  margin: 0;
+  padding: 0;
+  width: 1rem;
+}
+
+input[type="checkbox"]:checked {
+  background: hsl(0, 100%, 90%);
+}
+
+input[type="checkbox"]::after {
+  border-bottom: 2px solid hsl(0, 100%, 10%);
+  border-left: 2px solid hsl(0, 100%, 10%);
+  box-sizing: border-box;
+  content: "";
+  display: block;
+  height: 0.3rem;
+  margin-bottom: 0.125rem;
+  opacity: 0;
+  transform: translateX(-0.25rem) rotate(-45deg);
+  transition: 200ms ease-out;
+  width: 0.6rem;
+}
+
+input[type="checkbox"]:checked::after {
+  content: "";
+  opacity: 1;
+  transform: translateX(0) rotate(-45deg);
+}
+
 input[type="text"] {
   background: hsl(0, 0%, 100%, 1);
   border: none;
