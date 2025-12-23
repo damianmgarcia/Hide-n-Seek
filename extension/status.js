@@ -32,7 +32,11 @@ backupButton.addEventListener("click", backup);
 const restoreButton = document.querySelector("#restore-button");
 restoreButton.addEventListener("click", async () => {
   const restored = await restore();
-  animateButton(restoreButton, restored ? "success" : "failure");
+  animateButton(
+    restoreButton,
+    restored ? "success" : "failure",
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  );
 });
 
 const disableButton = (button, jobBoard) => {
