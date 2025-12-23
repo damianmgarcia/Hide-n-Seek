@@ -124,7 +124,7 @@ const jobBoards = (() => {
       id: "linkedIn",
       name: "LinkedIn",
       listingSelector:
-        "li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id]), [data-view-name='job-card'] > a",
+        "li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id]), div > [data-view-name='job-card'] > a, div:has(> [data-view-name='job-search-job-card'])",
       logo: {
         src: "/assets/images/linkedin-logo.svg",
         alt: "LinkedIn's logo",
@@ -137,7 +137,7 @@ const jobBoards = (() => {
           id: "companyName",
           removableValues: false,
           selector:
-            ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > *:not(.visually-hidden), [data-view-name='job-card'] figure + div > div:first-child p + div > p:first-child",
+            ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > *:not(.visually-hidden), div > [data-view-name='job-card'] figure + div > div:first-child p + div > p:first-child, div > [data-view-name='job-search-job-card'] p + div > p",
           match: "exact",
           processors: [
             commonProcessors.trim,
@@ -156,7 +156,7 @@ const jobBoards = (() => {
           id: "promotionalStatus",
           removableValues: false,
           selector:
-            ".job-card-list__footer-wrapper, .job-card-container__footer-wrapper, [data-view-name='job-card'] figure + div > div:last-child",
+            ".job-card-list__footer-wrapper, .job-card-container__footer-wrapper, div > [data-view-name='job-card'] figure + div > div:last-child",
           match: "exact",
           processors: [
             {
