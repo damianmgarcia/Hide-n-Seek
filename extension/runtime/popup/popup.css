@@ -556,15 +556,14 @@ html:has(#request-permissions[data-permissions-needed]) {
 .feed-charm-text {
   font: 1.1rem "Schoolbell";
   position: absolute;
-  transform: translate(-23px, -6px);
+  transform: translate(-35px, -6px);
 }
 
-.feed-charm-bowl {
-  --scale: 0.3;
+.feed-charm-coffee {
+  --scale: 0.04;
   --translateX: -28px;
-  --translateY: 11px;
+  --translateY: 10px;
   position: absolute;
-  filter: hue-rotate(180deg) brightness(2.5);
   transform: translate(var(--translateX), var(--translateY)) scale(var(--scale));
 }
 
@@ -643,29 +642,29 @@ html:has(#request-permissions[data-permissions-needed]) {
   }
 }
 
-.feed-charm-button:hover .feed-charm-bowl {
-  animation: bowl-rattle 0.5s ease-in-out infinite alternate;
+.feed-charm-button:hover .feed-charm-coffee {
+  animation: rattle 0.5s ease-in-out infinite alternate;
 }
 
-@keyframes bowl-rattle {
+@keyframes rattle {
   0% {
     transform: translate(var(--translateX), var(--translateY)) rotate(0deg)
       scale(var(--scale));
   }
   20% {
-    transform: translate(calc(var(--translateX) - 2px), var(--translateY))
+    transform: translate(calc(var(--translateX) - 1px), var(--translateY))
       rotate(-3deg) scale(var(--scale));
   }
   40% {
-    transform: translate(calc(var(--translateX) + 2px), var(--translateY))
+    transform: translate(calc(var(--translateX) + 1px), var(--translateY))
       rotate(3deg) scale(var(--scale));
   }
   60% {
-    transform: translate(calc(var(--translateX) - 1px), var(--translateY))
+    transform: translate(calc(var(--translateX) - 0px), var(--translateY))
       rotate(-2deg) scale(var(--scale));
   }
   80% {
-    transform: translate(calc(var(--translateX) + 1px), var(--translateY))
+    transform: translate(calc(var(--translateX) + 0px), var(--translateY))
       rotate(2deg) scale(var(--scale));
   }
   100% {
