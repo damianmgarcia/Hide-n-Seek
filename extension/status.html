@@ -8,53 +8,43 @@
     <script type="module" src="status.js"></script>
   </head>
   <body>
+    <label
+      >Show release notes after an update
+      <input type="checkbox" name="show-release-notes-after-update"
+    /></label>
     <div class="status-container">
       <header>
         <img src="assets/images/hide-n-seek-icon.svg" />
         <h1>Hide n' Seek</h1>
       </header>
-
       <section class="version-info">
         <h2>Version <span class="version"></span></h2>
-        <p class="release-date">December 12, 2025</p>
+        <p class="release-date">December 22, 2025</p>
       </section>
-
       <section class="permissions">
         <h3>Permissions</h3>
         <div class="buttons-container permissions-buttons"></div>
       </section>
-
       <section class="changelog">
         <h3>What's New</h3>
         <ul>
           <li>
-            <b>Improved job board permission controls</b>
-            <p>
-              Control where Hide n' Seek is enabled: Instead of being enabled
-              for all job boards upon install, you can now choose the job boards
-              where you want Hide n' Seek enabled.
-            </p>
+            <b>Update listing detection on LinkedIn</b>
+            <p>Listings can now be detected on the new version of LinkedIn</p>
+            <p>Fix duplicated overlays on blocked LinkedIn listings</p>
           </li>
           <li>
-            <b>See what's new</b>
+            <b>Update release notes</b>
             <p>
-              You'll now see what's new with each update, including new features
-              and bug fixes, in a Hide n' Seek status page. You can open this
-              page at any time to see what version you're running, which job
-              boards have Hide n' Seek enabled, and even backup and restore your
-              data.
+              You can now control whether release notes show after an update
             </p>
-          </li>
-          <li>
-            <b>Improved listing detection on LinkedIn</b>
             <p>
-              You can now block listings on LinkedIn's job feed page
-              (https://www.linkedin.com/jobs/)
+              The release notes now display in a light or dark theme according
+              to your device's preferred color scheme
             </p>
           </li>
         </ul>
       </section>
-
       <section class="data">
         <h3>Data</h3>
         <div class="buttons-container">

@@ -556,15 +556,14 @@ html:has(#request-permissions[data-permissions-needed]) {
 .feed-charm-text {
   font: 1.1rem "Schoolbell";
   position: absolute;
-  transform: translate(-23px, -6px);
+  transform: translate(-35px, -6px);
 }
 
-.feed-charm-bowl {
-  --scale: 0.3;
+.feed-charm-coffee {
+  --scale: 0.04;
   --translateX: -28px;
-  --translateY: 11px;
+  --translateY: 10px;
   position: absolute;
-  filter: hue-rotate(180deg) brightness(2.5);
   transform: translate(var(--translateX), var(--translateY)) scale(var(--scale));
 }
 
@@ -643,29 +642,29 @@ html:has(#request-permissions[data-permissions-needed]) {
   }
 }
 
-.feed-charm-button:hover .feed-charm-bowl {
-  animation: bowl-rattle 0.5s ease-in-out infinite alternate;
+.feed-charm-button:hover .feed-charm-coffee {
+  animation: rattle 0.5s ease-in-out infinite alternate;
 }
 
-@keyframes bowl-rattle {
+@keyframes rattle {
   0% {
     transform: translate(var(--translateX), var(--translateY)) rotate(0deg)
       scale(var(--scale));
   }
   20% {
-    transform: translate(calc(var(--translateX) - 2px), var(--translateY))
+    transform: translate(calc(var(--translateX) - 1px), var(--translateY))
       rotate(-3deg) scale(var(--scale));
   }
   40% {
-    transform: translate(calc(var(--translateX) + 2px), var(--translateY))
+    transform: translate(calc(var(--translateX) + 1px), var(--translateY))
       rotate(3deg) scale(var(--scale));
   }
   60% {
-    transform: translate(calc(var(--translateX) - 1px), var(--translateY))
+    transform: translate(calc(var(--translateX) - 0px), var(--translateY))
       rotate(-2deg) scale(var(--scale));
   }
   80% {
-    transform: translate(calc(var(--translateX) + 1px), var(--translateY))
+    transform: translate(calc(var(--translateX) + 0px), var(--translateY))
       rotate(2deg) scale(var(--scale));
   }
   100% {
@@ -810,6 +809,44 @@ input[type="checkbox"] {
 input[type="radio"] {
   appearance: none;
   margin: 0;
+}
+
+input[type="checkbox"] {
+  align-content: center;
+  appearance: none;
+  background: hsl(0, 0%, 100%);
+  cursor: pointer;
+  border-radius: 0.25rem;
+  display: inline-grid;
+  height: 1rem;
+  justify-items: center;
+  margin: 0;
+  padding: 0;
+  width: 1rem;
+}
+
+input[type="checkbox"]:checked {
+  background: hsl(0, 100%, 90%);
+}
+
+input[type="checkbox"]::after {
+  border-bottom: 2px solid hsl(0, 100%, 10%);
+  border-left: 2px solid hsl(0, 100%, 10%);
+  box-sizing: border-box;
+  content: "";
+  display: block;
+  height: 0.3rem;
+  margin-bottom: 0.125rem;
+  opacity: 0;
+  transform: translateX(-0.25rem) rotate(-45deg);
+  transition: 200ms ease-out;
+  width: 0.6rem;
+}
+
+input[type="checkbox"]:checked::after {
+  content: "";
+  opacity: 1;
+  transform: translateX(0) rotate(-45deg);
 }
 
 input[type="text"] {

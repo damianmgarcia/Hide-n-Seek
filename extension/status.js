@@ -6,6 +6,7 @@ import {
 import { backup, restore } from "./runtime/modules/backup.js";
 import { animateButton } from "./runtime/modules/animation.js";
 
+const storage = await chrome.storage.local.get();
 const version = chrome.runtime.getManifest().version;
 document
   .querySelectorAll(".version")
@@ -14,17 +15,33 @@ document
 const jobBoards = jobBoardIds.map(getJobBoardById);
 const permissionsButtons = document.querySelector(".permissions-buttons");
 
+const showReleaseNotesAfterUpdateCheckbox = document.querySelector(
+  "[name='show-release-notes-after-update']"
+);
+showReleaseNotesAfterUpdateCheckbox.checked =
+  storage.showReleaseNotesAfterUpdate;
+showReleaseNotesAfterUpdateCheckbox.addEventListener("change", () =>
+  chrome.storage.local.set({
+    showReleaseNotesAfterUpdate: showReleaseNotesAfterUpdateCheckbox.checked,
+  })
+);
+
 const backupButton = document.querySelector("#backup-button");
 backupButton.addEventListener("click", backup);
 
 const restoreButton = document.querySelector("#restore-button");
 restoreButton.addEventListener("click", async () => {
   const restored = await restore();
-  animateButton(restoreButton, restored ? "success" : "failure");
+  animateButton(
+    restoreButton,
+    restored ? "success" : "failure",
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  );
 });
 
 const disableButton = (button, jobBoard) => {
-  button.innerHTML = `✓ Hide n' Seek is enabled on <b>${jobBoard.name}</b>`;
+  button.innerHTML = `Hide n' Seek is enabled on <b>${jobBoard.name}</b>`;
+  button.classList.add("enabled");
   button.classList.remove("green-button");
   button.disabled = true;
 };

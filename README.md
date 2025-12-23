@@ -81,6 +81,15 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 8.2.0
+  - Release date
+    - 2025-12-22
+  - Improvements
+    - Update listing detection for LinkedIn so that listings can be detected on the new version of LinkedIn
+    - Add option to disable the release notes popup that appear when Hide n' Seek updates
+    - Apply light or dark theme to the release notes popup according to device theme
+  - Bug fix
+    - Fix duplicated overlays on blocked LinkedIn listings
 - 8.1.0
   - Release date
     - 2025-12-12
