@@ -6,6 +6,7 @@ import {
 import { backup, restore } from "./runtime/modules/backup.js";
 import { animateButton } from "./runtime/modules/animation.js";
 
+const storage = await chrome.storage.local.get();
 const version = chrome.runtime.getManifest().version;
 document
   .querySelectorAll(".version")
@@ -13,6 +14,17 @@ document
 
 const jobBoards = jobBoardIds.map(getJobBoardById);
 const permissionsButtons = document.querySelector(".permissions-buttons");
+
+const showReleaseNotesAfterUpdateCheckbox = document.querySelector(
+  "[name='show-release-notes-after-update']"
+);
+showReleaseNotesAfterUpdateCheckbox.checked =
+  storage.showReleaseNotesAfterUpdate;
+showReleaseNotesAfterUpdateCheckbox.addEventListener("change", () =>
+  chrome.storage.local.set({
+    showReleaseNotesAfterUpdate: showReleaseNotesAfterUpdateCheckbox.checked,
+  })
+);
 
 const backupButton = document.querySelector("#backup-button");
 backupButton.addEventListener("click", backup);
