@@ -81,6 +81,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 8.2.1
+  - Release date
+    - 2026-01-10
+  - Bug fix
+    - Prevent release notes from showing after minor patches to Hide n' Seek or after browser updates
 - 8.2.0
   - Release date
     - 2025-12-22
