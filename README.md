@@ -84,68 +84,69 @@ The promotional video was created with a combination of Adobe After Effects and 
 - 8.2.1
   - Release date
     - 2026-01-10
-  - Bug fix
-    - Prevent release notes from showing after minor patches to Hide n' Seek or after browser updates
+  - Patches
+    - The release notes popup no longer shows after patches to Hide n' Seek or after browser updates
 - 8.2.0
   - Release date
     - 2025-12-22
-  - Improvements
+  - Minor updates
     - Update listing detection for LinkedIn so that listings can be detected on the new version of LinkedIn
     - Add option to disable the release notes popup that appear when Hide n' Seek updates
     - Apply light or dark theme to the release notes popup according to device theme
-  - Bug fix
+  - Patches
     - Fix duplicated overlays on blocked LinkedIn listings
 - 8.1.0
   - Release date
     - 2025-12-12
-  - Improvements
+  - Minor updates
     - Backup and restore functionality is now available for Firefox
     - Settings now has links to the Hide n' Seek status page, which includes information on job board permissions, what's new, and data management
 - 8.0.0
   - Release date
     - 2025-12-11
-  - Improvements
-    - Show Hide n' Seek info (version, what's new, permissions) in a popup when it's installed or updated
+  - Major updates
+    - Show Hide n' Seek release notes (version, what's new, permissions) in a popup when installed or updated
+  - Patches
     - Adjust listing detection for LinkedIn jobs collections
     - Reload page when a LinkedIn job collection iframe is detected so that listings load in the regular page where Hide n' Seek can detect them (Hide n' Seek doesn't currently support iframes).
 - 7.1.3
   - Release date
     - 2025-12-07
-  - Bug fix
+  - Patches
     - Adjust company name detection to correctly detect the company name on listings in the jobs tab of LinkedIn company pages
 - 7.1.2
   - Release date
     - 2025-11-28
-  - Bug fix
+  - Patches
     - Fixed a bug that was resulting in old keyword toggles not being removed from listings
 - 7.1.1
   - Release date
     - 2025-11-26
-  - Bug fix
+  - Patches
     - Fixed a bug that was resulting in the search popup's job search query not being searched
 - 7.1.0
   - Release date
     - 2025-11-25
-  - Improvements
+  - Minor updates
     - Added "Enable Hide n' Seek" buttons to the job search popup when permissions are required to search a job board
 - 7.0.1
   - Release date
     - 2025-11-23
-  - Bug fix
+  - Patches
     - Fixed a minor issue with the extension trying to update a tab's badge after a tab has closed
 - 7.0.0
   - Release date
     - 2025-11-23
-  - New features
+  - Major updates
     - Add support for all Glassdoor sites
       - Previously, only the ".com" version of Glassdoor was supported, but now all of Glassdoor's sites are. For example, glassdoor.ca, glassdoor.com.au, glassdoor.co.uk, etc. all work with Hide n' Seek now.
-  - Improvements
+  - Minor updates
     - Optional instead of required permissions
       - Previously, Hide n' Seek required permissions to be granted for LinkedIn, Indeed, and Glassdoor on installation, even if you only used one of those sites. Now all permissions are optional and asked for when you visit one of the supported sites. After permissions have been granted the first time they will be permanent unless you revoke the permissions in extension's management page.
 - 6.0.0
   - Release date
     - 2025-11-03
-  - New features
+  - Major updates
     - Block jobs by keyword
       - You can now block jobs by keyword. Just open the popup, enter a keyword, and press Enter to add it to your list! You can also block jobs using regular expressions. For example, you could block /part[\s-]?time/i to block many variations of "part time" such as part-time, parttime, part time, Part-Time, etc.
     - Feed Charm (Donate)
@@ -153,31 +154,30 @@ The promotional video was created with a combination of Adobe After Effects and 
 - 5.1.4
   - Release date
     - 2025-03-27
-  - Bug fix
+  - Patches
     - Updated company name detection for LinkedIn. Many thanks to [ert224](https://github.com/ert224) and [jogwuegbu](https://github.com/jogwuegbu) for discovering and contributing this fix!
 - 5.1.3
   - Release date
     - 2024-12-20
-  - Bug fix
+  - Patches
     - Fixes maximum call stack issue with very large exports. Many thanks to [wchen342](https://github.com/wchen342) for discovering and contributing this fix!
     - Fixed a compatibility issue with Firefox related to the Chrome API
-  - Improvement
     - Improves compatibility with the inDoors extension. Many thanks to [wchen342](https://github.com/wchen342) for discovering and contributing this improvement!
 - 5.1.2
   - Release date
     - 2024-11-28
-  - Patch
+  - Patches
     - Glassdoor recently updated their website code, which affected the extension's ability to detect company names. This update fixes this issue.
 - 5.1.1
   - Release date
     - 2024-11-25
-  - Bug fix
+  - Patches
     - In the Firefox version of Hide n' Seek, company names were previously not being detected due to a change in LinkedIn's company name selector.
     - Many thanks to [alexmerm](https://github.com/alexmerm) for reporting this issue!
 - 5.1.0
   - Release date
     - 2024-11-02
-  - Improvements
+  - Minor updates
     - Updated data storage strategy so that many more jobs can be blocked. Previously, a few hundred jobs could be blocked before the extension's sync storage quota would have been exceeded. Now, users can block thousands of jobs.
     - A notification now shows when a user exceeds the sync storage quota for the extension. Users who exceed the sync storage quota will still be able to block jobs, but the blocked jobs won't sync.
     - Many thanks to [wchen342](https://github.com/wchen342) for contributing this fix!
@@ -185,93 +185,92 @@ The promotional video was created with a combination of Adobe After Effects and 
 - 5.0.5
   - Release date
     - 2024-10-06
-  - Improvement
+  - Patches
     - Removed web_accessible_resources from the manifest
 - 5.0.4
   - Release date
     - 2024-09-15
-  - Bug fix
+  - Patches
     - Updated the LinkedIn job detection heuristic. Many thanks to [wchen342](https://github.com/wchen342) for contributing this fix!
 - 5.0.3
   - Release date
     - 2024-09-06
-  - Bug fix
+  - Patches
     - Unable to block promoted jobs on non-English versions of LinkedIn
       - Updated the LinkedIn promoted job detection heuristic
 - 5.0.2
   - Release date
     - 2024-08-28
-  - Bug fix
+  - Patches
     - Backup fails when the blocked jobs list includes company names with non-ASCII characters
       - Added support for non-ASCII characters in company names. This change resolves [#34](https://github.com/damianmgarcia/Hide-n-Seek/issues/34). Once again, many thanks to [Matej9937](https://github.com/Matej9937) for discovering this issue, documenting it with incredible attention to detail, and using amazing problem solving skills to help find a solution!
 - 5.0.1
   - Release date
     - 2024-08-11
-  - Patch
+  - Patches
     - Add support for a new LinkedIn job listing format
       - Added support for a new LinkedIn job listing format where the company name is separated by its location with a middle dot instead of being on a separate line. This change resolves [#32](https://github.com/damianmgarcia/Hide-n-Seek/issues/32). Many thanks to [Matej9937](https://github.com/Matej9937) for discovering this issue, documenting it with incredible attention to detail, and using amazing problem solving skills to help find a solution!
       - Updated promoted job detection algorithm
 - 5.0.0
   - Release date
     - 2024-07-28
-  - New features
+  - Major updates
     - Backup and Restore
       - You can now backup your settings and hidden jobs to a file on your device, and then restore them later when you need to. The backup file does not include any personal data, so you can freely share it with others as a way of sharing your hidden jobs list with them.
 - 4.3.3
   - Release date
     - 2024-04-01
-  - Bug fixes
+  - Patches
     - Chrome: Fixed bug in which popup job searches get stuck on "Searching..." after starting a search. This appears to be caused by a [Chromium bug](https://issues.chromium.org/issues/40288048)
     - Fixed a bug caused by pointer events bubbling through block buttons, leading to jobs opening in Glassdoor when clicking a block button
     - Added permission notifications in Firefox and permission requests in Chrome and Edge when permissions are missing when attempting to perform a job search with the popup
 - 4.3.2
   - Release date
     - 2024-03-31
-  - Bug fixes
+  - Patches
     - Firefox: Fixed buttons in popup list missing the remove icon
 - 4.3.1
   - Release date
     - 2024-03-30
-  - Bug fixes
+  - Patches
     - Firefox: Fixed popup search getting stuck on "Searching..." after starting a search
 - 4.3.0
   - Release date
     - 2024-03-30
-  - Improvements
+  - Minor updates
     - Added support for Firefox
     - Added support for Glassdoor
 - 4.2.8
   - Release date
     - 2023-12-27
-  - Improvements
+  - Patches
     - Small UI improvements
       - The "x" remove icons on hidden job buttons in the popup list now become red when you hover over them.
       - A job attribute's title text now shows when you hover over any part of the job attribute toggle button, not just when you hover over the job attribute title itself.
-  - Bug fixes
     - Incorrect pointer priority in popup hidden jobs list
       - An element below the hidden jobs list that was negatively affecting scroll and click behavior has been fixed.
 - 4.2.7
   - Release date
     - 2023-11-01
-  - Bug fixes
+  - Patches
     - Companies on Indeed being detected as "Unknown Company"
       - Indeed's recent website update broke company name detection, but this is now resolved.
 - 4.2.6
   - Release date
     - 2023-09-02
-  - Bug fixes
+  - Patches
     - Duplicated hidden job overlays on the Indeed job feed with Chrome
       - The caching of job listings has been adjusted to prevent the duplication of hidden job overlays on previously-loaded job listings. This issue specifically occurred whenever the Indeed job feed lazy-loaded new listings, and only with Chrome (not Edge).
 - 4.2.5
   - Release date
     - 2023-08-28
-  - Bug fixes
+  - Patches
     - Not optimized for discoverability by search engines
       - Updated the name in the manifest to improve discoverability by search engines.
 - 4.2.4
   - Release date
     - 2023-08-24
-  - Bug fixes
+  - Patches
     - False positive job listings on certain pages of the signed-out version of LinkedIn
       - Job listing detection has been adjusted to eliminate false positives on certain pages of the signed-out version of LinkedIn.
     - Missing extension button badge after pressing back/forward buttons on Indeed
@@ -279,13 +278,13 @@ The promotional video was created with a combination of Adobe After Effects and 
 - 4.2.3
   - Release date
     - 2023-08-20
-  - Bug fixes
+  - Patches
     - UI not showing on Indeed
       - Changes to Indeed's code prevented detection of job listings. This update resolves this issue by taking into account these changes.
 - 4.2.2
   - Release date
     - 2023-05-14
-  - Improvements
+  - Minor updates
     - Added support for all non-US versions of Indeed
       - The extension now works with all non-US versions of Indeed. This update resolves [#14](https://github.com/damianmgarcia/Hide-n-Seek/issues/14).
     - Added network connectivity handling to the job search popup
@@ -293,7 +292,7 @@ The promotional video was created with a combination of Adobe After Effects and 
 - 4.1.2
   - Release date
     - 2023-04-18
-  - Bug fixes
+  - Patches
     - UI not showing
       - Some code optimizations seem to have reduced the frequency of [this issue](https://github.com/damianmgarcia/Hide-n-Seek/issues/11). However, the [source of this bug may be Chrome itself](https://bugs.chromium.org/p/chromium/issues/detail?id=1426461).
     - Popup scrollbar not visible when page zoom is greater than 100%
@@ -301,63 +300,63 @@ The promotional video was created with a combination of Adobe After Effects and 
 - 4.1.1
   - Release date
     - 2023-02-24
-  - Bug fixes
+  - Patches
     - UI not showing
       - See details [here](https://github.com/damianmgarcia/Hide-n-Seek/pull/5)
 - 4.1.0
   - Release date
     - 2023-02-19
-  - Improvements
+  - Minor updates
     - Added support for the signed-out version of LinkedIn's job search
       - The extension is now compatible with the signed-out version of LinkedIn's job search.
 - 4.0.0
   - Release date
     - 2023-02-14
-  - New features
+  - Major updates
     - Start a job search from the popup
       - If you are not already searching for jobs, the option panel now displays a search box that lets you start a job search.
-  - Improvements
+  - Minor updates
     - Support for LinkedIn job collections and Indeed job feed
       - The extension now detects and adds "hide" buttons to jobs in LinkedIn job collections and Indeed job feeds.
     - Popup keyboard accessibility
       - Tabbing through the popup is now a consistent and reliable experience for keyboard users.
-  - Bug fixes
+  - Patches
     - UI not showing on LinkedIn after clicking browser's back or forward buttons
       - A MutationObserver for detecting jobs would sometimes stop working during back/forward web navigation on LinkedIn because LinkedIn would remove the element that the observer was observing. This issue has been resolved.
 - 3.1.0
   - Release date
     - 2023-02-03
-  - Improvements
+  - Minor updates
     - Added Firefox support
       - Firefox 109, released 2023-01-17, added support for Manifest Version 3 (MV3) extensions.
       - [Firefox's handling of permissions for MV3 extensions is broken](https://github.com/w3c/webextensions/issues/119#issuecomment-965799707). Unlike other browsers, Firefox does not ask users to grant permissions during installation, nor does it make it obvious enough to users that permissions are needed even when they search for jobs on a supported job board. Instead, users must take additional steps after installation to grant necessary permissions. This is an unfortunate user experience. Therefore, publication to Firefox Add-ons has been suspended until Firefox resolves this issue.
 - 3.0.0
   - Release date
     - 2023-02-01
-  - New features
+  - Major updates
     - View and manage hidden jobs from popup
       - The extension's browser button popup includes a new list of hidden jobs. It allows you to easily see and remove jobs that you have hidden.
-  - Improvements
+  - Minor updates
     - Refined user interface and user experience
       - The behaviors, colors, and animations of user interface elements have been updated.
 - 2.0.1
   - Release date
     - 2023-01-23
-  - Bug fixes
+  - Patches
     - UI not showing on LinkedIn
       - A MutationObserver was called to observe for mutations on an element that, sometimes, did not yet exist in the DOM. This was fixed with the help of a function that waits for the necessary element to populate the DOM before observing it.
 - 2.0.0
   - Release date
     - 2023-01-21
-  - New features
+  - Major updates
     - Remove hidden jobs from display
       - The extension's browser button popup includes a new toggle button, "Do not display hidden jobs", that lets you remove hidden jobs from view, rather than hide them behind overlays.
     - Hidden jobs tally
       - The toolbar button now includes a tally of hidden jobs. The tally increases or decreases by 1 each time a company is hidden or unhidden, respectively. It also increases or decreases by 1 if promoted or sponsored jobs are hidden or unhidden, respectively. A simple breakdown of the tally is displayed when your cursor hovers over the extension's browser button.
-  - Improvements
+  - Minor updates
     - No more delay when unhiding all jobs
       - Clicking the "Unhide all jobs" button (or its "Undo" button) now produces instantaneous results across all active tabs and windows. Previously, there was a short delay.
-  - Bug fixes
+  - Patches
     - Multiple content-script and CSS injections
       - A new script-check mechanism prevents multiple injections of content-scripts and stylesheets, which would occasionally lead to a "doubling" effect of the UI.
 - 1.0.0
