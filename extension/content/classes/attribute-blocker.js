@@ -17,12 +17,12 @@ class AttributeBlocker {
       } else if (attribute.match === "pattern") {
         return (value, pattern) => {
           const regexMatch = /^\/(?<pattern>.+)\/(?<flags>[dgimsuy]*)$/.exec(
-            pattern
+            pattern,
           );
           if (regexMatch) {
             return new RegExp(
               regexMatch.groups.pattern,
-              [...new Set(regexMatch.groups.flags.split(""))].join("")
+              [...new Set(regexMatch.groups.flags.split(""))].join(""),
             ).test(value);
           } else {
             return new RegExp("\\b" + pattern + "\\b", "i").test(value);
@@ -51,7 +51,7 @@ class AttributeBlocker {
       ...[...blockedValuesFromStorage]
         .filter(
           (blockedValueFromStorage) =>
-            !this.blockedValues.has(blockedValueFromStorage)
+            !this.blockedValues.has(blockedValueFromStorage),
         )
         .map((value) => [value, "block"]),
       ...[...this.blockedValues]
@@ -63,7 +63,7 @@ class AttributeBlocker {
     mergedChanges.forEach((action, value) =>
       action === "block"
         ? this.blockValue(value, false)
-        : this.unblockValue(value, false)
+        : this.unblockValue(value, false),
     );
   }
 
@@ -80,7 +80,7 @@ class AttributeBlocker {
           this.defaultAttribute,
           this.attribute.removableValues,
           this.valueIsBlocked(value, blockedValue),
-          () => this.unblockValue(blockedValue)
+          () => this.unblockValue(blockedValue),
         );
       }
     } else {
@@ -97,7 +97,7 @@ class AttributeBlocker {
           } else {
             this.blockValue(value);
           }
-        }
+        },
       );
     }
   }
@@ -142,14 +142,14 @@ class AttributeBlocker {
       [...AttributeBlocker.valueStorageKeys].map((valueStorageKey) => [
         `${valueStorageKey}.backup`,
         [],
-      ])
+      ]),
     );
 
     const changes = Object.assign(
       {
         [this.storageKey]: [...this.blockedValues],
       },
-      emptiedBackups
+      emptiedBackups,
     );
     chrome.storage.local.set(changes);
     this.#changes.clear();
