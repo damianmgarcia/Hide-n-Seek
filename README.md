@@ -81,6 +81,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 8.2.2
+  - Release date
+    - 2026-03-11
+  - Patches
+    - Update listing detection for LinkedIn so that listings can be detected on the new version of LinkedIn
 - 8.2.1
   - Release date
     - 2026-01-10

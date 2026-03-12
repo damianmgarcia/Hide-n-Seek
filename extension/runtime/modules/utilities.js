@@ -6,13 +6,17 @@ const chunk = (array, chunkSize) => {
   return chunks;
 };
 
-const difference = (arrayA, arrayB) => {
-  return arrayA.filter((item) => !arrayB.includes(item));
+const difference = (listA, listB) => {
+  const [setA, setB] = [listA, listB].map((list) =>
+    list instanceof Set ? list : new Set(list),
+  );
+  return Set.prototype.difference
+    ? [...setA.difference(setB)]
+    : [...setA].filter((item) => !setB.has(item));
 };
 
 const debounce = (func, delay = 0) => {
   let timeoutId;
-
   return (...args) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(func, delay, ...args);

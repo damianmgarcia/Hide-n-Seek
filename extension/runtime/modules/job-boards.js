@@ -124,7 +124,7 @@ const jobBoards = (() => {
       id: "linkedIn",
       name: "LinkedIn",
       listingSelector:
-        "li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id]), div > [data-view-name='job-card'] > a, div:has(> [data-view-name='job-search-job-card'])",
+        "li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id]), div > [data-view-name='job-card'] > a, div:has(> [data-view-name='job-search-job-card']), [data-component-type=LazyColumn] > div:has(+hr):has(figure) > div",
       logo: {
         src: "/assets/images/linkedin-logo.svg",
         alt: "LinkedIn's logo",
@@ -137,7 +137,7 @@ const jobBoards = (() => {
           id: "companyName",
           removableValues: false,
           selector:
-            ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > *:not(.visually-hidden), div > [data-view-name='job-card'] figure + div > div:first-child p + div > p:first-child, div > [data-view-name='job-search-job-card'] p + div > p",
+            ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > *:not(.visually-hidden), div > [data-view-name='job-card'] figure + div > div:first-child p + div > p:first-child, div > [data-view-name='job-search-job-card'] p + div > p, [data-component-type=LazyColumn] > div:has(+hr):has(figure) > div figure + div > div:first-child p + div",
           match: "exact",
           processors: [
             commonProcessors.trim,
@@ -237,9 +237,9 @@ const getJobBoardTabs = async (filters = {}) => {
       jobBoard.domains.some(
         (domain) =>
           tab.url.includes(domain) &&
-          (!filters.jobBoardId || jobBoard.id === filters.jobBoardId)
-      )
-    )
+          (!filters.jobBoardId || jobBoard.id === filters.jobBoardId),
+      ),
+    ),
   );
 };
 
