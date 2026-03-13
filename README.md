@@ -1,3 +1,12 @@
+> [!IMPORTANT]
+> **Hide n' Seek is not currently working on LinkedIn due to changes LinkedIn recently made to their site.** [A new version that fixes this issue](https://github.com/damianmgarcia/Hide-n-Seek/pull/72) is pending release on the following browsers:
+> 
+> - [ ] Chrome
+> - [ ] Edge
+> - [x] Firefox (2026-03-11)
+>
+> Once the update has been released for your browser or extension store, you can force your browser to manually update the extension by going to your browser's extension settings page if you don't want to wait for the automatic update.
+
 # **Hide n' Seek: Hide Promoted Jobs & Companies**
 
 ![A promotional marquee. The logo and name are featured on the left side of the marquee. The logo is a simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. A "before and after" diagram on the right side of the marquee shows how the extension hides jobs and is titled "View the jobs you seek. Hide the ones you don't"](/images/promotional-marquee-2-normalized.svg)
