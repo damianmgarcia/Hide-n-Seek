@@ -1,5 +1,10 @@
-> [!IMPORTANT]
-> **Hide n' Seek is not currently working on LinkedIn due to changes LinkedIn recently made to their site.** [A new version that fixes this issue](https://github.com/damianmgarcia/Hide-n-Seek/pull/72) is pending release on the following browsers:
+> [!IMPORTANT] 
+>
+> **2026-03-11**
+> 
+> **Hide n' Seek is not currently working on LinkedIn due to changes LinkedIn recently made to their site.**
+>
+> [A new version that fixes this issue](https://github.com/damianmgarcia/Hide-n-Seek/pull/72) is pending release on the following browsers:
 > 
 > - [ ] Chrome
 > - [ ] Edge
