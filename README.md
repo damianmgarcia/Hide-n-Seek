@@ -1,16 +1,18 @@
 > [!IMPORTANT] 
 >
-> **2026-03-11**
+> 2026-03-11
 > 
 > **Hide n' Seek is not currently working on LinkedIn due to changes LinkedIn recently made to their site.**
 >
-> [A new version that fixes this issue](https://github.com/damianmgarcia/Hide-n-Seek/pull/72) is pending release on the following browsers:
+> [A new version (8.2.2) that fixes this issue](https://github.com/damianmgarcia/Hide-n-Seek/pull/72) was submitted to the Chrome, Edge, and Firefox extension stores on 2026-03-11. Release timing depends on each store's review process, which typically takes a few days.
 > 
-> - [ ] Chrome
-> - [ ] Edge
-> - [x] Firefox (2026-03-11)
+> - [ ] Chrome (Pending)
+> - [ ] Edge (Pending)
+> - [x] Firefox (Released 2026-03-11)
 >
-> Once the update has been released for your browser or extension store, you can force your browser to manually update the extension by going to your browser's extension settings page if you don't want to wait for the automatic update.
+> Once the update has been released for your browser, you can force your browser to manually update the extension by going to your browser's extension settings page if you don't want to wait for the automatic update.
+>
+> Thank you for your patience and for using Hide n' Seek!
 
 # **Hide n' Seek: Hide Promoted Jobs & Companies**
 
