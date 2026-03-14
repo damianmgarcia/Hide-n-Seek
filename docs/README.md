@@ -25,7 +25,7 @@
 [**Check it out on YouTube**](https://youtu.be/zhh7mI7bgRg)
 
 <a href="https://youtu.be/zhh7mI7bgRg" target="_blank">
- <img src="images/hide-n-seek-youtube-thumbnail-github-readme-normalized.svg" alt="Check it out on YouTube" width="50%" />
+ <img src="assets/images/hide-n-seek-youtube-thumbnail-github-readme-normalized.svg" alt="Check it out on YouTube" width="50%" />
 </a>
 
 ## **Usage**
