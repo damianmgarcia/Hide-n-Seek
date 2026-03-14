@@ -16,7 +16,7 @@
 
 # **Hide n' Seek: Hide Promoted Jobs & Companies**
 
-![A promotional marquee. The logo and name are featured on the left side of the marquee. The logo is a simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. A "before and after" diagram on the right side of the marquee shows how the extension hides jobs and is titled "View the jobs you seek. Hide the ones you don't"](/images/promotional-marquee-2-normalized.svg)
+![A promotional marquee. The logo and name are featured on the left side of the marquee. The logo is a simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. A "before and after" diagram on the right side of the marquee shows how the extension hides jobs and is titled "View the jobs you seek. Hide the ones you don't"](assets/images/promotional-marquee-2-normalized.svg)
 
 ## **Description**
 
@@ -34,17 +34,17 @@
 
 - You can search for a job by clicking the Hide n' Seek button on the browser's toolbar or you can go directly to a supported job board's website to perform your search if you prefer.
 
-<img src="/images/usage-job-search-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram that shows a job search in the extension's popup" /><br><br>
+<img src="assets/images/usage-job-search-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram that shows a job search in the extension's popup" /><br><br>
 
 - “Block” buttons are added next to every listing. If you see a listing you don’t like, simply click the button to hide it. By default, the listing will be hidden under an overlay. Alternatively, you can completely eliminate it from search results by enabling the “Do not display hidden jobs” option.
 
 - Click a job's "block" button and all jobs by that company will be hidden behind an overlay.
 
-<img src="/images/usage-hide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of hiding a job' /><br><br>
+<img src="assets/images/usage-hide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of hiding a job' /><br><br>
 
 - Click a job's "unblock" button to remove the overlays.
 
-<img src="/images/usage-unhide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of unhiding a job' /><br><br>
+<img src="assets/images/usage-unhide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of unhiding a job' /><br><br>
 
 - Click the toolbar button for additional options:
   - Block jobs by keyword (or a regular expression as /pattern/flags format, for example /part[\s-]?time/i)
@@ -53,7 +53,7 @@
   - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays
   - Click the settings button where you can find options to backup and restore your data, manage job board permissions, see what's new, or report issues.
 
-<img src="/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of the extension's toolbar button, along with the options panel, shows a list of hidden jobs and controls for managing the list." /><br><br>
+<img src="assets/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of the extension's toolbar button, along with the options panel, shows a list of hidden jobs and controls for managing the list." /><br><br>
 
 ## **Supported Job Boards**
 
