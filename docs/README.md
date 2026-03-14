@@ -2,7 +2,7 @@
 >
 > 2026-03-11
 > 
-> **Hide n' Seek is not currently working on LinkedIn due to changes LinkedIn recently made to their site.**
+> **LinkedIn recently made changes to their site that resulted in Hide n' Seek 8.2.1 and older from being able to detect job listings.**
 >
 > [A new version (8.2.2) that fixes this issue](https://github.com/damianmgarcia/Hide-n-Seek/pull/72) was submitted to the Chrome, Edge, and Firefox extension stores on 2026-03-11. Release timing depends on each store's review process, which typically takes a few days.
 > 
