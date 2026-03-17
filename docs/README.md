@@ -7,7 +7,7 @@
 > [A new version (8.2.2) that fixes this issue](https://github.com/damianmgarcia/Hide-n-Seek/pull/72) was submitted to the Chrome, Edge, and Firefox extension stores on 2026-03-11. Release timing depends on each store's review process, which typically takes a few days.
 > 
 > - [x] Chrome (Released 2026-03-14)
-> - [ ] Edge (Pending)
+> - [x] Edge (Released 2026-03-16)
 > - [x] Firefox (Released 2026-03-11)
 >
 > Once the update has been released for your browser, you can force your browser to manually update the extension by going to your browser's extension settings page if you don't want to wait for the automatic update.
