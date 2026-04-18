@@ -9,26 +9,26 @@ class JobSearchPopup {
   static jobBoardSelectorElements = [
     {
       label: document.querySelector(
-        "label.job-board-search-option-container[data-job-board-id='glassdoor']"
+        "label.job-board-search-option-container[data-job-board-id='glassdoor']",
       ),
       input: document.querySelector(
-        "label.job-board-search-option-container[data-job-board-id='glassdoor'] > input"
+        "label.job-board-search-option-container[data-job-board-id='glassdoor'] > input",
       ),
     },
     {
       label: document.querySelector(
-        "label.job-board-search-option-container[data-job-board-id='indeed']"
+        "label.job-board-search-option-container[data-job-board-id='indeed']",
       ),
       input: document.querySelector(
-        "label.job-board-search-option-container[data-job-board-id='indeed'] > input"
+        "label.job-board-search-option-container[data-job-board-id='indeed'] > input",
       ),
     },
     {
       label: document.querySelector(
-        "label.job-board-search-option-container[data-job-board-id='linkedIn']"
+        "label.job-board-search-option-container[data-job-board-id='linkedIn']",
       ),
       input: document.querySelector(
-        "label.job-board-search-option-container[data-job-board-id='linkedIn'] > input"
+        "label.job-board-search-option-container[data-job-board-id='linkedIn'] > input",
       ),
     },
   ];
@@ -38,15 +38,15 @@ class JobSearchPopup {
   static jobSearchContainer = document.querySelector(".options-for-job-search");
 
   static jobNameSearchContainerInput = document.querySelector(
-    ".job-name-search-container > input"
+    ".job-name-search-container > input",
   );
 
   static jobNameSearchContainerButton = document.querySelector(
-    ".job-name-search-container > button"
+    ".job-name-search-container > button",
   );
 
   static requestPermissionsButton = document.querySelector(
-    "#request-permissions-search"
+    "#request-permissions-search",
   );
 
   static jobBoardSearch = {
@@ -77,7 +77,7 @@ class JobSearchPopup {
     },
   };
 
-  static updateSelectedJobBoard() {
+  static updateSelectedJobBoard({ focusInput = true } = {}) {
     this.jobBoardSelectorElements.forEach(({ label, input }) => {
       label.setAttribute("data-checked", input.checked);
       if (!input.checked) return;
@@ -98,10 +98,10 @@ class JobSearchPopup {
         recentSearchQueryJobBoardId: label.getAttribute("data-job-board-id"),
       });
       if (!navigator.onLine) return;
-      this.jobNameSearchContainerInput.placeholder = `Search ${label.getAttribute(
-        "data-job-board-placeholder-name"
+      this.jobNameSearchContainerInput.placeholder = `Search jobs on ${label.getAttribute(
+        "data-job-board-placeholder-name",
       )}`;
-      this.jobNameSearchContainerInput.focus();
+      if (focusInput) this.jobNameSearchContainerInput.focus();
     });
   }
 
@@ -113,7 +113,7 @@ class JobSearchPopup {
   static savedUserInput = "";
   static disableInputs(textInputPlaceholder = "") {
     this.jobBoardSelectorElements.forEach(
-      ({ input }) => (input.disabled = true)
+      ({ input }) => (input.disabled = true),
     );
     this.jobNameSearchContainerInput.disabled = true;
     this.jobNameSearchContainerButton.disabled = true;
@@ -124,7 +124,7 @@ class JobSearchPopup {
 
   static enableInputs(textInputValue = this.savedUserInput) {
     this.jobBoardSelectorElements.forEach(
-      ({ input }) => (input.disabled = false)
+      ({ input }) => (input.disabled = false),
     );
     this.jobNameSearchContainerInput.value = textInputValue;
     this.jobNameSearchContainerInput.disabled = false;
@@ -168,7 +168,7 @@ class JobSearchPopup {
     if (!this.hasOriginPermissions) {
       this.disableInputs("Requesting permissions...");
       const permissionsGranted = await requestOriginPermissions(
-        jobBoard.origins
+        jobBoard.origins,
       );
       if (!permissionsGranted) return this.flashError("Permissions required");
     }
@@ -176,7 +176,7 @@ class JobSearchPopup {
     this.disableInputs("Searching...");
     const jobBoardResponse = await safeAwait(
       fetch,
-      `https://${jobBoard.domains[0]}`
+      `https://${jobBoard.domains[0]}`,
     );
     if (!jobBoardResponse) {
       return this.flashError(`Can't connect to ${jobBoard.name}`);
@@ -196,13 +196,25 @@ class JobSearchPopup {
   static async start(activeTab) {
     if (this.started) return this.updateInputsBasedOnConnectivity();
     this.started = true;
-
-    this.jobBoardSelectorElements.forEach(({ input }) =>
-      input.addEventListener("input", () => this.updateSelectedJobBoard())
-    );
+    const arrowKeys = new Set([
+      "ArrowUp",
+      "ArrowRight",
+      "ArrowDown",
+      "ArrowLeft",
+    ]);
+    let isArrowKey;
+    this.jobBoardSelectorElements.forEach(({ input }) => {
+      input.addEventListener("keydown", (keyboardEvent) => {
+        if (arrowKeys.has(keyboardEvent.key)) isArrowKey = true;
+      });
+      input.addEventListener("input", () => {
+        this.updateSelectedJobBoard({ focusInput: !isArrowKey });
+        isArrowKey = false;
+      });
+    });
 
     this.jobNameSearchContainerInput.addEventListener("input", () =>
-      this.updateSearchButton()
+      this.updateSearchButton(),
     );
 
     this.jobNameSearchContainerInput.addEventListener(
@@ -210,15 +222,15 @@ class JobSearchPopup {
       (keyboardEvent) => {
         if (keyboardEvent.key === "Enter" && !keyboardEvent.repeat)
           this.search(activeTab);
-      }
+      },
     );
 
     this.jobNameSearchContainerButton.addEventListener("click", () =>
-      this.search(activeTab)
+      this.search(activeTab),
     );
 
     this.requestPermissionsButton.addEventListener("click", () =>
-      requestOriginPermissions(this.jobBoard.origins)
+      requestOriginPermissions(this.jobBoard.origins),
     );
 
     this.jobNameSearchContainerInput.focus();
@@ -227,7 +239,7 @@ class JobSearchPopup {
 
     const storageIncludesRecentSearchQueryJobBoardId = Object.hasOwn(
       localStorage,
-      "recentSearchQueryJobBoardId"
+      "recentSearchQueryJobBoardId",
     );
     if (storageIncludesRecentSearchQueryJobBoardId)
       this.recentSearchQueryJobBoardId =
@@ -242,7 +254,7 @@ class JobSearchPopup {
     });
 
     ["online", "offline"].forEach((eventType) =>
-      addEventListener(eventType, () => this.updateInputsBasedOnConnectivity())
+      addEventListener(eventType, () => this.updateInputsBasedOnConnectivity()),
     );
 
     this.updateInputsBasedOnConnectivity();
