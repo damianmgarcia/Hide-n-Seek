@@ -1,18 +1,10 @@
-> [!IMPORTANT] 
+> [!IMPORTANT]
 >
-> 2026-03-11
+> **Job Listing Detection**
 > 
-> **LinkedIn recently made changes to their site that resulted in Hide n' Seek 8.2.1 and older from being able to detect job listings.**
->
-> [A new version (8.2.2) that fixes this issue](https://github.com/damianmgarcia/Hide-n-Seek/pull/72) was submitted to the Chrome, Edge, and Firefox extension stores on 2026-03-11. Release timing depends on each store's review process, which typically takes a few days.
-> 
-> - [x] Chrome (Released 2026-03-14)
-> - [x] Edge (Released 2026-03-16)
-> - [x] Firefox (Released 2026-03-11)
->
-> Once the update has been released for your browser, you can force your browser to manually update the extension by going to your browser's extension settings page if you don't want to wait for the automatic update.
->
-> Thank you for your patience and for using Hide n' Seek!
+> - `🟢 Glassdoor`
+> - `🟢 Indeed`
+> - `🟡 LinkedIn` - Listings aren't being detected on some of LinkedIn's job listings pages because LinkedIn has been changing their site's internal structure recently. This issue will be fixed in the next release of Hide n' Seek.
 
 # **Hide n' Seek: Hide Promoted Jobs & Companies**
 
@@ -97,6 +89,14 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 8.3.0
+  - Release date
+    - 2026-04-18
+  - Minor updates
+    - Reduce size of the block buttons on job listings
+    - Add tooltip to clarify block button's action
+  - Patches
+    - Adjust listing detection for LinkedIn
 - 8.2.2
   - Release date
     - 2026-03-11
