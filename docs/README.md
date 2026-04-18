@@ -1,5 +1,13 @@
 > [!IMPORTANT]
 >
+> **LinkedIn Job Listing Detection Issue (2026-04-18)**
+> 
+> Listings aren't being detected on some of LinkedIn's job listings pages because LinkedIn has been changing their site's internal structure recently. A new release (8.3.0) that fixes this issue was submitted to the Chrome, Edge, and Firefox extension stores on 2026-04-18. Release timing depends on each store's review process, which typically takes a few days.
+> 
+> - [ ] Chrome (Pending review)
+> - [ ] Edge (Pending review)
+> - [x] Firefox (Released 2026-04-18)
+> 
 > **Job Listing Detection**
 > 
 > - `🟢 Glassdoor`
