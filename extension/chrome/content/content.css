@@ -100,24 +100,23 @@ html[data-hns-remove-hidden-jobs="true"]
 }
 
 .hns-block-button {
-  background: hsl(0, 0%, 50%, 0.25) !important;
   border-radius: 50% !important;
   cursor: pointer !important;
   display: grid !important;
   height: 18px !important;
   margin: 10px !important;
-  padding: 15px !important;
+  padding: 4px !important;
   pointer-events: auto !important;
   transition: background-color 200ms ease-out !important;
   width: 18px !important;
 }
 
 .hns-block-button:hover {
-  background: hsl(0, 0%, 50%, 0.45) !important;
+  background: hsl(0, 100%, 75%, 0.25) !important;
 }
 
 .hns-block-button:active {
-  background: hsl(0, 0%, 50%, 0.55) !important;
+  background: hsl(0, 100%, 75%, 0.35) !important;
 }
 
 .hns-block-button path {
@@ -142,7 +141,9 @@ html[data-hns-remove-hidden-jobs="true"]
   min-width: max-content !important;
   padding: 0 20px !important;
   position: relative !important;
-  transition: background-color 200ms ease-out, color 100ms ease-out !important;
+  transition:
+    background-color 200ms ease-out,
+    color 100ms ease-out !important;
   user-select: none !important;
 }
 
@@ -277,12 +278,16 @@ html[data-hns-remove-hidden-jobs="true"]
 .hns-block-attribute-toggle[data-hns-blocked-attribute]
   .hns-block-attribute-toggle-hidden-indicator {
   opacity: 1 !important;
-  transition: opacity 200ms ease-out 100ms, transform 200ms ease-out !important;
+  transition:
+    opacity 200ms ease-out 100ms,
+    transform 200ms ease-out !important;
 }
 
 .hns-block-attribute-toggle .hns-block-attribute-toggle-hidden-indicator {
   opacity: 0 !important;
-  transition: opacity 200ms ease-out, transform 200ms ease-out !important;
+  transition:
+    opacity 200ms ease-out,
+    transform 200ms ease-out !important;
 }
 
 .hns-block-attribute-toggle[data-hns-blocked-attribute]

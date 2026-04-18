@@ -19,13 +19,8 @@ const hnsContainer = {
       event.preventDefault();
       event.stopPropagation();
     });
-    element.querySelector(".hns-block-button").addEventListener("click", () => {
-      if (defaultToggle) defaultToggle.element.click();
-    });
-
     const toggles = new Map();
     const togglesContainer = element.querySelector(".toggles");
-    let defaultToggle;
 
     const getToggleId = (jobAttribute, jobAttributeValue) =>
       `${jobAttribute}__${jobAttributeValue}`;
@@ -40,7 +35,7 @@ const hnsContainer = {
       defaultAttribute,
       removeOnToggleOff,
       toggledOn,
-      onToggle
+      onToggle,
     ) => {
       const toggleId = getToggleId(jobAttribute, jobAttributeValue);
       if (toggles.has(toggleId) || (removeOnToggleOff && !toggledOn)) return;
@@ -53,10 +48,16 @@ const hnsContainer = {
         defaultAttribute,
         removeOnToggleOff,
         toggledOn,
-        onToggle
+        onToggle,
       );
 
-      if (defaultAttribute) defaultToggle = toggle;
+      if (defaultAttribute) {
+        const blockButton = element.querySelector(".hns-block-button");
+        blockButton.title = `Hide jobs from ${jobAttributeValue}`;
+        blockButton.addEventListener("click", () => {
+          toggle.element.click();
+        });
+      }
 
       togglesContainer.prepend(toggle.element);
       toggles.set(toggleId, toggle);
@@ -73,5 +74,5 @@ const hnsContainer = {
 ui.registerTemplate(
   hnsContainer.name,
   hnsContainer.html,
-  hnsContainer.createComponent
+  hnsContainer.createComponent,
 );

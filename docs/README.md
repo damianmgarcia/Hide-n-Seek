@@ -1,11 +1,10 @@
 > [!IMPORTANT]
 >
-> **Job Listing Detection Status**
+> **Job Listing Detection**
 > 
 > - `🟢 Glassdoor`
 > - `🟢 Indeed`
-> - `🟡 LinkedIn` - Listings aren't being detected on LinkedIn's Jobs page (linkedin.com/jobs/). This will be fixed in the next release.
-
+> - `🟡 LinkedIn` - Listings aren't being detected on some of LinkedIn's job listings pages because LinkedIn has been changing their site's internal structure recently. This issue will be fixed in the next release of Hide n' Seek.
 
 # **Hide n' Seek: Hide Promoted Jobs & Companies**
 
@@ -90,6 +89,14 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 8.3.0
+  - Release date
+    - 2026-04-18
+  - Minor updates
+    - Reduce size of the block buttons on job listings
+    - Add tooltip to clarify block button's action
+  - Patches
+    - Adjust listing detection for LinkedIn
 - 8.2.2
   - Release date
     - 2026-03-11

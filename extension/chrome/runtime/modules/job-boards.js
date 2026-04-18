@@ -68,8 +68,10 @@ const jobBoards = (() => {
           id: "companyName",
           removableValues: false,
           match: "exact",
-          selector:
-            ".EmployerProfile_compactEmployerName__LE242, .EmployerProfile_compactEmployerName__9MGcV, [class*=EmployerProfile_compactEmployerName__]",
+          selector: `
+            .EmployerProfile_compactEmployerName__LE242,
+            .EmployerProfile_compactEmployerName__9MGcV,
+            [class*=EmployerProfile_compactEmployerName__]`,
           processors: [
             commonProcessors.trim,
             commonProcessors.replaceEmptyWith("Unknown Company"),
@@ -123,8 +125,13 @@ const jobBoards = (() => {
       domains: ["linkedin.com"],
       id: "linkedIn",
       name: "LinkedIn",
-      listingSelector:
-        "li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id]), div > [data-view-name='job-card'] > a, div:has(> [data-view-name='job-search-job-card']), [data-component-type=LazyColumn] > div:has(+hr):has(figure) > div",
+      listingSelector: `
+        li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id]),
+        div > [data-view-name='job-card'] > a,
+        div:has(> [data-view-name='job-search-job-card']),
+        [data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > div:not(:has(> a)),
+        [data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > div > a,
+        [data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > a`,
       logo: {
         src: "/assets/images/linkedin-logo.svg",
         alt: "LinkedIn's logo",
@@ -136,14 +143,22 @@ const jobBoards = (() => {
           name: "Company",
           id: "companyName",
           removableValues: false,
-          selector:
-            ".job-card-container__primary-description, .job-card-container__company-name, .base-search-card__subtitle, .artdeco-entity-lockup__subtitle > *:not(.visually-hidden), div > [data-view-name='job-card'] figure + div > div:first-child p + div > p:first-child, div > [data-view-name='job-search-job-card'] p + div > p, [data-component-type=LazyColumn] > div:has(+hr):has(figure) > div figure + div > div:first-child p + div",
+          selector: `
+            .job-card-container__primary-description,
+            .job-card-container__company-name,
+            .base-search-card__subtitle,
+            .artdeco-entity-lockup__subtitle > *:not(.visually-hidden),
+            div > [data-view-name='job-card'] figure + div > div:first-child p + div > p:first-child,
+            div > [data-view-name='job-search-job-card'] p + div > p,
+            [data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > div:not(:has(> a)) figure + div > div:first-child * + *:nth-child(2):has(> p),
+            [data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > div > a figure + div > div:first-child * + *:nth-child(2):has(> p),
+            [data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > a figure + div > div:first-child * + *:nth-child(2):has(> p)`,
           match: "exact",
           processors: [
             commonProcessors.trim,
             {
               process: "replace",
-              pattern: "\\s[·•]\\s.*$",
+              pattern: "\\s*[·•]\\s*.*$",
               flags: "gm",
               replacement: "",
             },
@@ -155,8 +170,10 @@ const jobBoards = (() => {
           name: "Status",
           id: "promotionalStatus",
           removableValues: false,
-          selector:
-            ".job-card-list__footer-wrapper, .job-card-container__footer-wrapper, div > [data-view-name='job-card'] figure + div > div:last-child",
+          selector: `
+            .job-card-list__footer-wrapper,
+            .job-card-container__footer-wrapper,
+            div > [data-view-name='job-card'] figure + div > div:last-child`,
           match: "exact",
           processors: [
             {
