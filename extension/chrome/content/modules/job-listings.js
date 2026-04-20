@@ -5,7 +5,7 @@ const jobListings = async (jobBoard) => {
     const updateDOM = (displayPreference) => {
       document.documentElement.setAttribute(
         "data-hns-remove-hidden-jobs",
-        displayPreference
+        displayPreference,
       );
     };
 
@@ -36,20 +36,20 @@ const jobListings = async (jobBoard) => {
   setDisplayPreference(storage);
 
   const attributeBlockers = jobBoard.attributes.map(
-    (attribute) => new AttributeBlocker(jobBoard, attribute, storage, hnsMap)
+    (attribute) => new AttributeBlocker(jobBoard, attribute, storage, hnsMap),
   );
 
   const attributeBlockerMap = new Map(
     attributeBlockers.map((attributeBlocker) => [
       attributeBlocker.storageKey,
       attributeBlocker,
-    ])
+    ]),
   );
 
   chrome.storage.local.onChanged.addListener((changes) =>
     Object.entries(changes).forEach(([storageKey, changes]) =>
-      attributeBlockerMap.get(storageKey)?.handleStorageChanges(changes)
-    )
+      attributeBlockerMap.get(storageKey)?.handleStorageChanges(changes),
+    ),
   );
 
   return { addHns, removeHns, setDisplayPreference };
