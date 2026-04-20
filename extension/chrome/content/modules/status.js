@@ -1,9 +1,11 @@
 const hnsStatus = (jobBoard) => {
   const tabStatus = () => ({
     jobBoard,
-    hasListings: Boolean(document.querySelector(".hns-container")),
+    hasListings: Boolean(
+      document.querySelector(".hns-container:has(.hns-block-attribute-toggle)"),
+    ),
     blockedJobsCount: document.querySelectorAll(
-      `.hns-container:has([data-hns-blocked-attribute])`
+      ".hns-container:has([data-hns-blocked-attribute])",
     ).length,
   });
 
