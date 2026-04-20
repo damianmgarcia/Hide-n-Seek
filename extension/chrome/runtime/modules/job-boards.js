@@ -10,13 +10,6 @@ const jobBoards = (() => {
       process: "subtract",
       selector: ".hns-container",
     },
-    replaceEmptyWith(replacement) {
-      return {
-        process: "replace",
-        pattern: "^\\s*$",
-        replacement,
-      };
-    },
   };
 
   const commonAttributes = {
@@ -72,10 +65,7 @@ const jobBoards = (() => {
             .EmployerProfile_compactEmployerName__LE242,
             .EmployerProfile_compactEmployerName__9MGcV,
             [class*=EmployerProfile_compactEmployerName__]`,
-          processors: [
-            commonProcessors.trim,
-            commonProcessors.replaceEmptyWith("Unknown Company"),
-          ],
+          processors: [commonProcessors.trim],
           default: true,
         },
       ],
@@ -98,10 +88,7 @@ const jobBoards = (() => {
           removableValues: false,
           match: "exact",
           selector: ".companyName, [data-testid='company-name']",
-          processors: [
-            commonProcessors.trim,
-            commonProcessors.replaceEmptyWith("Unknown Company"),
-          ],
+          processors: [commonProcessors.trim],
           default: true,
         },
         {
@@ -162,7 +149,6 @@ const jobBoards = (() => {
               flags: "gm",
               replacement: "",
             },
-            commonProcessors.replaceEmptyWith("Unknown Company"),
           ],
           default: true,
         },

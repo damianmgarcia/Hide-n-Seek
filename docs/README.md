@@ -1,15 +1,15 @@
 > [!IMPORTANT]
 >
 > **LinkedIn Job Listing Detection Issue (2026-04-18)**
-> 
+>
 > Listings aren't being detected on some of LinkedIn's job listings pages because LinkedIn has been changing their site's internal structure recently. A new release (8.3.0) that fixes this issue was submitted to the Chrome, Edge, and Firefox extension stores on 2026-04-18. Release timing depends on each store's review process, which typically takes a few days.
-> 
+>
 > - [x] Chrome (Released 2026-04-18)
 > - [ ] Edge (Pending review)
 > - [x] Firefox (Released 2026-04-18)
-> 
+>
 > **Job Listing Detection**
-> 
+>
 > - `🟢 Glassdoor`
 > - `🟢 Indeed`
 > - `🟡 LinkedIn` - Listings aren't being detected on some of LinkedIn's job listings pages because LinkedIn has been changing their site's internal structure recently. This issue will be fixed in the next release of Hide n' Seek.
@@ -97,6 +97,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 8.3.1
+  - Release date
+    - 2026-04-19
+  - Patches
+    - Reduce chance of block buttons being added to non-listings
 - 8.3.0
   - Release date
     - 2026-04-18
