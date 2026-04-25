@@ -1,18 +1,18 @@
 > [!IMPORTANT]
 >
-> **LinkedIn Job Listing Detection Issue (2026-04-18)**
+> **LinkedIn Job Listing Detection Issue (2026-04-25)**
 >
-> Listings aren't being detected on some of LinkedIn's job listings pages because LinkedIn has been changing their site's internal structure recently. A new release (8.3.0) that fixes this issue was submitted to the Chrome, Edge, and Firefox extension stores on 2026-04-18. Release timing depends on each store's review process, which typically takes a few days.
+> Due to LinkedIn's recent changes to their site's structure, there may be occasional false positive or false negative listing detection issues. A new release (8.3.2) that addresses this issue was submitted to the Chrome, Edge, and Firefox extension stores on 2026-04-25. Release timing depends on each store's review process, which typically takes a few days.
 >
-> - [x] Chrome (Released 2026-04-18)
+> - [x] Chrome (Released 2026-04-25)
 > - [ ] Edge (Pending review)
-> - [x] Firefox (Released 2026-04-18)
+> - [x] Firefox (Released 2026-04-25)
 >
 > **Job Listing Detection**
 >
 > - `🟢 Glassdoor`
 > - `🟢 Indeed`
-> - `🟡 LinkedIn` - Listings aren't being detected on some of LinkedIn's job listings pages because LinkedIn has been changing their site's internal structure recently. This issue will be fixed in the next release of Hide n' Seek.
+> - `🟡 LinkedIn` - Due to LinkedIn's recent changes to their site's structure, there may be occasional false positive or false negative listing detection issues. [Please report any issues](https://github.com/damianmgarcia/Hide-n-Seek/issues) and I will fix them as soon as possible.
 
 # **Hide n' Seek: Hide Promoted Jobs & Companies**
 
@@ -102,6 +102,7 @@ The promotional video was created with a combination of Adobe After Effects and 
     - 2026-04-25
   - Patches
     - Reduce chance of block buttons being added to non-listings on LinkedIn by restricting Hide n' Seek to the /jobs/ path
+    - Many thanks to [nmpereira](https://github.com/nmpereira) for discovering and contributing this fix!
 - 8.3.1
   - Release date
     - 2026-04-19
