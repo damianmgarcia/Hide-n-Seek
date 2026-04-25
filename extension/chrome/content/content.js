@@ -1,9 +1,7 @@
 (async () => {
   const jobBoard = await chrome.runtime.sendMessage({
     request: "get job board",
-    data: {
-      hostname: location.hostname,
-    },
+    data: { url: location.href },
   });
 
   if (!jobBoard) return;

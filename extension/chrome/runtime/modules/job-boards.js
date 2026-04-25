@@ -46,6 +46,7 @@ const jobBoards = (() => {
         "glassdoor.nl",
         "glassdoor.sg",
       ],
+      paths: ["/"],
       id: "glassdoor",
       name: "Glassdoor",
       listingSelector: "li[data-test='jobListing']",
@@ -72,6 +73,7 @@ const jobBoards = (() => {
     },
     {
       domains: ["indeed.com"],
+      paths: ["/"],
       id: "indeed",
       name: "Indeed",
       listingSelector: "li:has(.result:not([aria-hidden='true']))",
@@ -110,6 +112,7 @@ const jobBoards = (() => {
     },
     {
       domains: ["linkedin.com"],
+      paths: ["/jobs/"],
       id: "linkedIn",
       name: "LinkedIn",
       listingSelector: `
@@ -215,11 +218,18 @@ const jobBoardIds = jobBoards.map((jobBoard) => jobBoard.id);
 
 const jobBoardOrigins = jobBoards.flatMap((jobBoard) => jobBoard.origins);
 
-const getJobBoardByHostname = (hostname) => {
+const getJobBoardByUrl = (url) => {
+  if (!URL.canParse(url)) return;
+  const { hostname, pathname } = new URL(url);
   for (const jobBoard of jobBoards) {
     for (const domain of jobBoard.domains) {
-      if (hostname.endsWith(`.${domain}`) || hostname === domain)
-        return jobBoard;
+      for (const path of jobBoard.paths) {
+        if (
+          (hostname.endsWith(`.${domain}`) || hostname === domain) &&
+          pathname.startsWith(path)
+        )
+          return jobBoard;
+      }
     }
   }
 };
@@ -228,28 +238,21 @@ const getJobBoardById = (id) =>
   jobBoards.find((jobBoard) => jobBoard.id === id);
 
 const getJobBoardTabs = async (filters = {}) => {
-  const urlMatchPatterns = filters.origins || jobBoardOrigins;
-
   const tabs = await chrome.tabs.query({
-    url: urlMatchPatterns,
+    url:
+      filters.origins ||
+      (filters.jobBoardId && getJobBoardById(filters.jobBoardId)?.origins) ||
+      jobBoardOrigins,
     windowType: "normal",
   });
 
-  return tabs.filter((tab) =>
-    jobBoards.some((jobBoard) =>
-      jobBoard.domains.some(
-        (domain) =>
-          tab.url.includes(domain) &&
-          (!filters.jobBoardId || jobBoard.id === filters.jobBoardId),
-      ),
-    ),
-  );
+  return tabs.filter((tab) => getJobBoardByUrl(tab.url));
 };
 
 export {
   jobBoardIds,
   jobBoardOrigins,
-  getJobBoardByHostname,
+  getJobBoardByUrl,
   getJobBoardById,
   getJobBoardTabs,
 };

@@ -5,7 +5,7 @@ import {
   requestOriginPermissions,
 } from "../modules/permissions.js";
 import { getActiveTab, getTabStatus } from "../modules/tabs.js";
-import { getJobBoardByHostname } from "../modules/job-boards.js";
+import { getJobBoardByUrl } from "../modules/job-boards.js";
 import "../modules/sync-manager.js";
 import "../modules/settings-manager.js";
 import { JobSearchPopup } from "./classes/job-search-popup.js";
@@ -16,7 +16,7 @@ import { JobBoardPopup } from "./classes/job-board-popup.js";
 
   const activeTab = await getActiveTab();
   if (!activeTab) return JobSearchPopup.start(activeTab);
-  const jobBoard = getJobBoardByHostname(new URL(activeTab.url).hostname);
+  const jobBoard = getJobBoardByUrl(activeTab.url);
   if (!jobBoard) return JobSearchPopup.start(activeTab);
   const originPermissions = await hasOriginPermissions(jobBoard.origins);
   if (originPermissions === true) {
