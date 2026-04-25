@@ -1,7 +1,7 @@
 import {
   jobBoardIds,
   getJobBoardTabs,
-  getJobBoardByHostname,
+  getJobBoardByUrl,
 } from "./job-boards.js";
 import { hasOriginPermissions } from "./permissions.js";
 
@@ -90,7 +90,7 @@ const reloadTabs = async (tabs) =>
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (!tab || !tab.url) return;
-  const jobBoard = getJobBoardByHostname(new URL(tab.url).hostname);
+  const jobBoard = getJobBoardByUrl(tab.url);
   if (!jobBoard) return;
   const originPermissions = await hasOriginPermissions(jobBoard.origins);
   if (!originPermissions) {

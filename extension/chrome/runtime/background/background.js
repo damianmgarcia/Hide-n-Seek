@@ -1,13 +1,13 @@
 import { install } from "../modules/install.js";
 import { addMessageListener } from "../modules/messaging.js";
 import { updateBadge, updateBadges } from "../modules/tabs.js";
-import { getJobBoardByHostname } from "../modules/job-boards.js";
+import { getJobBoardByUrl } from "../modules/job-boards.js";
 import { updateLocalStorage, updateSyncStorage } from "../modules/storage.js";
 import { updateContentScriptRegistrations } from "../modules/permissions.js";
 
 addMessageListener("refresh popup", ({ sender }) => updateBadge(sender.tab));
 addMessageListener("get job board", ({ message, sendResponse }) =>
-  sendResponse(getJobBoardByHostname(message.data.hostname))
+  sendResponse(getJobBoardByUrl(message.data.url)),
 );
 
 chrome.runtime.onInstalled.addListener(install);

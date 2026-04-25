@@ -97,6 +97,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 8.3.2
+  - Release date
+    - 2026-04-25
+  - Patches
+    - Reduce chance of block buttons being added to non-listings on LinkedIn by restricting Hide n' Seek to the /jobs/ path
 - 8.3.1
   - Release date
     - 2026-04-19
