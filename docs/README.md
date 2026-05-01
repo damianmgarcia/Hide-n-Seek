@@ -5,7 +5,7 @@
 > Due to LinkedIn's recent changes to their site's structure, there may be occasional false positive or false negative listing detection issues. A new release (8.3.2) that addresses this issue was submitted to the Chrome, Edge, and Firefox extension stores on 2026-04-25. Release timing depends on each store's review process, which typically takes a few days.
 >
 > - [x] Chrome (Released 2026-04-25)
-> - [ ] Edge (Pending review)
+> - [x] Edge (Released 2026-05-01)
 > - [x] Firefox (Released 2026-04-25)
 >
 > **Job Listing Detection**
