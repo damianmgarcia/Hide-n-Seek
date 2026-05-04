@@ -1,4 +1,4 @@
-import { jobBoardIds, getJobBoardById } from "./runtime/modules/job-boards.js";
+import { jobBoards } from "./runtime/modules/job-boards.js";
 import {
   hasOriginPermissions,
   requestOriginPermissions,
@@ -12,18 +12,17 @@ document
   .querySelectorAll(".version")
   .forEach((element) => (element.textContent = version));
 
-const jobBoards = jobBoardIds.map(getJobBoardById);
 const permissionsButtons = document.querySelector(".permissions-buttons");
 
 const showReleaseNotesAfterUpdateCheckbox = document.querySelector(
-  "[name='show-release-notes-after-update']"
+  "[name='show-release-notes-after-update']",
 );
 showReleaseNotesAfterUpdateCheckbox.checked =
   storage.showReleaseNotesAfterUpdate;
 showReleaseNotesAfterUpdateCheckbox.addEventListener("change", () =>
   chrome.storage.local.set({
     showReleaseNotesAfterUpdate: showReleaseNotesAfterUpdateCheckbox.checked,
-  })
+  }),
 );
 
 const backupButton = document.querySelector("#backup-button");
@@ -35,7 +34,9 @@ restoreButton.addEventListener("click", async () => {
   animateButton(
     restoreButton,
     restored ? "success" : "failure",
-    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light",
   );
 });
 
@@ -47,21 +48,23 @@ const disableButton = (button, jobBoard) => {
 };
 
 jobBoards.forEach((jobBoard) => {
-  hasOriginPermissions(jobBoard.origins).then((hasOriginPermissions) => {
-    const button = document.createElement("button");
-    button.classList.add("text-button");
-    if (hasOriginPermissions) {
-      disableButton(button, jobBoard);
-    } else {
-      button.classList.add("green-button");
-      button.innerHTML = `Click to enable Hide n' Seek on <b>${jobBoard.name}</b>`;
-      button.addEventListener("click", async () => {
-        const permissionsGranted = await requestOriginPermissions(
-          jobBoard.origins
-        );
-        if (permissionsGranted) disableButton(button, jobBoard);
-      });
-    }
-    permissionsButtons.append(button);
-  });
+  hasOriginPermissions(jobBoard.matchPatterns.origins).then(
+    (hasOriginPermissions) => {
+      const button = document.createElement("button");
+      button.classList.add("text-button");
+      if (hasOriginPermissions) {
+        disableButton(button, jobBoard);
+      } else {
+        button.classList.add("green-button");
+        button.innerHTML = `Click to enable Hide n' Seek on <b>${jobBoard.name}</b>`;
+        button.addEventListener("click", async () => {
+          const permissionsGranted = await requestOriginPermissions(
+            jobBoard.matchPatterns.origins,
+          );
+          if (permissionsGranted) disableButton(button, jobBoard);
+        });
+      }
+      permissionsButtons.append(button);
+    },
+  );
 });
