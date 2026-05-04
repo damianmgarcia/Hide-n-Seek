@@ -7,6 +7,10 @@ html[data-hns-remove-hidden-jobs="true"]
   display: none !important;
 }
 
+html[data-hns-remove-block-buttons="true"] .hns-block-button {
+  display: none !important;
+}
+
 .hns-container {
   all: unset !important;
   background: transparent !important;
