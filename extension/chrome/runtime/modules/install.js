@@ -1,5 +1,6 @@
 import { deChunkStorage } from "./storage.js";
-import { updateContentScriptRegistrations } from "./permissions.js";
+import { matchPatterns } from "./job-boards.js";
+import { reloadTabs } from "./tabs.js";
 
 const install = async (details) => {
   const isInstall = details.reason === chrome.runtime.OnInstalledReason.INSTALL;
@@ -10,7 +11,28 @@ const install = async (details) => {
   if (isInstall && Object.keys(syncStorage).length)
     await chrome.storage.local.set(syncStorage);
 
-  updateContentScriptRegistrations({ reloadAllTabs: true });
+  await chrome.scripting.registerContentScripts([
+    {
+      id: "hide-n-seek",
+      matches: matchPatterns.listingPages,
+      css: ["/content/content.css"],
+      js: [
+        "/content/classes/event-dispatcher.js",
+        "/content/classes/element-collector.js",
+        "/content/classes/attribute-blocker.js",
+        "/content/modules/ui/ui.js",
+        "/content/modules/ui/hns-container.js",
+        "/content/modules/ui/hns-block-attribute-toggle.js",
+        "/content/modules/attribute-processor.js",
+        "/content/modules/job-listings.js",
+        "/content/modules/messaging.js",
+        "/content/modules/status.js",
+        "/content/content.js",
+      ],
+    },
+  ]);
+
+  reloadTabs();
 
   const showReleaseNotes = (() => {
     const dontShowReleaseNotes =
@@ -21,7 +43,7 @@ const install = async (details) => {
     } else if (isUpdate) {
       const toVersionParts = (version) => version.split(".").map(Number);
       const [newMajor, newMinor] = toVersionParts(
-        chrome.runtime.getManifest().version
+        chrome.runtime.getManifest().version,
       );
       const [oldMajor, oldMinor] = toVersionParts(details.previousVersion);
       const isMajorUpdate = newMajor > oldMajor;

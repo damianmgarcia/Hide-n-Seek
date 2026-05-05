@@ -1,8 +1,4 @@
-import {
-  jobBoardIds,
-  getJobBoardTabs,
-  getJobBoardByUrl,
-} from "./job-boards.js";
+import { jobBoards, getJobBoardTabs, getJobBoardByUrl } from "./job-boards.js";
 import { hasOriginPermissions } from "./permissions.js";
 
 const getActiveTab = async () => {
@@ -67,32 +63,41 @@ const updateBadge = async (tab, { title, text, backgroundColor } = {}) => {
 };
 
 const updateBadges = (changes) =>
-  jobBoardIds
-    .filter((jobBoardId) =>
+  jobBoards
+    .filter((jobBoard) =>
       Object.keys(changes).some(
         (key) =>
-          key.includes(jobBoardId) &&
+          key.includes(jobBoard.id) &&
           key.includes("blockedJobAttributeValues") &&
-          !key.endsWith(".backup")
-      )
+          !key.endsWith(".backup"),
+      ),
     )
-    .map((jobBoardId) => getJobBoardTabs({ jobBoardId }))
+    .map((jobBoard) => getJobBoardTabs({ jobBoardId: jobBoard.id }))
     .forEach(async (tabs) => (await tabs).forEach(updateBadge));
 
-const reloadTabs = async (tabs) =>
-  Promise.all(
+const reloadTabs = async (tabs) => {
+  tabs = tabs || (await getJobBoardTabs());
+  await Promise.all(
     tabs.map((tab) =>
       chrome.tabs.reload(tab.id, {
         bypassCache: true,
-      })
-    )
+      }),
+    ),
   );
+  try {
+    await chrome.runtime.sendMessage({
+      request: "refresh popup",
+    });
+  } catch {}
+};
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (!tab || !tab.url) return;
   const jobBoard = getJobBoardByUrl(tab.url);
   if (!jobBoard) return;
-  const originPermissions = await hasOriginPermissions(jobBoard.origins);
+  const originPermissions = await hasOriginPermissions(
+    jobBoard.matchPatterns.origins,
+  );
   if (!originPermissions) {
     updateBadge(tab, {
       title: `Hide n' Seek needs to be enabled on ${jobBoard.name}`,
