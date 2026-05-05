@@ -22,33 +22,12 @@ const jobBoards = (() => {
     },
   };
 
-  return [
+  const jobBoards = [
     {
-      domains: [
-        "glassdoor.com",
-        "glassdoor.at",
-        "glassdoor.be",
-        "glassdoor.ca",
-        "glassdoor.ch",
-        "glassdoor.co.in",
-        "glassdoor.co.nz",
-        "glassdoor.co.uk",
-        "glassdoor.com.ar",
-        "glassdoor.com.au",
-        "glassdoor.com.br",
-        "glassdoor.com.hk",
-        "glassdoor.com.mx",
-        "glassdoor.de",
-        "glassdoor.es",
-        "glassdoor.fr",
-        "glassdoor.ie",
-        "glassdoor.it",
-        "glassdoor.nl",
-        "glassdoor.sg",
-      ],
-      paths: ["/"],
       id: "glassdoor",
       name: "Glassdoor",
+      defaultUrl: "https://glassdoor.com",
+      listingPaths: ["/"],
       listingSelector: "li[data-test='jobListing']",
       logo: {
         src: "/assets/images/glassdoor-logo.svg",
@@ -72,10 +51,10 @@ const jobBoards = (() => {
       ],
     },
     {
-      domains: ["indeed.com"],
-      paths: ["/"],
       id: "indeed",
       name: "Indeed",
+      defaultUrl: "https://indeed.com",
+      listingPaths: ["/"],
       listingSelector: "li:has(.result:not([aria-hidden='true']))",
       logo: {
         src: "/assets/images/indeed-logo.svg",
@@ -111,10 +90,10 @@ const jobBoards = (() => {
       ],
     },
     {
-      domains: ["linkedin.com"],
-      paths: ["/jobs/"],
       id: "linkedIn",
       name: "LinkedIn",
+      defaultUrl: "https://linkedin.com",
+      listingPaths: ["/jobs/"],
       listingSelector: `
         li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id]),
         div > [data-view-name='job-card'] > a,
@@ -208,41 +187,67 @@ const jobBoards = (() => {
         },
       ],
     },
-  ].map((jobBoard) => ({
-    ...jobBoard,
-    origins: jobBoard.domains.map((domain) => `https://*.${domain}/*`),
-  }));
+  ];
+
+  const optionalHostPermissions =
+    chrome.runtime.getManifest().optional_host_permissions;
+  for (const jobBoard of jobBoards) {
+    const origins = optionalHostPermissions.filter((origin) =>
+      new RegExp(jobBoard.id, "i").test(origin),
+    );
+    const listingPages = [];
+    for (const origin of origins) {
+      for (const listingPath of jobBoard.listingPaths) {
+        listingPages.push(origin.replace(/\/\*$/, `${listingPath}*`));
+      }
+    }
+    jobBoard.matchPatterns = { origins, listingPages };
+  }
+
+  return jobBoards;
 })();
 
-const jobBoardIds = jobBoards.map((jobBoard) => jobBoard.id);
-
-const jobBoardOrigins = jobBoards.flatMap((jobBoard) => jobBoard.origins);
+const matchPatterns = {
+  listingPages: jobBoards.flatMap(
+    (jobBoard) => jobBoard.matchPatterns.listingPages,
+  ),
+};
 
 const getJobBoardByUrl = (url) => {
   if (!URL.canParse(url)) return;
   const { hostname, pathname } = new URL(url);
   for (const jobBoard of jobBoards) {
-    for (const domain of jobBoard.domains) {
-      for (const path of jobBoard.paths) {
-        if (
-          (hostname.endsWith(`.${domain}`) || hostname === domain) &&
-          pathname.startsWith(path)
-        )
-          return jobBoard;
-      }
+    for (const listingPage of jobBoard.matchPatterns.listingPages) {
+      const match = /^https:\/\/\*\.(?<domain>[^/]+)(?<path>[^*]+)\*$/.exec(
+        listingPage,
+      );
+      if (
+        match &&
+        match.groups.domain &&
+        match.groups.path &&
+        (hostname.endsWith(`.${match.groups.domain}`) ||
+          hostname === match.groups.domain) &&
+        pathname.startsWith(match.groups.path)
+      )
+        return jobBoard;
     }
   }
 };
 
-const getJobBoardById = (id) =>
-  jobBoards.find((jobBoard) => jobBoard.id === id);
+const getJobBoardById = (() => {
+  const jobBoardById = Object.fromEntries(
+    jobBoards.map((jobBoard) => [jobBoard.id, jobBoard]),
+  );
+  return (id) => jobBoardById[id];
+})();
 
 const getJobBoardTabs = async (filters = {}) => {
   const tabs = await chrome.tabs.query({
     url:
-      filters.origins ||
-      (filters.jobBoardId && getJobBoardById(filters.jobBoardId)?.origins) ||
-      jobBoardOrigins,
+      filters.matchPatterns ||
+      (filters.jobBoardId &&
+        getJobBoardById(filters.jobBoardId)?.matchPatterns.listingPages) ||
+      matchPatterns.listingPages,
     windowType: "normal",
   });
 
@@ -250,8 +255,8 @@ const getJobBoardTabs = async (filters = {}) => {
 };
 
 export {
-  jobBoardIds,
-  jobBoardOrigins,
+  jobBoards,
+  matchPatterns,
   getJobBoardByUrl,
   getJobBoardById,
   getJobBoardTabs,
