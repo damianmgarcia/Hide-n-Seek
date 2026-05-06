@@ -23,9 +23,10 @@
   font-weight: 400;
   font-stretch: 100%;
   src: url(/assets/fonts/open-sans-wght-400.woff2) format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
+    U+FFFD;
 }
 
 @font-face {
@@ -35,9 +36,10 @@
   font-weight: 700;
   font-stretch: 100%;
   src: url(/assets/fonts/open-sans-wght-700.woff2) format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
+    U+FFFD;
 }
 
 * {
@@ -45,6 +47,25 @@
 }
 
 html {
+  --color-danger: hsl(0, 100%, 30%);
+  --color-danger-hover: hsl(0, 100%, 40%);
+  --color-danger-active: hsl(0, 100%, 45%);
+  --color-green: hsl(120, 100%, 25%);
+  --color-green-hover: hsl(120, 100%, 27%);
+  --color-green-active: hsl(120, 100%, 30%);
+  --color-gray: hsl(0, 0%, 30%);
+  --color-gray-hover: hsl(0, 0%, 40%);
+  --color-gray-active: hsl(0, 0%, 45%);
+  --color-black: hsl(0, 0%, 0%);
+  --color-black-hover: hsl(0, 0%, 20%);
+  --color-black-active: hsl(0, 0%, 30%);
+  --color-yellow: hsl(60, 100%, 50%);
+  --color-shade: hsl(0, 0%, 100%, 0.6);
+  --color-shade-hover: hsl(0, 0%, 100%, 0.5);
+  --color-shade-active: hsl(0, 0%, 100%, 0.3);
+  --color-glassdoor: hsl(157, 100%, 32%);
+  --color-indeed: hsl(218, 100%, 30%);
+  --color-linkedin: hsl(210, 90%, 40%);
   --document-width: 21rem;
   --scrollbar-width: 10px;
   width: var(--document-width);
@@ -58,14 +79,24 @@ html:not([data-job-board-id]) {
   height: 13rem;
 }
 
-html:has(#settings-container:not(#settings-container.invisible)) {
+html:has(.options-container-settings:not(.invisible)) {
   height: 37.5rem;
+}
+
+html:has(#request-permissions[data-permissions-needed]:not(.invisible)) {
+  height: 8.5rem;
+}
+
+h2 {
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   --body-margin: 0.5rem;
-  background: hsl(0, 0%, 0%);
-  color: hsl(0, 0%, 0%);
+  background: var(--color-black);
+  color: var(--color-black);
   font-family: "Open Sans", sans-serif;
   font-size: 100%;
   font-synthesis: none;
@@ -98,7 +129,7 @@ html:not([data-job-board-id]) footer {
 }
 
 .hide-n-seek-title {
-  color: hsl(0, 0%, 0%);
+  color: var(--color-black);
   font: 1.55rem "Fredoka-Bold";
   line-height: 1;
   margin: 4px 0 0 0;
@@ -108,7 +139,7 @@ html:not([data-job-board-id]) footer {
 #settings-toggle {
   aspect-ratio: 1;
   border-radius: 50%;
-  fill: hsl(0, 0%, 0%);
+  fill: var(--color-black);
   height: 1.75rem;
   justify-self: end;
   margin-top: 4px;
@@ -119,7 +150,7 @@ html:not([data-job-board-id]) footer {
 
 main:has(.warning) #settings-toggle::after {
   --size: 0.8rem;
-  background: hsl(60, 100%, 50%);
+  background: var(--color-yellow);
   border-radius: 50%;
   content: "!";
   display: grid;
@@ -134,27 +165,24 @@ main:has(.warning) #settings-toggle::after {
 }
 
 #settings-toggle:hover {
-  background: hsl(0, 0%, 100%, 0.5);
-  fill: hsl(0, 0%, 20%);
+  background: var(--color-shade-hover);
+  fill: var(--color-black-hover);
 }
 
 #settings-toggle:active {
-  background: hsl(0, 0%, 100%, 0.6);
+  background: var(--color-shade);
 }
 
-main:has(#settings-container:not(#settings-container.invisible))
-  #settings-toggle {
-  background: hsl(0, 0%, 100%, 0.6);
+main:has(.options-container-settings:not(.invisible)) #settings-toggle {
+  background: var(--color-shade);
 }
 
-main:has(#settings-container:not(#settings-container.invisible))
-  #settings-toggle:hover {
-  background: hsl(0, 0%, 100%, 0.5);
+main:has(.options-container-settings:not(.invisible)) #settings-toggle:hover {
+  background: var(--color-shade-hover);
 }
 
-main:has(#settings-container:not(#settings-container.invisible))
-  #settings-toggle:active {
-  background: hsl(0, 0%, 100%, 0.3);
+main:has(.options-container-settings:not(.invisible)) #settings-toggle:active {
+  background: var(--color-shade-active);
 }
 
 #settings-toggle svg {
@@ -165,13 +193,11 @@ main:has(#settings-container:not(#settings-container.invisible))
   transform: rotate(15deg);
 }
 
-main:has(#settings-container:not(#settings-container.invisible))
-  #settings-toggle
-  svg {
+main:has(.options-container-settings:not(.invisible)) #settings-toggle svg {
   transform: rotate(180deg);
 }
 
-main:has(#settings-container:not(#settings-container.invisible))
+main:has(.options-container-settings:not(.invisible))
   #settings-toggle:hover
   svg {
   transform: rotate(165deg);
@@ -209,8 +235,8 @@ main:has(#settings-container:not(#settings-container.invisible))
   width: calc(100% - 2rem);
 }
 
-html[data-job-board-id] .options-for-job-board,
-html:not([data-job-board-id]) .options-for-job-search {
+html[data-job-board-id] .options-container-job-board,
+html:not([data-job-board-id]) .options-container-job-search {
   display: flex;
 }
 
@@ -223,12 +249,8 @@ html:not([data-job-board-id]) .options-for-job-search {
 }
 
 html:has(#request-permissions[data-permissions-needed])
-  .options-for-job-search {
+  .options-container-job-search {
   display: none;
-}
-
-html:has(#request-permissions[data-permissions-needed]) {
-  height: 8.5rem;
 }
 
 .job-board-search-options-container {
@@ -250,15 +272,15 @@ html:has(#request-permissions[data-permissions-needed]) {
 }
 
 .job-board-search-option-container[data-job-board-id="glassdoor"][data-checked="true"] {
-  background: hsl(157, 100%, 32%);
+  background: var(--color-glassdoor);
 }
 
 .job-board-search-option-container[data-job-board-id="indeed"][data-checked="true"] {
-  background: hsl(218, 100%, 30%);
+  background: var(--color-indeed);
 }
 
 .job-board-search-option-container[data-job-board-id="linkedIn"][data-checked="true"] {
-  background: hsl(210, 90%, 40%);
+  background: var(--color-linkedin);
 }
 
 .job-board-search-option-container[data-checked="false"] {
@@ -271,7 +293,7 @@ html:has(#request-permissions[data-permissions-needed]) {
 }
 
 .job-board-search-option-container[data-checked="false"]:active {
-  background: hsl(0, 0%, 100%, 0.3);
+  background: var(--color-shade-active);
 }
 
 .job-board-search-option-container * {
@@ -298,20 +320,22 @@ html:has(#request-permissions[data-permissions-needed]) {
   width: 100%;
 }
 
-.options-for-job-search #request-permissions-search,
-.options-for-job-search[data-permissions-needed] .job-name-search-container {
+.options-container-job-search #request-permissions-search,
+.options-container-job-search[data-permissions-needed]
+  .job-name-search-container {
   display: none;
 }
 
-.options-for-job-search[data-permissions-needed] #request-permissions-search {
+.options-container-job-search[data-permissions-needed]
+  #request-permissions-search {
   display: block;
 }
 
-.options-for-job-search .job-board-name {
+.options-container-job-search .job-board-name {
   width: 100%;
 }
 
-.options-for-job-board .job-board-name {
+.options-container-job-board .job-board-name {
   border-radius: calc(1px / 0);
   margin-top: -1.5rem;
   max-height: 0.8rem;
@@ -409,7 +433,7 @@ html:has(#request-permissions[data-permissions-needed]) {
   --padding: 0.5rem;
   --width: 111px;
   align-items: center;
-  background: hsl(0, 0%, 100%, 0.3);
+  background: var(--color-shade-active);
   border-radius: 0.5rem;
   display: grid;
   font-size: calc(40px / 3);
@@ -446,7 +470,7 @@ html:has(#request-permissions[data-permissions-needed]) {
 
 .hidden-job-button {
   align-items: start;
-  background: hsl(0, 0%, 100%, 0.3);
+  background: var(--color-shade-active);
   border-radius: 1rem;
   box-sizing: border-box;
   cursor: pointer;
@@ -464,11 +488,11 @@ html:has(#request-permissions[data-permissions-needed]) {
 }
 
 .hidden-job-button:hover {
-  background: hsl(0, 0%, 100%, 0.5);
+  background: var(--color-shade-hover);
 }
 
 .hidden-job-button:active {
-  background: hsl(0, 0%, 100%, 0.6);
+  background: var(--color-shade);
 }
 
 .hidden-job-button[data-job-attribute="promotionalStatus"] {
@@ -526,11 +550,11 @@ html:has(#request-permissions[data-permissions-needed]) {
 }
 
 .hidden-job-button:hover svg {
-  fill: hsl(0, 100%, 40%);
+  fill: var(--color-danger-hover);
 }
 
 .hidden-job-button:active svg {
-  fill: hsl(0, 100%, 45%);
+  fill: var(--color-danger-active);
 }
 
 .unhide-all-and-undo-buttons {
@@ -542,7 +566,8 @@ html:has(#request-permissions[data-permissions-needed]) {
 
 .feed-charm-button {
   background: hsl(48, 99%, 64%);
-  box-shadow: 0px 2px 2px 1px hsl(0, 0%, 0%, 0.6),
+  box-shadow:
+    0px 2px 2px 1px hsl(0, 0%, 0%, 0.6),
     inset 0px 2px 2px 1px hsl(60, 100%, 80%, 0.7);
   display: grid;
   gap: 0.5rem;
@@ -703,51 +728,51 @@ button {
 }
 
 .red-button {
-  background: hsl(0, 100%, 30%);
+  background: var(--color-danger);
 }
 
 .red-button:hover {
-  background: hsl(0, 100%, 40%);
+  background: var(--color-danger-hover);
 }
 
 .red-button:active {
-  background: hsl(0, 100%, 45%);
+  background: var(--color-danger-active);
 }
 
 .green-button {
-  background: hsl(120, 100%, 25%);
+  background: var(--color-green);
 }
 
 .green-button:hover {
-  background: hsl(120, 100%, 27%);
+  background: var(--color-green-hover);
 }
 
 .green-button:active {
-  background: hsl(120, 100%, 30%);
+  background: var(--color-green-active);
 }
 
 .gray-button {
-  background: hsl(0, 0%, 30%);
+  background: var(--color-gray);
 }
 
 .gray-button:hover {
-  background: hsl(0, 0%, 40%);
+  background: var(--color-gray-hover);
 }
 
 .gray-button:active {
-  background: hsl(0, 0%, 45%);
+  background: var(--color-gray-active);
 }
 
 .black-button {
-  background: hsl(0, 0%, 0%);
+  background: var(--color-black);
 }
 
 .black-button:hover {
-  background: hsl(0, 0%, 20%);
+  background: var(--color-black-hover);
 }
 
 .black-button:active {
-  background: hsl(0, 0%, 30%);
+  background: var(--color-black-active);
 }
 
 .toggle-container {
@@ -766,29 +791,29 @@ button {
 }
 
 .toggle-container[data-checked="false"] {
-  background: hsl(0, 0%, 100%, 0.3);
-  color: hsl(0, 0%, 0%);
+  background: var(--color-shade-active);
+  color: var(--color-black);
 }
 
 .toggle-container[data-checked="false"]:hover {
-  background: hsl(0, 0%, 100%, 0.5);
+  background: var(--color-shade-hover);
 }
 
 .toggle-container[data-checked="false"]:active {
-  background: hsl(0, 0%, 100%, 0.6);
+  background: var(--color-shade);
 }
 
 .toggle-container[data-checked="true"] {
-  background: hsl(0, 100%, 30%);
+  background: var(--color-danger);
   color: hsl(0, 0%, 100%);
 }
 
 .toggle-container[data-checked="true"]:hover {
-  background: hsl(0, 100%, 40%);
+  background: var(--color-danger-hover);
 }
 
 .toggle-container[data-checked="true"]:active {
-  background: hsl(0, 100%, 45%);
+  background: var(--color-danger-active);
 }
 
 :focus-visible,
@@ -863,13 +888,14 @@ input[type="text"] {
 }
 
 input[type="text"]:disabled {
-  background: hsl(0, 0%, 100%, 0.3);
+  background: var(--color-shade-active);
   opacity: 1;
 }
 
 .add-keyword-container {
   background: hsl(0, 0%, 100%, 0.1);
-  box-shadow: 0 5px 10px 0px hsl(0, 0%, 0%, 0.05),
+  box-shadow:
+    0 5px 10px 0px hsl(0, 0%, 0%, 0.05),
     0 1px 2px 1px hsl(0, 0%, 0%, 0.05);
   display: grid;
   grid-template-columns: 1fr auto;
@@ -912,7 +938,7 @@ input[name="add-keyword"] {
 }
 
 body::-webkit-scrollbar-track {
-  background: hsl(0, 0%, 100%, 0.5);
+  background: var(--color-shade-hover);
 }
 
 body::-webkit-scrollbar-track:hover {
@@ -920,30 +946,34 @@ body::-webkit-scrollbar-track:hover {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: hsl(0, 0%, 100%, 0.5);
+  background: var(--color-shade-hover);
 }
 
 body::-webkit-scrollbar-thumb:hover {
   background: hsl(0, 0%, 100%, 1);
 }
 
-#settings-container {
+.options-container-settings {
+  align-items: normal;
   background: hsl(30, 56.6%, 65.7%);
   border-radius: 1rem;
+  display: flex;
   flex-direction: column;
   gap: 1rem;
+  justify-content: normal;
+  justify-items: normal;
   overflow: auto;
   padding: 1rem;
   width: calc(100% - 2rem);
   z-index: 2;
 }
 
-#settings-container.invisible {
+.options-container-settings.invisible {
   overflow: hidden;
 }
 
 .setting-group {
-  background: hsl(0, 0%, 100%, 0.3);
+  background: var(--color-shade-active);
   border-radius: 1rem;
   display: grid;
   font-size: 0.8em;
@@ -967,7 +997,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 .info-box.warning .info-box-icon {
   --size: 1rem;
-  background: hsl(60, 100%, 50%);
+  background: var(--color-yellow);
   border-radius: 50%;
   display: grid;
   font-size: calc(var(--size) / 1.5);
