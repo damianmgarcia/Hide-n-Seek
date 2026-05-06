@@ -1,19 +1,21 @@
+import { initialStorage } from "../initial-storage.js";
+
 class HiddenJobsListManager {
   jobAttributeValuesContainer = document.querySelector(".hidden-jobs-list");
   jobAttributeValueSelector = ".hidden-job-button";
   nothingHiddenElement = document.querySelector(".nothing-hidden-message");
   addKeywordInput = document.querySelector("input[name='add-keyword']");
 
-  constructor(jobBoard, storage) {
+  constructor(jobBoard) {
     this.jobBoard = jobBoard;
     this.jobAttributes = jobBoard.attributes.map((attribute) => attribute.id);
 
     chrome.storage.local.onChanged.addListener((changes) => {
       const changesIncludesBlockedJobAttributeValues = Object.keys(
-        changes
+        changes,
       ).some(
         (key) =>
-          key.includes("blockedJobAttributeValues") && !key.endsWith(".backup")
+          key.includes("blockedJobAttributeValues") && !key.endsWith(".backup"),
       );
 
       if (changesIncludesBlockedJobAttributeValues) this.updateJobsPopupList();
@@ -27,22 +29,22 @@ class HiddenJobsListManager {
         const storageUpdated = await this.updateStorage(
           "keyword",
           trimmedValue,
-          "block"
+          "block",
         );
         if (!storageUpdated) {
           const alreadyAddedElement =
             this.jobAttributeValuesContainer.querySelector(
-              `[data-job-attribute="keyword"][data-job-attribute-value="${trimmedValue}"]`
+              `[data-job-attribute="keyword"][data-job-attribute-value="${trimmedValue}"]`,
             );
           alreadyAddedElement.scrollIntoView({ block: "center" });
           alreadyAddedElement.animate(
-            ...this.getPopupListChangeAnimation("attention")
+            ...this.getPopupListChangeAnimation("attention"),
           );
         }
       }
     });
 
-    this.updateJobsPopupList(storage);
+    this.updateJobsPopupList(initialStorage);
   }
 
   getJobAttributeValuesFromStorage(jobAttribute, storage) {
@@ -52,7 +54,7 @@ class HiddenJobsListManager {
           key.includes(this.jobBoard.id) &&
           key.includes(jobAttribute) &&
           key.includes("blockedJobAttributeValues") &&
-          !key.endsWith(".backup")
+          !key.endsWith(".backup"),
       )
       .flatMap(([, value]) => value);
   }
@@ -60,15 +62,16 @@ class HiddenJobsListManager {
   getJobAttributeValueElementsInPopupList() {
     return Array.from(
       document.querySelectorAll(
-        `${this.jobAttributeValueSelector}:not(.removing)`
-      )
+        `${this.jobAttributeValueSelector}:not(.removing)`,
+      ),
     );
   }
 
   getElementJobAttributeValue(jobAttribute, elements) {
     return elements
       .filter(
-        (element) => element.getAttribute("data-job-attribute") === jobAttribute
+        (element) =>
+          element.getAttribute("data-job-attribute") === jobAttribute,
       )
       .map((element) => element.getAttribute("data-job-attribute-value"));
   }
@@ -76,7 +79,7 @@ class HiddenJobsListManager {
   updatePopupListToReflectStorageForJobAttribute(
     jobAttribute,
     storageValues,
-    popupListValues
+    popupListValues,
   ) {
     storageValues.forEach((storageValue) => {
       const valueIsInStorageButNotPopupList =
@@ -96,22 +99,22 @@ class HiddenJobsListManager {
   updateJobsPopupListForJobAttribute(
     jobAttribute,
     allJobAttributeValuesFromStorage,
-    jobAttributeValueElementsFromPopupList
+    jobAttributeValueElementsFromPopupList,
   ) {
     const jobAttributeValuesFromStorage = this.getJobAttributeValuesFromStorage(
       jobAttribute,
-      allJobAttributeValuesFromStorage
+      allJobAttributeValuesFromStorage,
     );
 
     const jobAttributeValuesFromPopupList = this.getElementJobAttributeValue(
       jobAttribute,
-      jobAttributeValueElementsFromPopupList
+      jobAttributeValueElementsFromPopupList,
     );
 
     this.updatePopupListToReflectStorageForJobAttribute(
       jobAttribute,
       jobAttributeValuesFromStorage,
-      jobAttributeValuesFromPopupList
+      jobAttributeValuesFromPopupList,
     );
   }
 
@@ -126,8 +129,8 @@ class HiddenJobsListManager {
       this.updateJobsPopupListForJobAttribute(
         jobAttribute,
         jobAttributeValuesFromStorage,
-        jobAttributeValueElementsFromPopupList
-      )
+        jobAttributeValueElementsFromPopupList,
+      ),
     );
   }
 
@@ -137,8 +140,8 @@ class HiddenJobsListManager {
         ([key]) =>
           key.includes(this.jobBoard.id) &&
           key.includes("blockedJobAttributeValues") &&
-          !key.endsWith(".backup")
-      )
+          !key.endsWith(".backup"),
+      ),
     );
   }
 
@@ -155,18 +158,18 @@ class HiddenJobsListManager {
 
     const removeIconSvg = document.createElementNS(
       "http://www.w3.org/2000/svg",
-      "svg"
+      "svg",
     );
     removeIconSvg.ondragstart = (dragEvent) => dragEvent.preventDefault();
     const removeIconUse = document.createElementNS(
       "http://www.w3.org/2000/svg",
-      "use"
+      "use",
     );
     removeIconUse.setAttribute("href", "#remove-icon");
     removeIconSvg.insertAdjacentElement("beforeend", removeIconUse);
 
     [jobAttributeValueElement, removeIconSvg].forEach((element) =>
-      button.insertAdjacentElement("beforeend", element)
+      button.insertAdjacentElement("beforeend", element),
     );
 
     return button;
@@ -227,7 +230,7 @@ class HiddenJobsListManager {
 
   async updateStorage(jobAttribute, jobAttributeValue, action) {
     const storageBlockedValues = Object.entries(
-      await this.getBlockedJobAttributeValuesFromStorage()
+      await this.getBlockedJobAttributeValuesFromStorage(),
     );
 
     if (action === "unblock" && !storageBlockedValues.length) {
@@ -236,7 +239,7 @@ class HiddenJobsListManager {
       const key = `JobAttributeManager.${this.jobBoard.id}.${jobAttribute}.blockedJobAttributeValues`;
       if (
         !storageBlockedValues.some(
-          ([storageBlockedValueKey]) => storageBlockedValueKey === key
+          ([storageBlockedValueKey]) => storageBlockedValueKey === key,
         )
       ) {
         storageBlockedValues.push([key, []]);
@@ -256,7 +259,7 @@ class HiddenJobsListManager {
             return [
               storageKey,
               blockedValues.filter(
-                (blockedValue) => blockedValue !== jobAttributeValue
+                (blockedValue) => blockedValue !== jobAttributeValue,
               ),
             ];
           } else if (action === "block") {
@@ -274,7 +277,7 @@ class HiddenJobsListManager {
 
     if (clearBackups) {
       Object.keys(storageChangesToSet).forEach(
-        (key) => (storageChangesToSet[`${key}.backup`] = [])
+        (key) => (storageChangesToSet[`${key}.backup`] = []),
       );
     }
 
@@ -293,7 +296,7 @@ class HiddenJobsListManager {
       (listElement) =>
         listElement.getAttribute("data-job-attribute") === jobAttribute &&
         listElement.getAttribute("data-job-attribute-value") ===
-          jobAttributeValue
+          jobAttributeValue,
     );
     if (alreadyInList) return;
 
@@ -301,15 +304,15 @@ class HiddenJobsListManager {
 
     const jobAttributeValueElement = this.createElementForJobAttributeValue(
       jobAttribute,
-      jobAttributeValue
+      jobAttributeValue,
     );
 
     jobAttributeValueElement.addEventListener("click", () =>
-      this.updateStorage(jobAttribute, jobAttributeValue, "unblock")
+      this.updateStorage(jobAttribute, jobAttributeValue, "unblock"),
     );
 
     const listElementsValues = listElements.map((listElement) =>
-      listElement.getAttribute("data-job-attribute-value")
+      listElement.getAttribute("data-job-attribute-value"),
     );
     const insertPosition = listElementsValues.length
       ? [...listElementsValues, jobAttributeValue]
@@ -331,7 +334,7 @@ class HiddenJobsListManager {
 
     insertionReferenceElement.insertAdjacentElement(
       insertionPoint,
-      jobAttributeValueElement
+      jobAttributeValueElement,
     );
 
     let scrolledIntoView;
@@ -346,12 +349,12 @@ class HiddenJobsListManager {
     }
 
     await jobAttributeValueElement.animate(
-      ...this.getPopupListChangeAnimation("add")
+      ...this.getPopupListChangeAnimation("add"),
     ).finished;
 
     if (scrolledIntoView) {
       await jobAttributeValueElement.animate(
-        ...this.getPopupListChangeAnimation("attention")
+        ...this.getPopupListChangeAnimation("attention"),
       ).finished;
     }
   }
@@ -364,7 +367,7 @@ class HiddenJobsListManager {
 
     const jobAttributeValuesInPopupList = this.getElementJobAttributeValue(
       jobAttribute,
-      jobAttributeValueElementsInPopupList
+      jobAttributeValueElementsInPopupList,
     );
 
     const jobAttributeValueIsNotInPopupList =
@@ -376,20 +379,21 @@ class HiddenJobsListManager {
       jobAttributeValueElementsInPopupList.find(
         (element) =>
           element.getAttribute("data-job-attribute") === jobAttribute &&
-          element.getAttribute("data-job-attribute-value") === jobAttributeValue
+          element.getAttribute("data-job-attribute-value") ===
+            jobAttributeValue,
       );
 
     if (!jobAttributeValueElementToRemove) return;
 
     jobAttributeValueElementToRemove.classList.add("removing");
     await jobAttributeValueElementToRemove.animate(
-      ...this.getPopupListChangeAnimation("remove")
+      ...this.getPopupListChangeAnimation("remove"),
     ).finished;
 
     jobAttributeValueElementToRemove.remove();
 
     const listIsEmpty = !document.querySelectorAll(
-      this.jobAttributeValueSelector
+      this.jobAttributeValueSelector,
     ).length;
 
     if (listIsEmpty)
