@@ -54,7 +54,7 @@ chrome.storage.local
 const hasOnlyRemovals = (changes) =>
   Object.values(changes).every(
     (value) =>
-      Object.hasOwn(value, "oldValue") && !Object.hasOwn(value, "newValue")
+      Object.hasOwn(value, "oldValue") && !Object.hasOwn(value, "newValue"),
   );
 
 const hasOnlySyncIdOrOldSyncId = (changes) => {
@@ -94,8 +94,8 @@ const updateSyncStorage = debounce(async (changes) => {
   const syncKeysToRemove = difference(syncStorageKeys, localStorageKeys);
   const trimmedSyncStorage = Object.fromEntries(
     Object.entries(syncStorage).filter(
-      ([key]) => !syncKeysToRemove.includes(key)
-    )
+      ([key]) => !syncKeysToRemove.includes(key),
+    ),
   );
   syncId = crypto.randomUUID();
 
@@ -124,7 +124,7 @@ const updateLocalStorage = async (changes) => {
     const syncCleared = !Object.keys(await chrome.storage.sync.get()).length;
     if (syncCleared) {
       const oldSync = Object.fromEntries(
-        Object.entries(changes).map(([key, value]) => [key, value["oldValue"]])
+        Object.entries(changes).map(([key, value]) => [key, value["oldValue"]]),
       );
       chrome.storage.sync.set(oldSync);
     }
@@ -142,8 +142,8 @@ const updateLocalStorage = async (changes) => {
   const localKeysToRemove = difference(localStorageKeys, syncStorageKeys);
   const trimmedLocalStorage = Object.fromEntries(
     Object.entries(localStorage).filter(
-      ([key]) => !localKeysToRemove.includes(key)
-    )
+      ([key]) => !localKeysToRemove.includes(key),
+    ),
   );
 
   const newLocalStorage = {
@@ -172,7 +172,7 @@ const { getBlockedValues, getBackupValues } = (() => {
       ([key]) =>
         isForJobBoardId(key, jobBoardId) &&
         key.endsWith("blockedJobAttributeValues.backup"),
-      storage
+      storage,
     );
 
   const getBlockedValues = (jobBoardId, storage) =>
@@ -180,7 +180,7 @@ const { getBlockedValues, getBackupValues } = (() => {
       ([key]) =>
         isForJobBoardId(key, jobBoardId) &&
         key.endsWith("blockedJobAttributeValues"),
-      storage
+      storage,
     );
 
   return { getBackupValues, getBlockedValues };
