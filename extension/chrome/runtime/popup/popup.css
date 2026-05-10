@@ -495,15 +495,15 @@ html:has(#request-permissions[data-permissions-needed])
   background: var(--color-shade);
 }
 
-.hidden-job-button[data-job-attribute="promotionalStatus"] {
+.hidden-job-button[data-job-attribute="promoted"] {
   background: hsl(60, 100%, 50%, 0.3);
 }
 
-.hidden-job-button[data-job-attribute="promotionalStatus"]:hover {
+.hidden-job-button[data-job-attribute="promoted"]:hover {
   background: hsl(60, 100%, 50%, 0.5);
 }
 
-.hidden-job-button[data-job-attribute="promotionalStatus"]:active {
+.hidden-job-button[data-job-attribute="promoted"]:active {
   background: hsl(60, 100%, 50%, 0.6);
 }
 
