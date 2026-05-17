@@ -22,8 +22,8 @@ const restore = async function () {
     const fileList = await upload();
     const file = fileList[0];
     const fileText = await file.text();
-    const jsonStorage = JSON.parse(fileText);
-    await initializeStorage(jsonStorage);
+    const backup = JSON.parse(fileText);
+    await initializeStorage(backup);
     return true;
   } catch (error) {
     console.log(error);
