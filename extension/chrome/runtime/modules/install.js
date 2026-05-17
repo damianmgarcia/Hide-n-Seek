@@ -1,4 +1,4 @@
-import { deChunkStorage } from "./storage.js";
+import { deChunkStorage, initializeStorage } from "./storage.js";
 import { matchPatterns } from "./job-boards.js";
 import { reloadTabs } from "./tabs.js";
 
@@ -8,9 +8,7 @@ const install = async (details) => {
   if (!isInstall && !isUpdate) return;
 
   const syncStorage = deChunkStorage(await chrome.storage.sync.get());
-  if (isInstall && Object.keys(syncStorage).length)
-    await chrome.storage.local.set(syncStorage);
-
+  await initializeStorage(syncStorage);
   await chrome.scripting.registerContentScripts([
     {
       id: "hide-n-seek",
@@ -31,7 +29,6 @@ const install = async (details) => {
       ],
     },
   ]);
-
   reloadTabs();
 
   const showReleaseNotes = (() => {
