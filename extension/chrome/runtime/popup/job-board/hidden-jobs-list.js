@@ -11,14 +11,11 @@ class HiddenJobsListManager {
     this.jobAttributes = jobBoard.attributes.map((attribute) => attribute.id);
 
     chrome.storage.local.onChanged.addListener((changes) => {
-      const changesIncludesBlockedJobAttributeValues = Object.keys(
-        changes,
-      ).some(
-        (key) =>
-          key.includes("blockedJobAttributeValues") && !key.endsWith(".backup"),
+      const changesIncludesBlockedValues = Object.keys(changes).some(
+        (key) => key.includes("blocked") && !key.endsWith(".backup"),
       );
 
-      if (changesIncludesBlockedJobAttributeValues) this.updateJobsPopupList();
+      if (changesIncludesBlockedValues) this.updateJobsPopupList();
     });
 
     this.addKeywordInput.addEventListener("keydown", async (keyboardEvent) => {
@@ -53,7 +50,7 @@ class HiddenJobsListManager {
         ([key]) =>
           key.includes(this.jobBoard.id) &&
           key.includes(jobAttribute) &&
-          key.includes("blockedJobAttributeValues") &&
+          key.includes("blocked") &&
           !key.endsWith(".backup"),
       )
       .flatMap(([, value]) => value);
@@ -120,7 +117,7 @@ class HiddenJobsListManager {
 
   async updateJobsPopupList(storage) {
     const jobAttributeValuesFromStorage =
-      await this.getBlockedJobAttributeValuesFromStorage(storage);
+      await this.getBlockedValuesFromStorage(storage);
 
     const jobAttributeValueElementsFromPopupList =
       this.getJobAttributeValueElementsInPopupList();
@@ -134,12 +131,12 @@ class HiddenJobsListManager {
     );
   }
 
-  async getBlockedJobAttributeValuesFromStorage(storage) {
+  async getBlockedValuesFromStorage(storage) {
     return Object.fromEntries(
       Object.entries(storage || (await chrome.storage.local.get())).filter(
         ([key]) =>
           key.includes(this.jobBoard.id) &&
-          key.includes("blockedJobAttributeValues") &&
+          key.includes("blocked") &&
           !key.endsWith(".backup"),
       ),
     );
@@ -230,13 +227,13 @@ class HiddenJobsListManager {
 
   async updateStorage(jobAttribute, jobAttributeValue, action) {
     const storageBlockedValues = Object.entries(
-      await this.getBlockedJobAttributeValuesFromStorage(),
+      await this.getBlockedValuesFromStorage(),
     );
 
     if (action === "unblock" && !storageBlockedValues.length) {
       return;
     } else if (action === "block") {
-      const key = `JobAttributeManager.${this.jobBoard.id}.${jobAttribute}.blockedJobAttributeValues`;
+      const key = `${this.jobBoard.id}.${jobAttribute}.blocked`;
       if (
         !storageBlockedValues.some(
           ([storageBlockedValueKey]) => storageBlockedValueKey === key,
