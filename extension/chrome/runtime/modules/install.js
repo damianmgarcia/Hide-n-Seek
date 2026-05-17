@@ -7,8 +7,10 @@ const install = async (details) => {
   const isUpdate = details.reason === chrome.runtime.OnInstalledReason.UPDATE;
   if (!isInstall && !isUpdate) return;
 
-  const syncStorage = deChunkStorage(await chrome.storage.sync.get());
-  await initializeStorage(syncStorage);
+  const storage = isInstall
+    ? deChunkStorage(await chrome.storage.sync.get())
+    : await chrome.storage.local.get();
+  await initializeStorage(storage);
   await chrome.scripting.registerContentScripts([
     {
       id: "hide-n-seek",
@@ -30,10 +32,8 @@ const install = async (details) => {
     },
   ]);
   reloadTabs();
-
   const showReleaseNotes = (() => {
-    const dontShowReleaseNotes =
-      syncStorage.showReleaseNotesAfterUpdate === false;
+    const dontShowReleaseNotes = storage.showReleaseNotesAfterUpdate === false;
     if (dontShowReleaseNotes) return false;
     if (isInstall) {
       return true;
@@ -49,8 +49,6 @@ const install = async (details) => {
     }
   })();
   if (showReleaseNotes) chrome.tabs.create({ url: "status.html" });
-  if (!Object.hasOwn(syncStorage, "showReleaseNotesAfterUpdate"))
-    chrome.storage.local.set({ showReleaseNotesAfterUpdate: true });
 };
 
 export { install };
