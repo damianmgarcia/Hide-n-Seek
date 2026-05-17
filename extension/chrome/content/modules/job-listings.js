@@ -21,12 +21,12 @@ const jobListings = async (jobBoard) => {
   };
   const displaySettings = [
     {
-      storageKey: "setting.global.removeHiddenJobs",
+      storageKey: "removeHiddenJobs",
       attribute: "data-hns-remove-hidden-jobs",
       defaultValue: false,
     },
     {
-      storageKey: "setting.global.removeBlockButtons",
+      storageKey: "removeBlockButtons",
       attribute: "data-hns-remove-block-buttons",
       defaultValue: false,
     },
