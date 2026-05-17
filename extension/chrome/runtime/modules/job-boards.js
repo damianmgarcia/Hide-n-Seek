@@ -18,7 +18,7 @@ const jobBoards = (() => {
       id: "keyword",
       removableValues: true,
       match: "pattern",
-      processors: [commonProcessors.subtractHnsText],
+      processors: [{ ...commonProcessors.subtractHnsText }],
     },
   };
 
@@ -27,6 +27,7 @@ const jobBoards = (() => {
       id: "glassdoor",
       name: "Glassdoor",
       defaultUrl: "https://glassdoor.com",
+      isSPA: false,
       listingPaths: ["/"],
       listingSelector: "li[data-test='jobListing']",
       logo: {
@@ -35,17 +36,17 @@ const jobBoards = (() => {
         brandColor: "#00A264",
       },
       attributes: [
-        commonAttributes.keyword,
+        { ...commonAttributes.keyword },
         {
           name: "Company",
-          id: "companyName",
+          id: "company",
           removableValues: false,
           match: "exact",
           selector: `
             .EmployerProfile_compactEmployerName__LE242,
             .EmployerProfile_compactEmployerName__9MGcV,
             [class*=EmployerProfile_compactEmployerName__]`,
-          processors: [commonProcessors.trim],
+          processors: [{ ...commonProcessors.trim }],
           default: true,
         },
       ],
@@ -54,6 +55,7 @@ const jobBoards = (() => {
       id: "indeed",
       name: "Indeed",
       defaultUrl: "https://indeed.com",
+      isSPA: false,
       listingPaths: ["/"],
       listingSelector: "li:has(.result:not([aria-hidden='true']))",
       logo: {
@@ -62,19 +64,19 @@ const jobBoards = (() => {
         brandColor: "#003A9B",
       },
       attributes: [
-        commonAttributes.keyword,
+        { ...commonAttributes.keyword },
         {
           name: "Company",
-          id: "companyName",
+          id: "company",
           removableValues: false,
           match: "exact",
           selector: ".companyName, [data-testid='company-name']",
-          processors: [commonProcessors.trim],
+          processors: [{ ...commonProcessors.trim }],
           default: true,
         },
         {
           name: "Status",
-          id: "promotionalStatus",
+          id: "promoted",
           removableValues: false,
           match: "exact",
           selector: ".sponsoredJob",
@@ -93,6 +95,7 @@ const jobBoards = (() => {
       id: "linkedIn",
       name: "LinkedIn",
       defaultUrl: "https://linkedin.com",
+      isSPA: true,
       listingPaths: ["/jobs/"],
       listingSelector: `
         li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id]),
@@ -107,10 +110,10 @@ const jobBoards = (() => {
         brandColor: "#0a66c2",
       },
       attributes: [
-        commonAttributes.keyword,
+        { ...commonAttributes.keyword },
         {
           name: "Company",
-          id: "companyName",
+          id: "company",
           removableValues: false,
           selector: `
             .job-card-container__primary-description,
@@ -124,7 +127,7 @@ const jobBoards = (() => {
             [data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > a figure + div > div:first-child * + *:nth-child(2):has(> p)`,
           match: "exact",
           processors: [
-            commonProcessors.trim,
+            { ...commonProcessors.trim },
             {
               process: "replace",
               pattern: "\\s*[·•]\\s*.*$",
@@ -136,7 +139,7 @@ const jobBoards = (() => {
         },
         {
           name: "Status",
-          id: "promotionalStatus",
+          id: "promoted",
           removableValues: false,
           selector: `
             .job-card-list__footer-wrapper,
@@ -189,20 +192,32 @@ const jobBoards = (() => {
     },
   ];
 
-  const optionalHostPermissions =
-    chrome.runtime.getManifest().optional_host_permissions;
-  for (const jobBoard of jobBoards) {
-    const origins = optionalHostPermissions.filter((origin) =>
-      new RegExp(jobBoard.id, "i").test(origin),
-    );
-    const listingPages = [];
-    for (const origin of origins) {
-      for (const listingPath of jobBoard.listingPaths) {
-        listingPages.push(origin.replace(/\/\*$/, `${listingPath}*`));
+  const addMatchPatterns = (() => {
+    const optionalHostPermissions =
+      chrome.runtime.getManifest().optional_host_permissions;
+    return (jobBoard) => {
+      const origins = optionalHostPermissions.filter((origin) =>
+        new RegExp(jobBoard.id, "i").test(origin),
+      );
+      const listingPages = [];
+      for (const origin of origins) {
+        for (const listingPath of jobBoard.listingPaths) {
+          listingPages.push(origin.replace(/\/\*$/, `${listingPath}*`));
+        }
       }
+      jobBoard.matchPatterns = { origins, listingPages };
+    };
+  })();
+
+  const addAttributeKeys = (jobBoard) => {
+    for (const attribute of jobBoard.attributes) {
+      attribute.storageKey = `${jobBoard.id}.${attribute.id}.blocked`;
+      attribute.backupStorageKey = `${attribute.storageKey}.backup`;
     }
-    jobBoard.matchPatterns = { origins, listingPages };
-  }
+  };
+
+  jobBoards.forEach(addMatchPatterns);
+  jobBoards.forEach(addAttributeKeys);
 
   return jobBoards;
 })();
