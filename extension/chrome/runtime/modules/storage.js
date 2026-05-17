@@ -1,6 +1,12 @@
 import { debounce, difference } from "./utilities.js";
 import { jobBoards } from "./job-boards.js";
 
+let syncId = "";
+let syncError = "";
+chrome.storage.local
+  .get()
+  .then((localStorage) => (syncError = localStorage.syncError));
+
 const initializeStorage = async (storage) => {
   const settings = [
     {
@@ -120,12 +126,6 @@ const deChunkStorage = (storage) => {
   return deChunkedStorage;
 };
 
-let syncId = "";
-let syncError = "";
-chrome.storage.local
-  .get()
-  .then((localStorage) => (syncError = localStorage.syncError));
-
 const hasOnlyRemovals = (changes) =>
   Object.values(changes).every(
     (value) =>
@@ -178,6 +178,7 @@ const cleanStorage = async (allowedKeys, sendSyncCleanCommand = true) => {
 
 const setSyncStorage = async (storage, keysToRemove) => {
   try {
+    delete storage.syncError;
     if (keysToRemove) await chrome.storage.sync.remove(keysToRemove);
     await chrome.storage.sync.set(chunkStorage(storage));
     syncError = "";
@@ -218,7 +219,6 @@ const syncSyncStorage = debounce(async (changes) => {
     ...chunkedLocalStorage,
     syncId,
   };
-  delete newSyncStorage.syncError;
   await setSyncStorage(newSyncStorage, syncKeysToRemove);
 }, 2000);
 
