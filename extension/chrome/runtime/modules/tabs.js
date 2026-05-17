@@ -18,12 +18,13 @@ const defaultTabStatus = {
 
 const getTabStatus = async (tab) => {
   try {
-    const tabStatus = await chrome.tabs.sendMessage(tab.id, {
-      request: "get tab status",
-    });
-    return tabStatus || defaultTabStatus;
+    const tabStatus =
+      (await chrome.tabs.sendMessage(tab.id, {
+        request: "get tab status",
+      })) || defaultTabStatus;
+    return { ...tabStatus, hasContentScript: true };
   } catch {
-    return defaultTabStatus;
+    return { ...defaultTabStatus, hasContentScript: false };
   }
 };
 
@@ -68,7 +69,7 @@ const updateBadges = (changes) =>
       Object.keys(changes).some(
         (key) =>
           key.includes(jobBoard.id) &&
-          key.includes("blockedJobAttributeValues") &&
+          key.includes("blocked") &&
           !key.endsWith(".backup"),
       ),
     )
@@ -93,22 +94,28 @@ const reloadTabs = async (tabs) => {
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (!tab || !tab.url) return;
-  const jobBoard = getJobBoardByUrl(tab.url);
-  if (!jobBoard) return;
-  const originPermissions = await hasOriginPermissions(
-    jobBoard.matchPatterns.origins,
-  );
-  if (!originPermissions) {
+  const jobBoardByUrl = getJobBoardByUrl(tab.url);
+  const tabStatus = await getTabStatus(tab);
+  if (!jobBoardByUrl) {
+    if (changeInfo.url && tabStatus.hasContentScript) {
+      reloadTabs([tab]);
+    }
+    return;
+  }
+  if (await hasOriginPermissions(jobBoardByUrl.matchPatterns.origins)) {
+    if (changeInfo.url && jobBoardByUrl.isSPA) {
+      reloadTabs([tab]);
+      return;
+    }
+    if (!tabStatus.hasListings) {
+      updateBadge(tab, { title: "", text: "" });
+    }
+  } else {
     updateBadge(tab, {
-      title: `Hide n' Seek needs to be enabled on ${jobBoard.name}`,
+      title: `Hide n' Seek needs to be enabled on ${jobBoardByUrl.name}`,
       text: "!",
       backgroundColor: [255, 255, 0, 255],
     });
-  } else {
-    const jobBoardStatus = await getTabStatus(tab);
-    if (!jobBoardStatus.hasListings) {
-      updateBadge(tab, { title: "", text: "" });
-    }
   }
 });
 
