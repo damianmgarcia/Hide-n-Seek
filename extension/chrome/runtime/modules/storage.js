@@ -40,8 +40,9 @@ const initializeStorage = async (storage) => {
     },
   ];
 
-  const legacyAttributeById = {
+  const legacyAttributeIdByNewId = {
     company: "companyName",
+    keyword: "keyword",
     promoted: "promotionalStatus",
   };
   const addJobAttributeSettings = (jobBoard) => {
@@ -53,7 +54,7 @@ const initializeStorage = async (storage) => {
         settings.push({
           name: attribute[key.name],
           getInitialValue() {
-            const legacyKey = `JobAttributeManager.${jobBoard.id}.${legacyAttributeById[attribute.id]}.blockedJobAttributeValues${key.suffix}`;
+            const legacyKey = `JobAttributeManager.${jobBoard.id}.${legacyAttributeIdByNewId[attribute.id]}.blockedJobAttributeValues${key.suffix}`;
             return (
               (Object.hasOwn(storage, legacyKey) && storage[legacyKey]) || []
             );
