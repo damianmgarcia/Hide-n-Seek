@@ -91,7 +91,7 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 - 9.0.0
   - Release date
-    - 2026-05-16
+    - 2026-05-18
   - Major updates
     - The "Do not display hidden jobs" setting has been moved to Settings > Display, and will now apply across all job boards
     - A "Remove block buttons" setting has been added to Settings > Display so that you can remove block buttons from listings. Without the block buttons, it's still possible to block listings by using keyword blocking
