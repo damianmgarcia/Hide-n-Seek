@@ -92,6 +92,7 @@ const reloadTabs = async (tabs) => {
   } catch {}
 };
 
+let tabHistory = {};
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (!tab || !tab.url) return;
   const jobBoardByUrl = getJobBoardByUrl(tab.url);
@@ -104,7 +105,21 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   }
   if (await hasOriginPermissions(jobBoardByUrl.matchPatterns.origins)) {
     if (changeInfo.url && jobBoardByUrl.isSPA) {
-      reloadTabs([tab]);
+      if (!tabHistory[tabId]) {
+        tabHistory[tabId] = changeInfo.url;
+        return;
+      }
+      if (!URL.canParse(tabHistory[tabId]) || !URL.canParse(changeInfo.url)) {
+        tabHistory[tabId] = changeInfo.url;
+        reloadTabs([tab]);
+        return;
+      }
+      const oldUrl = new URL(tabHistory[tabId]);
+      const newUrl = new URL(changeInfo.url);
+      const pathChanged =
+        oldUrl.origin !== newUrl.origin || oldUrl.pathname !== newUrl.pathname;
+      tabHistory[tabId] = changeInfo.url;
+      if (pathChanged) reloadTabs([tab]);
       return;
     }
     if (!tabStatus.hasListings) {
@@ -117,6 +132,10 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       backgroundColor: [255, 255, 0, 255],
     });
   }
+});
+
+chrome.tabs.onRemoved.addListener((tabId) => {
+  delete tabHistory[tabId];
 });
 
 export { getActiveTab, getTabStatus, updateBadge, updateBadges, reloadTabs };
