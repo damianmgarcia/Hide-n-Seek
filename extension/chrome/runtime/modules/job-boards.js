@@ -18,37 +18,17 @@ const jobBoards = (() => {
       id: "keyword",
       removableValues: true,
       match: "pattern",
-      processors: [commonProcessors.subtractHnsText],
+      processors: [{ ...commonProcessors.subtractHnsText }],
     },
   };
 
-  return [
+  const jobBoards = [
     {
-      domains: [
-        "glassdoor.com",
-        "glassdoor.at",
-        "glassdoor.be",
-        "glassdoor.ca",
-        "glassdoor.ch",
-        "glassdoor.co.in",
-        "glassdoor.co.nz",
-        "glassdoor.co.uk",
-        "glassdoor.com.ar",
-        "glassdoor.com.au",
-        "glassdoor.com.br",
-        "glassdoor.com.hk",
-        "glassdoor.com.mx",
-        "glassdoor.de",
-        "glassdoor.es",
-        "glassdoor.fr",
-        "glassdoor.ie",
-        "glassdoor.it",
-        "glassdoor.nl",
-        "glassdoor.sg",
-      ],
-      paths: ["/"],
       id: "glassdoor",
       name: "Glassdoor",
+      defaultUrl: "https://glassdoor.com",
+      isSPA: false,
+      listingPaths: ["/"],
       listingSelector: "li[data-test='jobListing']",
       logo: {
         src: "/assets/images/glassdoor-logo.svg",
@@ -56,26 +36,27 @@ const jobBoards = (() => {
         brandColor: "#00A264",
       },
       attributes: [
-        commonAttributes.keyword,
+        { ...commonAttributes.keyword },
         {
           name: "Company",
-          id: "companyName",
+          id: "company",
           removableValues: false,
           match: "exact",
           selector: `
             .EmployerProfile_compactEmployerName__LE242,
             .EmployerProfile_compactEmployerName__9MGcV,
             [class*=EmployerProfile_compactEmployerName__]`,
-          processors: [commonProcessors.trim],
+          processors: [{ ...commonProcessors.trim }],
           default: true,
         },
       ],
     },
     {
-      domains: ["indeed.com"],
-      paths: ["/"],
       id: "indeed",
       name: "Indeed",
+      defaultUrl: "https://indeed.com",
+      isSPA: false,
+      listingPaths: ["/"],
       listingSelector: "li:has(.result:not([aria-hidden='true']))",
       logo: {
         src: "/assets/images/indeed-logo.svg",
@@ -83,19 +64,19 @@ const jobBoards = (() => {
         brandColor: "#003A9B",
       },
       attributes: [
-        commonAttributes.keyword,
+        { ...commonAttributes.keyword },
         {
           name: "Company",
-          id: "companyName",
+          id: "company",
           removableValues: false,
           match: "exact",
           selector: ".companyName, [data-testid='company-name']",
-          processors: [commonProcessors.trim],
+          processors: [{ ...commonProcessors.trim }],
           default: true,
         },
         {
           name: "Status",
-          id: "promotionalStatus",
+          id: "promoted",
           removableValues: false,
           match: "exact",
           selector: ".sponsoredJob",
@@ -111,10 +92,11 @@ const jobBoards = (() => {
       ],
     },
     {
-      domains: ["linkedin.com"],
-      paths: ["/jobs/"],
       id: "linkedIn",
       name: "LinkedIn",
+      defaultUrl: "https://linkedin.com",
+      isSPA: true,
+      listingPaths: ["/jobs/"],
       listingSelector: `
         li:has(.job-card-container, .job-search-card, .job-card-job-posting-card-wrapper, [data-job-id]),
         div > [data-view-name='job-card'] > a,
@@ -128,10 +110,10 @@ const jobBoards = (() => {
         brandColor: "#0a66c2",
       },
       attributes: [
-        commonAttributes.keyword,
+        { ...commonAttributes.keyword },
         {
           name: "Company",
-          id: "companyName",
+          id: "company",
           removableValues: false,
           selector: `
             .job-card-container__primary-description,
@@ -145,7 +127,7 @@ const jobBoards = (() => {
             [data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > a figure + div > div:first-child * + *:nth-child(2):has(> p)`,
           match: "exact",
           processors: [
-            commonProcessors.trim,
+            { ...commonProcessors.trim },
             {
               process: "replace",
               pattern: "\\s*[·•]\\s*.*$",
@@ -157,7 +139,7 @@ const jobBoards = (() => {
         },
         {
           name: "Status",
-          id: "promotionalStatus",
+          id: "promoted",
           removableValues: false,
           selector: `
             .job-card-list__footer-wrapper,
@@ -208,41 +190,79 @@ const jobBoards = (() => {
         },
       ],
     },
-  ].map((jobBoard) => ({
-    ...jobBoard,
-    origins: jobBoard.domains.map((domain) => `https://*.${domain}/*`),
-  }));
+  ];
+
+  const addMatchPatterns = (() => {
+    const optionalHostPermissions =
+      chrome.runtime.getManifest().optional_host_permissions;
+    return (jobBoard) => {
+      const origins = optionalHostPermissions.filter((origin) =>
+        new RegExp(jobBoard.id, "i").test(origin),
+      );
+      const listingPages = [];
+      for (const origin of origins) {
+        for (const listingPath of jobBoard.listingPaths) {
+          listingPages.push(origin.replace(/\/\*$/, `${listingPath}*`));
+        }
+      }
+      jobBoard.matchPatterns = { origins, listingPages };
+    };
+  })();
+
+  const addAttributeKeys = (jobBoard) => {
+    for (const attribute of jobBoard.attributes) {
+      attribute.storageKey = `${jobBoard.id}.${attribute.id}.blocked`;
+      attribute.backupStorageKey = `${attribute.storageKey}.backup`;
+    }
+  };
+
+  jobBoards.forEach(addMatchPatterns);
+  jobBoards.forEach(addAttributeKeys);
+
+  return jobBoards;
 })();
 
-const jobBoardIds = jobBoards.map((jobBoard) => jobBoard.id);
-
-const jobBoardOrigins = jobBoards.flatMap((jobBoard) => jobBoard.origins);
+const matchPatterns = {
+  listingPages: jobBoards.flatMap(
+    (jobBoard) => jobBoard.matchPatterns.listingPages,
+  ),
+};
 
 const getJobBoardByUrl = (url) => {
   if (!URL.canParse(url)) return;
   const { hostname, pathname } = new URL(url);
   for (const jobBoard of jobBoards) {
-    for (const domain of jobBoard.domains) {
-      for (const path of jobBoard.paths) {
-        if (
-          (hostname.endsWith(`.${domain}`) || hostname === domain) &&
-          pathname.startsWith(path)
-        )
-          return jobBoard;
-      }
+    for (const listingPage of jobBoard.matchPatterns.listingPages) {
+      const match = /^https:\/\/\*\.(?<domain>[^/]+)(?<path>[^*]+)\*$/.exec(
+        listingPage,
+      );
+      if (
+        match &&
+        match.groups.domain &&
+        match.groups.path &&
+        (hostname.endsWith(`.${match.groups.domain}`) ||
+          hostname === match.groups.domain) &&
+        pathname.startsWith(match.groups.path)
+      )
+        return jobBoard;
     }
   }
 };
 
-const getJobBoardById = (id) =>
-  jobBoards.find((jobBoard) => jobBoard.id === id);
+const getJobBoardById = (() => {
+  const jobBoardById = Object.fromEntries(
+    jobBoards.map((jobBoard) => [jobBoard.id, jobBoard]),
+  );
+  return (id) => jobBoardById[id];
+})();
 
 const getJobBoardTabs = async (filters = {}) => {
   const tabs = await chrome.tabs.query({
     url:
-      filters.origins ||
-      (filters.jobBoardId && getJobBoardById(filters.jobBoardId)?.origins) ||
-      jobBoardOrigins,
+      filters.matchPatterns ||
+      (filters.jobBoardId &&
+        getJobBoardById(filters.jobBoardId)?.matchPatterns.listingPages) ||
+      matchPatterns.listingPages,
     windowType: "normal",
   });
 
@@ -250,8 +270,8 @@ const getJobBoardTabs = async (filters = {}) => {
 };
 
 export {
-  jobBoardIds,
-  jobBoardOrigins,
+  jobBoards,
+  matchPatterns,
   getJobBoardByUrl,
   getJobBoardById,
   getJobBoardTabs,

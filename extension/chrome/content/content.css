@@ -7,6 +7,10 @@ html[data-hns-remove-hidden-jobs="true"]
   display: none !important;
 }
 
+html[data-hns-remove-block-buttons="true"] .hns-block-button {
+  display: none !important;
+}
+
 .hns-container {
   all: unset !important;
   background: transparent !important;
@@ -173,33 +177,33 @@ html[data-hns-remove-hidden-jobs="true"]
   background: hsl(0, 0%, 100%, 0.7) !important;
 }
 
-.hns-block-attribute-toggle[data-hns-attribute="promotionalStatus"] {
+.hns-block-attribute-toggle[data-hns-attribute="promoted"] {
   border: 1px hsl(60, 50%, 80%, 1) solid !important;
 }
 
-.hns-block-attribute-toggle[data-hns-attribute="promotionalStatus"] {
+.hns-block-attribute-toggle[data-hns-attribute="promoted"] {
   background: hsl(60, 50%, 80%, 0) !important;
   color: hsl(60, 50%, 80%, 1) !important;
 }
 
-.hns-block-attribute-toggle[data-hns-attribute="promotionalStatus"]:hover {
+.hns-block-attribute-toggle[data-hns-attribute="promoted"]:hover {
   background: hsl(60, 50%, 80%, 0.2) !important;
 }
 
-.hns-block-attribute-toggle[data-hns-attribute="promotionalStatus"]:active {
+.hns-block-attribute-toggle[data-hns-attribute="promoted"]:active {
   background: hsl(60, 50%, 80%, 0.3) !important;
 }
 
-.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="promotionalStatus"] {
+.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="promoted"] {
   background: hsl(60, 50%, 80%, 1) !important;
   color: hsl(0, 0%, 0%) !important;
 }
 
-.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="promotionalStatus"]:hover {
+.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="promoted"]:hover {
   background: hsl(60, 50%, 80%, 0.8) !important;
 }
 
-.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="promotionalStatus"]:active {
+.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="promoted"]:active {
   background: hsl(60, 50%, 80%, 0.7) !important;
 }
 

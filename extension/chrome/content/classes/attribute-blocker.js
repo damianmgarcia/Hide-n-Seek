@@ -1,5 +1,6 @@
 class AttributeBlocker {
-  static valueStorageKeys = new Set();
+  static storageKeys = new Set();
+  static backupStorageKeys = new Set();
 
   #changes = new Map();
 
@@ -9,7 +10,8 @@ class AttributeBlocker {
     this.defaultAttribute = attribute.default;
     this.hnsMap = hnsMap;
     this.getValue = createAttributeProcessor(attribute);
-    this.storageKey = `JobAttributeManager.${jobBoard.id}.${attribute.id}.blockedJobAttributeValues`;
+    this.storageKey = attribute.storageKey;
+    this.backupStorageKey = attribute.backupStorageKey;
     this.blockedValues = new Set(storage[this.storageKey]);
     this.valueIsBlocked = (() => {
       if (attribute.match === "exact") {
@@ -31,12 +33,10 @@ class AttributeBlocker {
       }
     })();
 
-    AttributeBlocker.valueStorageKeys.add(this.storageKey);
+    AttributeBlocker.storageKeys.add(this.storageKey);
+    AttributeBlocker.backupStorageKeys.add(this.backupStorageKey);
 
-    const storagePropertiesToSet = [
-      this.storageKey,
-      `${this.storageKey}.backup`,
-    ]
+    const storagePropertiesToSet = [this.storageKey, this.backupStorageKey]
       .filter((storageKey) => !Object.hasOwn(storage, storageKey))
       .map((storageKey) => [storageKey, []]);
 
@@ -139,18 +139,15 @@ class AttributeBlocker {
 
   updateLocalStorage() {
     const emptiedBackups = Object.fromEntries(
-      [...AttributeBlocker.valueStorageKeys].map((valueStorageKey) => [
-        `${valueStorageKey}.backup`,
+      [...AttributeBlocker.backupStorageKeys].map((backupStorageKey) => [
+        backupStorageKey,
         [],
       ]),
     );
-
-    const changes = Object.assign(
-      {
-        [this.storageKey]: [...this.blockedValues],
-      },
-      emptiedBackups,
-    );
+    const changes = {
+      [this.storageKey]: [...this.blockedValues],
+      ...emptiedBackups,
+    };
     chrome.storage.local.set(changes);
     this.#changes.clear();
   }

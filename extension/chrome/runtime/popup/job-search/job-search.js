@@ -1,3 +1,4 @@
+import { initialStorage } from "../initial-storage.js";
 import { safeAwait } from "../../modules/utilities.js";
 import { getJobBoardById } from "../../modules/job-boards.js";
 import {
@@ -35,7 +36,9 @@ class JobSearchPopup {
 
   static recentSearchQueryJobBoardId = "linkedIn";
 
-  static jobSearchContainer = document.querySelector(".options-for-job-search");
+  static jobSearchContainer = document.querySelector(
+    ".options-container-job-search",
+  );
 
   static jobNameSearchContainerInput = document.querySelector(
     ".job-name-search-container > input",
@@ -85,7 +88,7 @@ class JobSearchPopup {
         label.getAttribute("data-job-board-id");
       const jobBoard = getJobBoardById(this.recentSearchQueryJobBoardId);
       this.jobBoard = jobBoard;
-      hasOriginPermissions(jobBoard.origins).then((result) => {
+      hasOriginPermissions(jobBoard.matchPatterns.origins).then((result) => {
         this.hasOriginPermissions = result;
         if (!this.hasOriginPermissions) {
           this.requestPermissionsButton.textContent = `Enable Hide n' Seek on ${jobBoard.name}`;
@@ -168,16 +171,13 @@ class JobSearchPopup {
     if (!this.hasOriginPermissions) {
       this.disableInputs("Requesting permissions...");
       const permissionsGranted = await requestOriginPermissions(
-        jobBoard.origins,
+        jobBoard.matchPatterns.origins,
       );
       if (!permissionsGranted) return this.flashError("Permissions required");
     }
 
     this.disableInputs("Searching...");
-    const jobBoardResponse = await safeAwait(
-      fetch,
-      `https://${jobBoard.domains[0]}`,
-    );
+    const jobBoardResponse = await safeAwait(fetch, jobBoard.defaultUrl);
     if (!jobBoardResponse) {
       return this.flashError(`Can't connect to ${jobBoard.name}`);
     }
@@ -193,7 +193,7 @@ class JobSearchPopup {
   }
 
   static started = false;
-  static async start(activeTab) {
+  static async start(activeTab, storage = initialStorage) {
     if (this.started) return this.updateInputsBasedOnConnectivity();
     this.started = true;
     const arrowKeys = new Set([
@@ -230,20 +230,17 @@ class JobSearchPopup {
     );
 
     this.requestPermissionsButton.addEventListener("click", () =>
-      requestOriginPermissions(this.jobBoard.origins),
+      requestOriginPermissions(this.jobBoard.matchPatterns.origins),
     );
 
     this.jobNameSearchContainerInput.focus();
 
-    const localStorage = await chrome.storage.local.get();
-
     const storageIncludesRecentSearchQueryJobBoardId = Object.hasOwn(
-      localStorage,
+      storage,
       "recentSearchQueryJobBoardId",
     );
     if (storageIncludesRecentSearchQueryJobBoardId)
-      this.recentSearchQueryJobBoardId =
-        localStorage.recentSearchQueryJobBoardId;
+      this.recentSearchQueryJobBoardId = storage.recentSearchQueryJobBoardId;
 
     this.jobBoardSelectorElements.forEach(({ label, input }) => {
       if (

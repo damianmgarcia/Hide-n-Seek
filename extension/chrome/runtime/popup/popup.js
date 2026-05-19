@@ -1,24 +1,25 @@
 import { addMessageListener } from "../modules/messaging.js";
-import { refreshPopup } from "../modules/refresh-popup.js";
+import { refresh } from "./refresh.js";
 import {
   hasOriginPermissions,
   requestOriginPermissions,
 } from "../modules/permissions.js";
 import { getActiveTab, getTabStatus } from "../modules/tabs.js";
 import { getJobBoardByUrl } from "../modules/job-boards.js";
-import "../modules/sync-manager.js";
-import "../modules/settings-manager.js";
-import { JobSearchPopup } from "./classes/job-search-popup.js";
-import { JobBoardPopup } from "./classes/job-board-popup.js";
+import "./settings/settings.js";
+import { JobSearchPopup } from "./job-search/job-search.js";
+import { JobBoardPopup } from "./job-board/job-board.js";
 
 (async () => {
-  addMessageListener("refresh popup", refreshPopup);
+  addMessageListener("refresh popup", refresh);
 
   const activeTab = await getActiveTab();
   if (!activeTab) return JobSearchPopup.start(activeTab);
   const jobBoard = getJobBoardByUrl(activeTab.url);
   if (!jobBoard) return JobSearchPopup.start(activeTab);
-  const originPermissions = await hasOriginPermissions(jobBoard.origins);
+  const originPermissions = await hasOriginPermissions(
+    jobBoard.matchPatterns.origins,
+  );
   if (originPermissions === true) {
     const { hasListings } = await getTabStatus(activeTab);
     if (!hasListings) {
@@ -31,7 +32,7 @@ import { JobBoardPopup } from "./classes/job-board-popup.js";
     permissionsButton.setAttribute("data-permissions-needed", "");
     permissionsButton.textContent = `Enable Hide n' Seek on ${jobBoard.name}`;
     permissionsButton.addEventListener("click", () =>
-      requestOriginPermissions(jobBoard.origins)
+      requestOriginPermissions(jobBoard.matchPatterns.origins),
     );
   }
 })();

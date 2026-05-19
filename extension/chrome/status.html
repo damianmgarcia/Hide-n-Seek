@@ -19,7 +19,7 @@
       </header>
       <section class="version-info">
         <h2>Version <span class="version"></span></h2>
-        <p class="release-date">April 25, 2026</p>
+        <p class="release-date">May 18, 2026</p>
       </section>
       <section class="permissions">
         <h3>Permissions</h3>
@@ -29,15 +29,35 @@
         <h3>What's New</h3>
         <ul>
           <li>
-            <b>Reduce chance of block buttons being added to non-listings</b>
+            <b>Updated settings</b>
             <p>
-              Block buttons were inadvertently being added to some non-listing
-              elements on LinkedIn. LinkedIn continues to change the structure
-              of its site, which impacts Hide n' Seek's ability to detect
-              listings, and may lead to false positives and false negatives.
-              Hide n' Seek's detection will be updated as necessary to keep up
-              with these changes. Hide n' seek is now restricted to the /jobs/
-              path on LinkedIn.
+              The "Do not display hidden jobs" setting has been moved to
+              Settings > Display, and will now apply across all job boards.
+            </p>
+            <p>
+              A "Remove block buttons" setting has been added to Settings >
+              Display so that you can remove block buttons from listings.
+              Without the block buttons, it's still possible to block listings
+              by using keyword blocking.
+            </p>
+          </li>
+          <li>
+            <b>LinkedIn detection</b>
+            <p>
+              Due to recent changes to LinkedIn's site, it was occasionally
+              necessary to reload the page in order to get Hide n' Seek to work.
+              This update should reduce or eliminate needing to do that.
+            </p>
+          </li>
+          <li>
+            <b>Internal changes</b>
+            <p>
+              The backup and restore file structure has been overhauled, but it
+              is backwards compatible with old backup files.
+            </p>
+            <p>
+              Origin permission and content script registration handling has
+              been overhauled.
             </p>
           </li>
         </ul>

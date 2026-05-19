@@ -1,11 +1,3 @@
-const chunk = (array, chunkSize) => {
-  const chunks = [];
-  for (let i = 0; i < array.length; i += chunkSize) {
-    chunks.push(array.slice(i, i + chunkSize));
-  }
-  return chunks;
-};
-
 const difference = (listA, listB) => {
   const [setA, setB] = [listA, listB].map((list) =>
     list instanceof Set ? list : new Set(list),
@@ -31,4 +23,4 @@ const safeAwait = async (functionToAwait, ...args) => {
   }
 };
 
-export { chunk, debounce, difference, safeAwait };
+export { debounce, difference, safeAwait };

@@ -1,7 +1,89 @@
-import { chunk, debounce, difference } from "./utilities.js";
+import { debounce, difference } from "./utilities.js";
+import { jobBoards } from "./job-boards.js";
+
+let syncId = "";
+let syncError = "";
+chrome.storage.local
+  .get()
+  .then((localStorage) => (syncError = localStorage.syncError));
+
+const initializeStorage = async (storage) => {
+  const settings = [
+    {
+      name: "showReleaseNotesAfterUpdate",
+      getInitialValue() {
+        return true;
+      },
+    },
+    {
+      name: "recentSearchQueryJobBoardId",
+      getInitialValue() {
+        return "linkedIn";
+      },
+    },
+    {
+      name: "removeBlockButtons",
+      getInitialValue() {
+        return false;
+      },
+    },
+    {
+      name: "removeHiddenJobs",
+      getInitialValue() {
+        for (const jobBoardId of ["glassdoor", "indeed", "linkedIn"]) {
+          const legacyKey = `JobDisplayManager.${jobBoardId}.removeHiddenJobs`;
+          if (Object.hasOwn(storage, legacyKey) && storage[legacyKey])
+            return storage[legacyKey];
+        }
+        return false;
+      },
+    },
+  ];
+
+  const legacyAttributeIdByNewId = {
+    company: "companyName",
+    keyword: "keyword",
+    promoted: "promotionalStatus",
+  };
+  const addJobAttributeSettings = (jobBoard) => {
+    for (const attribute of jobBoard.attributes) {
+      for (const key of [
+        { name: "storageKey", suffix: "" },
+        { name: "backupStorageKey", suffix: ".backup" },
+      ]) {
+        settings.push({
+          name: attribute[key.name],
+          getInitialValue() {
+            const legacyKey = `JobAttributeManager.${jobBoard.id}.${legacyAttributeIdByNewId[attribute.id]}.blockedJobAttributeValues${key.suffix}`;
+            return (
+              (Object.hasOwn(storage, legacyKey) && storage[legacyKey]) || []
+            );
+          },
+        });
+      }
+    }
+  };
+  jobBoards.forEach(addJobAttributeSettings);
+  const initializedStorage = {};
+  for (const setting of settings) {
+    initializedStorage[setting.name] = Object.hasOwn(storage, setting.name)
+      ? storage[setting.name]
+      : setting.getInitialValue();
+  }
+  await cleanStorage(settings.map((setting) => setting.name));
+  await setSyncStorage(initializedStorage);
+  await chrome.storage.local.set(initializedStorage);
+};
 
 const chunkStorage = (() => {
   const CHUNK_SIZE = 100;
+  const chunk = (array, chunkSize) => {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
   return (storage) => {
     const chunkedStorage = {};
     for (const [key, value] of Object.entries(storage)) {
@@ -45,17 +127,14 @@ const deChunkStorage = (storage) => {
   return deChunkedStorage;
 };
 
-let syncId = "";
-let syncError = "";
-chrome.storage.local
-  .get()
-  .then((localStorage) => (syncError = localStorage.syncError));
-
 const hasOnlyRemovals = (changes) =>
   Object.values(changes).every(
     (value) =>
-      Object.hasOwn(value, "oldValue") && !Object.hasOwn(value, "newValue")
+      Object.hasOwn(value, "oldValue") && !Object.hasOwn(value, "newValue"),
   );
+
+const onlySyncErrorChanged = (changes) =>
+  Object.hasOwn(changes, "syncError") && Object.keys(changes).length === 1;
 
 const hasOnlySyncIdOrOldSyncId = (changes) => {
   const hasSyncId = Object.hasOwn(changes, "syncId");
@@ -71,11 +150,51 @@ const hasOnlySyncIdOrOldSyncId = (changes) => {
   return false;
 };
 
-const updateSyncStorage = debounce(async (changes) => {
-  const hasSyncError = Object.hasOwn(changes, "syncError");
-  const onlySyncErrorChanged =
-    hasSyncError && Object.keys(changes).length === 1;
-  if (onlySyncErrorChanged) return;
+const hasCleanStorageRequest = (changes) =>
+  Object.hasOwn(changes, "cleanStorage") &&
+  Object.hasOwn(changes.cleanStorage, "newValue");
+
+const cleanStorage = async (allowedKeys, sendSyncCleanCommand = true) => {
+  try {
+    chrome.storage.local.onChanged.removeListener(syncSyncStorage);
+    chrome.storage.sync.onChanged.removeListener(syncLocalStorage);
+    if (sendSyncCleanCommand) {
+      syncId = crypto.randomUUID();
+      await chrome.storage.sync.set({ cleanStorage: allowedKeys, syncId });
+    }
+    const [localStorage, syncStorage] = await Promise.all([
+      chrome.storage.local.get(),
+      chrome.storage.sync.get(),
+    ]);
+    const storageKeys = [
+      ...new Set([localStorage, syncStorage].flatMap(Object.keys)),
+    ];
+    const keysToRemove = difference(storageKeys, allowedKeys);
+    await Promise.all([
+      chrome.storage.local.remove(keysToRemove),
+      chrome.storage.sync.remove(keysToRemove),
+    ]);
+  } finally {
+    chrome.storage.local.onChanged.addListener(syncSyncStorage);
+    chrome.storage.sync.onChanged.addListener(syncLocalStorage);
+  }
+};
+
+const setSyncStorage = async (storage, keysToRemove) => {
+  try {
+    delete storage.syncError;
+    if (keysToRemove) await chrome.storage.sync.remove(keysToRemove);
+    await chrome.storage.sync.set(chunkStorage(storage));
+    syncError = "";
+  } catch (error) {
+    syncError = error.message;
+  } finally {
+    chrome.storage.local.set({ syncError });
+  }
+};
+
+const syncSyncStorage = debounce(async (changes) => {
+  if (onlySyncErrorChanged(changes)) return;
   if (hasOnlySyncIdOrOldSyncId(changes)) return;
   if (hasOnlyRemovals(changes)) return;
 
@@ -94,8 +213,8 @@ const updateSyncStorage = debounce(async (changes) => {
   const syncKeysToRemove = difference(syncStorageKeys, localStorageKeys);
   const trimmedSyncStorage = Object.fromEntries(
     Object.entries(syncStorage).filter(
-      ([key]) => !syncKeysToRemove.includes(key)
-    )
+      ([key]) => !syncKeysToRemove.includes(key),
+    ),
   );
   syncId = crypto.randomUUID();
 
@@ -104,27 +223,19 @@ const updateSyncStorage = debounce(async (changes) => {
     ...chunkedLocalStorage,
     syncId,
   };
-  delete newSyncStorage.syncError;
-
-  try {
-    await chrome.storage.sync.remove(syncKeysToRemove);
-    await chrome.storage.sync.set(chunkStorage(newSyncStorage));
-    syncError = "";
-  } catch (error) {
-    syncError = error.message;
-  } finally {
-    chrome.storage.local.set({ syncError });
-  }
+  await setSyncStorage(newSyncStorage, syncKeysToRemove);
 }, 2000);
 
-const updateLocalStorage = async (changes) => {
+const syncLocalStorage = async (changes) => {
   if (syncError) return;
   if (hasOnlySyncIdOrOldSyncId(changes)) return;
+  if (hasCleanStorageRequest(changes))
+    return cleanStorage(changes.cleanStorage.newValue, false);
   if (hasOnlyRemovals(changes)) {
     const syncCleared = !Object.keys(await chrome.storage.sync.get()).length;
     if (syncCleared) {
       const oldSync = Object.fromEntries(
-        Object.entries(changes).map(([key, value]) => [key, value["oldValue"]])
+        Object.entries(changes).map(([key, value]) => [key, value["oldValue"]]),
       );
       chrome.storage.sync.set(oldSync);
     }
@@ -142,8 +253,8 @@ const updateLocalStorage = async (changes) => {
   const localKeysToRemove = difference(localStorageKeys, syncStorageKeys);
   const trimmedLocalStorage = Object.fromEntries(
     Object.entries(localStorage).filter(
-      ([key]) => !localKeysToRemove.includes(key)
-    )
+      ([key]) => !localKeysToRemove.includes(key),
+    ),
   );
 
   const newLocalStorage = {
@@ -170,17 +281,14 @@ const { getBlockedValues, getBackupValues } = (() => {
   const getBackupValues = (jobBoardId, storage) =>
     getValues(
       ([key]) =>
-        isForJobBoardId(key, jobBoardId) &&
-        key.endsWith("blockedJobAttributeValues.backup"),
-      storage
+        isForJobBoardId(key, jobBoardId) && key.endsWith("blocked.backup"),
+      storage,
     );
 
   const getBlockedValues = (jobBoardId, storage) =>
     getValues(
-      ([key]) =>
-        isForJobBoardId(key, jobBoardId) &&
-        key.endsWith("blockedJobAttributeValues"),
-      storage
+      ([key]) => isForJobBoardId(key, jobBoardId) && key.endsWith("blocked"),
+      storage,
     );
 
   return { getBackupValues, getBlockedValues };
@@ -190,6 +298,7 @@ export {
   deChunkStorage,
   getBackupValues,
   getBlockedValues,
-  updateLocalStorage,
-  updateSyncStorage,
+  syncLocalStorage,
+  syncSyncStorage,
+  initializeStorage,
 };

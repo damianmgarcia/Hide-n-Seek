@@ -1,20 +1,21 @@
 import { getBackupValues, getBlockedValues } from "../../modules/storage.js";
+import { initialStorage } from "../initial-storage.js";
 
 class UnblockAllJobsManager {
   jobBoardLogo = document.querySelector(
-    ".options-for-job-board .job-board-name"
+    ".options-container-job-board .job-board-name",
   );
   unblockButton = document.querySelector("#unhide-all-jobs");
   undoButton = document.querySelector("#undo-unhide-all-jobs");
 
-  constructor(jobBoard, storage) {
+  constructor(jobBoard) {
     this.jobBoard = jobBoard;
     this.unblockButton.addEventListener("click", () => this.unblock());
     this.undoButton.addEventListener("click", () => this.undoUnblock());
     this.jobBoardLogo.setAttribute("src", jobBoard.logo.src);
     this.jobBoardLogo.setAttribute("alt", jobBoard.logo.alt);
     this.jobBoardLogo.style.setProperty("background", jobBoard.logo.brandColor);
-    this.updateButtons(storage);
+    this.updateButtons(initialStorage);
 
     chrome.storage.local.onChanged.addListener((changes) => {
       const syncIdIsTheOnlyChange =
@@ -33,11 +34,11 @@ class UnblockAllJobsManager {
     ]);
 
     const hasBlockedValues = Object.values(allBlockedValues).some(
-      (blockedValues) => blockedValues.length
+      (blockedValues) => blockedValues.length,
     );
 
     const hasBackupValues = Object.values(allBackupValues).some(
-      (backupValues) => backupValues.length
+      (backupValues) => backupValues.length,
     );
 
     if (hasBlockedValues && !hasBackupValues) {
@@ -56,7 +57,7 @@ class UnblockAllJobsManager {
     this.unblockButton.disabled = true;
 
     const allBlockedValues = Object.entries(
-      await getBlockedValues(this.jobBoard.id)
+      await getBlockedValues(this.jobBoard.id),
     );
 
     if (!allBlockedValues.length) return;
@@ -73,7 +74,7 @@ class UnblockAllJobsManager {
     this.undoButton.disabled = true;
 
     const allBackupValues = Object.entries(
-      await getBackupValues(this.jobBoard.id)
+      await getBackupValues(this.jobBoard.id),
     );
 
     if (!allBackupValues.length) return;

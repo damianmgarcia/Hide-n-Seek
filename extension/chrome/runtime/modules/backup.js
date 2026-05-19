@@ -1,4 +1,5 @@
 import { download, upload } from "./files.js";
+import { initializeStorage } from "./storage.js";
 
 const backup = async function () {
   const data = await chrome.storage.local.get();
@@ -8,7 +9,7 @@ const backup = async function () {
   const base64Storage = btoa(
     encodedJsonStorage.reduce(function (data, byte) {
       return data + String.fromCodePoint(byte);
-    }, "")
+    }, ""),
   );
   const dataUri = `data:application/json;base64,${base64Storage}`;
   const fileName = `hide-n-seek-backup-${Date.now()}.json`;
@@ -21,9 +22,8 @@ const restore = async function () {
     const fileList = await upload();
     const file = fileList[0];
     const fileText = await file.text();
-    const jsonStorage = JSON.parse(fileText);
-    await chrome.storage.local.clear();
-    await chrome.storage.local.set(jsonStorage);
+    const backup = JSON.parse(fileText);
+    await initializeStorage(backup);
     return true;
   } catch (error) {
     console.log(error);

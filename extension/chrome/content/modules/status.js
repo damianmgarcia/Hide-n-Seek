@@ -9,14 +9,7 @@ const hnsStatus = (jobBoard) => {
     ).length,
   });
 
-  const getTabStatus = ({ sendResponse }) => {
-    sendResponse(tabStatus());
-    const isLinkedInJobCollectionIframe =
-      jobBoard.id === "linkedIn" &&
-      location.pathname.startsWith("/jobs/collections") &&
-      document.querySelector("[data-testid='interop-iframe']");
-    if (isLinkedInJobCollectionIframe) location.reload();
-  };
+  const getTabStatus = ({ sendResponse }) => sendResponse(tabStatus());
 
   const sendTabStatus = () =>
     chrome.runtime.sendMessage({

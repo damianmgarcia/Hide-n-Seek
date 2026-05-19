@@ -1,8 +1,8 @@
-import { getActiveTab } from "./tabs.js";
-import { JobBoardPopup } from "../popup/classes/job-board-popup.js";
-import { JobSearchPopup } from "../popup/classes/job-search-popup.js";
+import { getActiveTab } from "../modules/tabs.js";
+import { JobBoardPopup } from "./job-board/job-board.js";
+import { JobSearchPopup } from "./job-search/job-search.js";
 
-const refreshPopup = async ({ message, sender }) => {
+const refresh = async ({ message, sender }) => {
   const activeTab = await getActiveTab();
 
   if (!sender.tab) sender.tab = activeTab;
@@ -22,4 +22,4 @@ const refreshPopup = async ({ message, sender }) => {
   }
 };
 
-export { refreshPopup };
+export { refresh };

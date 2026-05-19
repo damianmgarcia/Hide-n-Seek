@@ -1,13 +1,5 @@
 > [!IMPORTANT]
 >
-> **LinkedIn Job Listing Detection Issue (2026-04-25)**
->
-> Due to LinkedIn's recent changes to their site's structure, there may be occasional false positive or false negative listing detection issues. A new release (8.3.2) that addresses this issue was submitted to the Chrome, Edge, and Firefox extension stores on 2026-04-25. Release timing depends on each store's review process, which typically takes a few days.
->
-> - [x] Chrome (Released 2026-04-25)
-> - [x] Edge (Released 2026-05-01)
-> - [x] Firefox (Released 2026-04-25)
->
 > **Job Listing Detection**
 >
 > - `🟢 Glassdoor`
@@ -97,6 +89,16 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 9.0.0
+  - Release date
+    - 2026-05-18
+  - Major updates
+    - The "Do not display hidden jobs" setting has been moved to Settings > Display, and will now apply across all job boards
+    - A "Remove block buttons" setting has been added to Settings > Display so that you can remove block buttons from listings. Without the block buttons, it's still possible to block listings by using keyword blocking
+    - The backup and restore file structure has been overhauled, but it is backwards compatible with old backup files
+    - Origin permission and content script registration handling has been overhauled
+  - Patches
+    - Due to recent changes to LinkedIn's site, it was occasionally necessary to reload the page in order to get Hide n' Seek to work. This update should reduce or eliminate needing to do that.
 - 8.3.2
   - Release date
     - 2026-04-25

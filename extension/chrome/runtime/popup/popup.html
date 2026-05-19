@@ -51,11 +51,11 @@
       </header>
       <div class="main-content">
         <button
-          id="request-permissions"
           class="text-button green-button"
+          id="request-permissions"
           tabindex="0"
         ></button>
-        <div class="options-container options-for-job-search">
+        <div class="options-container options-container-job-search">
           <div class="job-board-search-options-container">
             <label
               class="job-board-search-option-container focus-visible-within"
@@ -142,12 +142,12 @@
             </button>
           </div>
           <button
-            id="request-permissions-search"
             class="text-button green-button"
+            id="request-permissions-search"
             tabindex="0"
           ></button>
         </div>
-        <div class="options-container options-for-job-board">
+        <div class="options-container options-container-job-board">
           <img class="job-board-name" draggable="false" />
           <div class="hidden-jobs-container">
             <div class="hidden-jobs-list-container">
@@ -174,45 +174,54 @@
             </div>
             <div class="unhide-all-and-undo-buttons">
               <button
-                id="unhide-all-jobs"
                 class="text-button red-button"
+                id="unhide-all-jobs"
                 disabled
               >
                 Unhide all jobs
               </button>
               <button
-                id="undo-unhide-all-jobs"
                 class="text-button gray-button"
+                id="undo-unhide-all-jobs"
                 disabled
               >
                 Undo
               </button>
             </div>
           </div>
-          <label class="toggle-container focus-visible-within">
-            Do not display hidden jobs
-            <input type="checkbox" name="remove-hidden-jobs" />
-          </label>
         </div>
-        <div id="settings-container" class="invisible">
-          <div data-hide-if-firefox id="data-settings" class="setting-group">
+        <div class="options-container options-container-settings invisible">
+          <div class="setting-group" id="display-settings">
+            <h2>Display</h2>
+            <label class="toggle-container focus-visible-within">
+              Do not display hidden jobs
+              <input type="checkbox" name="remove-hidden-jobs" />
+            </label>
+            <label class="toggle-container focus-visible-within">
+              Remove block buttons
+              <input type="checkbox" name="remove-block-buttons" />
+            </label>
+          </div>
+          <div class="setting-group" id="data-settings" data-hide-if-firefox>
+            <h2>Data</h2>
             <button
-              id="backup-button"
               class="text-button black-button"
+              id="backup-button"
               tabindex="0"
               title="Backup your settings and hidden jobs to a file on your device"
             >
               Backup data to file</button
             ><button
-              id="restore-button"
               class="text-button black-button"
+              id="restore-button"
               tabindex="0"
               title="Restore your settings and hidden jobs from a backup file"
             >
               Restore data from file
             </button>
           </div>
-          <div id="help-settings" class="setting-group">
+          <div class="setting-group" id="help-settings">
+            <h2>Links</h2>
             <div data-hide-if-not-firefox>
               <a href="/status.html" target="_blank">Backup and restore</a>
             </div>
