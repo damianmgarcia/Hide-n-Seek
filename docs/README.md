@@ -89,6 +89,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 9.0.1
+  - Release date
+    - 2026-05-19
+  - Patches
+    - Fix issue with LinkedIn reloading when clicking a job listing
 - 9.0.0
   - Release date
     - 2026-05-18
