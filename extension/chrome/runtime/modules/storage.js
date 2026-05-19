@@ -155,26 +155,29 @@ const hasCleanStorageRequest = (changes) =>
   Object.hasOwn(changes.cleanStorage, "newValue");
 
 const cleanStorage = async (allowedKeys, sendSyncCleanCommand = true) => {
-  chrome.storage.local.onChanged.removeListener(syncSyncStorage);
-  chrome.storage.sync.onChanged.removeListener(syncLocalStorage);
-  if (sendSyncCleanCommand) {
-    syncId = crypto.randomUUID();
-    await chrome.storage.sync.set({ cleanStorage: allowedKeys, syncId });
+  try {
+    chrome.storage.local.onChanged.removeListener(syncSyncStorage);
+    chrome.storage.sync.onChanged.removeListener(syncLocalStorage);
+    if (sendSyncCleanCommand) {
+      syncId = crypto.randomUUID();
+      await chrome.storage.sync.set({ cleanStorage: allowedKeys, syncId });
+    }
+    const [localStorage, syncStorage] = await Promise.all([
+      chrome.storage.local.get(),
+      chrome.storage.sync.get(),
+    ]);
+    const storageKeys = [
+      ...new Set([localStorage, syncStorage].flatMap(Object.keys)),
+    ];
+    const keysToRemove = difference(storageKeys, allowedKeys);
+    await Promise.all([
+      chrome.storage.local.remove(keysToRemove),
+      chrome.storage.sync.remove(keysToRemove),
+    ]);
+  } finally {
+    chrome.storage.local.onChanged.addListener(syncSyncStorage);
+    chrome.storage.sync.onChanged.addListener(syncLocalStorage);
   }
-  const [localStorage, syncStorage] = await Promise.all([
-    chrome.storage.local.get(),
-    chrome.storage.sync.get(),
-  ]);
-  const storageKeys = [
-    ...new Set([localStorage, syncStorage].flatMap(Object.keys)),
-  ];
-  const keysToRemove = difference(storageKeys, allowedKeys);
-  await Promise.all([
-    chrome.storage.local.remove(keysToRemove),
-    chrome.storage.sync.remove(keysToRemove),
-  ]);
-  chrome.storage.local.onChanged.addListener(syncSyncStorage);
-  chrome.storage.sync.onChanged.addListener(syncLocalStorage);
 };
 
 const setSyncStorage = async (storage, keysToRemove) => {
