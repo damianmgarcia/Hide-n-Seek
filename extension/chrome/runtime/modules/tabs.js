@@ -1,5 +1,23 @@
-import { jobBoards, getJobBoardTabs, getJobBoardByUrl } from "./job-boards.js";
+import {
+  getJobBoardById,
+  getJobBoardByUrl,
+  jobBoards,
+  matchPatterns,
+} from "./job-boards.js";
 import { hasOriginPermissions } from "./permissions.js";
+
+const getJobBoardTabs = async (filters = {}) => {
+  const tabs = await chrome.tabs.query({
+    url:
+      filters.matchPatterns ||
+      (filters.jobBoardId &&
+        getJobBoardById(filters.jobBoardId)?.matchPatterns.listingPages) ||
+      matchPatterns.listingPages,
+    windowType: "normal",
+  });
+
+  return tabs.filter((tab) => getJobBoardByUrl(tab.url));
+};
 
 const getActiveTab = async () => {
   const [activeTab] = await chrome.tabs.query({
@@ -18,13 +36,12 @@ const defaultTabStatus = {
 
 const getTabStatus = async (tab) => {
   try {
-    const tabStatus =
-      (await chrome.tabs.sendMessage(tab.id, {
-        request: "get tab status",
-      })) || defaultTabStatus;
-    return { ...tabStatus, hasContentScript: true };
+    const tabStatus = await chrome.tabs.sendMessage(tab.id, {
+      request: "get tab status",
+    });
+    return tabStatus || defaultTabStatus;
   } catch {
-    return { ...defaultTabStatus, hasContentScript: false };
+    return defaultTabStatus;
   }
 };
 
@@ -92,50 +109,32 @@ const reloadTabs = async (tabs) => {
   } catch {}
 };
 
-let tabHistory = {};
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (!tab || !tab.url) return;
-  const jobBoardByUrl = getJobBoardByUrl(tab.url);
-  const tabStatus = await getTabStatus(tab);
-  if (!jobBoardByUrl) {
-    if (changeInfo.url && tabStatus.hasContentScript) {
-      reloadTabs([tab]);
-    }
-    return;
-  }
-  if (await hasOriginPermissions(jobBoardByUrl.matchPatterns.origins)) {
-    if (changeInfo.url && jobBoardByUrl.isSPA) {
-      if (!tabHistory[tabId]) {
-        tabHistory[tabId] = changeInfo.url;
-        return;
-      }
-      if (!URL.canParse(tabHistory[tabId]) || !URL.canParse(changeInfo.url)) {
-        tabHistory[tabId] = changeInfo.url;
-        reloadTabs([tab]);
-        return;
-      }
-      const oldUrl = new URL(tabHistory[tabId]);
-      const newUrl = new URL(changeInfo.url);
-      const pathChanged =
-        oldUrl.origin !== newUrl.origin || oldUrl.pathname !== newUrl.pathname;
-      tabHistory[tabId] = changeInfo.url;
-      if (pathChanged) reloadTabs([tab]);
-      return;
-    }
-    if (!tabStatus.hasListings) {
-      updateBadge(tab, { title: "", text: "" });
-    }
-  } else {
+  const jobBoard = getJobBoardByUrl(tab.url);
+  if (!jobBoard) return;
+  const originPermissions = await hasOriginPermissions(
+    jobBoard.matchPatterns.origins,
+  );
+  if (!originPermissions) {
     updateBadge(tab, {
-      title: `Hide n' Seek needs to be enabled on ${jobBoardByUrl.name}`,
+      title: `Hide n' Seek needs to be enabled on ${jobBoard.name}`,
       text: "!",
       backgroundColor: [255, 255, 0, 255],
     });
+  } else {
+    const jobBoardStatus = await getTabStatus(tab);
+    if (!jobBoardStatus.hasListings) {
+      updateBadge(tab, { title: "", text: "" });
+    }
   }
 });
 
-chrome.tabs.onRemoved.addListener((tabId) => {
-  delete tabHistory[tabId];
-});
-
-export { getActiveTab, getTabStatus, updateBadge, updateBadges, reloadTabs };
+export {
+  getActiveTab,
+  getJobBoardTabs,
+  getTabStatus,
+  updateBadge,
+  updateBadges,
+  reloadTabs,
+};

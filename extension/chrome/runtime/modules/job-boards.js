@@ -256,23 +256,4 @@ const getJobBoardById = (() => {
   return (id) => jobBoardById[id];
 })();
 
-const getJobBoardTabs = async (filters = {}) => {
-  const tabs = await chrome.tabs.query({
-    url:
-      filters.matchPatterns ||
-      (filters.jobBoardId &&
-        getJobBoardById(filters.jobBoardId)?.matchPatterns.listingPages) ||
-      matchPatterns.listingPages,
-    windowType: "normal",
-  });
-
-  return tabs.filter((tab) => getJobBoardByUrl(tab.url));
-};
-
-export {
-  jobBoards,
-  matchPatterns,
-  getJobBoardByUrl,
-  getJobBoardById,
-  getJobBoardTabs,
-};
+export { jobBoards, matchPatterns, getJobBoardByUrl, getJobBoardById };
