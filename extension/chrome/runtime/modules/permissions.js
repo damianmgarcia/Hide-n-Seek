@@ -1,5 +1,4 @@
-import { getJobBoardTabs } from "./job-boards.js";
-import { reloadTabs } from "./tabs.js";
+import { getJobBoardTabs, reloadTabs } from "./tabs.js";
 
 const hasOriginPermissions = async (origins) =>
   chrome.permissions.contains({ origins });
