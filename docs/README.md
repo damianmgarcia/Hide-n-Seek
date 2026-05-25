@@ -89,6 +89,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 9.0.2
+  - Release date
+    - 2026-05-25
+  - Patches
+    - Remove LinkedIn auto-reload feature. This feature was meant to address an issue that required users to occasionally reload LinkedIn after switching pages in order to trigger Hide n' Seek. Unfortunately, it seems to have been causing some unnecessary reloads. Sorry about that!
 - 9.0.1
   - Release date
     - 2026-05-19
