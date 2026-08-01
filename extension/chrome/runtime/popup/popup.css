@@ -464,27 +464,23 @@ html:has(#request-permissions[data-permissions-needed])
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
   scrollbar-color: hsl(0, 0%, 0%, 0.5) hsl(0, 0%, 0%, 0.2);
-  scrollbar-gutter: stable both-edges;
   scrollbar-width: thin;
 }
 
 .hidden-job-button {
-  align-items: start;
   background: var(--color-shade-active);
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   box-sizing: border-box;
   cursor: pointer;
   display: grid;
+  font-size: 0.7rem;
+  gap: 0.3rem;
   grid-template-columns: 1fr auto;
-  height: 35px;
   justify-items: center;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  overflow: hidden;
   padding: 0.5rem;
   transition: 200ms ease-out;
   transition-property: background-color, opacity;
-  width: calc(100% - (1rem + 2rem));
+  width: calc(100% - 1rem);
 }
 
 .hidden-job-button:hover {
@@ -519,6 +515,18 @@ html:has(#request-permissions[data-permissions-needed])
   background: hsl(150, 100%, 90%, 0.8);
 }
 
+.hidden-job-button[data-job-attribute="job"] {
+  background: hsl(200, 100%, 75%, 0.4);
+}
+
+.hidden-job-button[data-job-attribute="job"]:hover {
+  background: hsl(200, 100%, 75%, 0.6);
+}
+
+.hidden-job-button[data-job-attribute="job"]:active {
+  background: hsl(200, 100%, 75%, 0.7);
+}
+
 .hidden-job-button.remove {
   height: 0;
   margin-bottom: 0;
@@ -530,14 +538,9 @@ html:has(#request-permissions[data-permissions-needed])
 }
 
 .hidden-job-name {
-  grid-column: 1 / 3;
   grid-row: 1 / 2;
-  max-width: 15ch;
-  overflow: clip visible;
   position: relative;
   text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .hidden-job-button svg {
@@ -778,13 +781,13 @@ button {
 .toggle-container {
   align-items: center;
   border-radius: 0.5rem;
+  box-sizing: border-box;
   cursor: pointer;
   display: grid;
   font-size: calc(40px / 3);
-  gap: 1rem;
-  grid-auto-flow: column;
+  grid-template-columns: 1fr auto;
   height: 40px;
-  justify-content: center;
+  padding: 8px;
   transition: 200ms ease-out;
   transition-property: background-color, color;
   width: 100%;
@@ -814,6 +817,29 @@ button {
 
 .toggle-container[data-checked="true"]:active {
   background: var(--color-danger-active);
+}
+
+.select-container {
+  align-items: center;
+  background: var(--color-shade-active);
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  display: grid;
+  font-size: calc(13.3333px);
+  gap: 0.25rem;
+  outline: none;
+  padding: 8px;
+  width: 100%;
+}
+
+select {
+  align-content: center;
+  display: inline-grid;
+  justify-items: center;
+  background: rgb(255, 255, 255);
+  border: none;
+  border-radius: 0.25rem;
+  padding: 2px;
 }
 
 :focus-visible,

@@ -174,7 +174,7 @@ class HiddenJobsListManager {
 
   getPopupListChangeAnimation(change) {
     const expanded = {
-      height: "35px",
+      height: "auto",
       marginBottom: "0",
       marginTop: "0",
       opacity: "1",
