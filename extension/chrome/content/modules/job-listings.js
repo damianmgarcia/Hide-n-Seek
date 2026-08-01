@@ -3,7 +3,11 @@ const jobListings = async (jobBoard) => {
 
   const addHns = (jobListing) => {
     jobListing.setAttribute("data-hns-job-listing", "");
-    const hns = ui.createComponent("hns-container", jobBoard.id);
+    const hns = ui.createComponent(
+      "hns-container",
+      jobBoard.id,
+      attributeBlockers,
+    );
     hns.jobListing = jobListing;
     hnsMap.set(jobListing, hns);
     for (const attributeBlocker of attributeBlockers)

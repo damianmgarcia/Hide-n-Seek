@@ -28,6 +28,12 @@ const initializeStorage = async (storage) => {
       },
     },
     {
+      name: "blockButtonAttribute",
+      getInitialValue() {
+        return "";
+      },
+    },
+    {
       name: "removeHiddenJobs",
       getInitialValue() {
         for (const jobBoardId of ["glassdoor", "indeed", "linkedIn"]) {
@@ -42,6 +48,7 @@ const initializeStorage = async (storage) => {
 
   const legacyAttributeIdByNewId = {
     company: "companyName",
+    job: "job",
     keyword: "keyword",
     promoted: "promotionalStatus",
   };
