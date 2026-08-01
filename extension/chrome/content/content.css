@@ -45,6 +45,10 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
   all: unset !important;
 }
 
+.hns-container :focus-visible {
+  outline: 4px solid hsl(0, 0%, 0%, 0.5) !important;
+}
+
 .hns-blocked-job,
 .hns-unblocked-job {
   align-content: center !important;
@@ -237,6 +241,34 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
   background: hsl(150, 50%, 80%, 0.7) !important;
 }
 
+.hns-block-attribute-toggle[data-hns-attribute="job"] {
+  border: 1px hsl(200, 100%, 80%, 1) solid !important;
+}
+
+.hns-block-attribute-toggle[data-hns-attribute="job"] {
+  background: hsl(200, 100%, 80%, 0) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-attribute="job"]:hover {
+  background: hsl(200, 100%, 80%, 0.2) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-attribute="job"]:active {
+  background: hsl(200, 100%, 80%, 0.3) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="job"] {
+  background: hsl(200, 100%, 80%, 1) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="job"]:hover {
+  background: hsl(200, 100%, 80%, 0.8) !important;
+}
+
+.hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="job"]:active {
+  background: hsl(200, 100%, 80%, 0.7) !important;
+}
+
 .hns-block-attribute-toggle-attribute {
   font-size: 10px !important;
   font-weight: bold !important;
@@ -249,8 +281,8 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
 }
 
 .hns-block-attribute-toggle-text {
-  font-size: 14px !important;
-  max-width: 15ch !important;
+  font-size: 12px !important;
+  max-width: 25ch !important;
   overflow: hidden !important;
   text-align: center !important;
   text-overflow: ellipsis !important;
@@ -303,4 +335,75 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
   transform: translateY(
     calc((var(--hidden-indicator-height) + var(--gap)) * -0.5)
   ) !important;
+}
+
+.hns-unblocked-job:has(.hns-menu) .hns-block-button {
+  display: none !important;
+}
+
+.hns-menu {
+  --color-danger: hsl(0, 100%, 30%) !important;
+  --color-danger-hover: hsl(0, 100%, 40%) !important;
+  --color-danger-active: hsl(0, 100%, 45%) !important;
+  background-color: hsl(39, 77%, 83%) !important;
+  border-radius: 10px !important;
+  border: 4px solid hsl(0, 0%, 0%) !important;
+  font-size: 14px !important;
+  padding: 8px 8px !important;
+  pointer-events: auto !important;
+}
+
+.hns-menu ul {
+  display: grid !important;
+  gap: 6px !important;
+}
+
+.hns-menu button {
+  background: var(--color-danger) !important;
+  border-radius: 8px !important;
+  box-sizing: border-box !important;
+  color: hsl(0, 0%, 100%) !important;
+  cursor: pointer !important;
+  padding: 4px 8px !important;
+  width: 100% !important;
+}
+
+.hns-menu button:hover {
+  background: var(--color-danger-hover) !important;
+}
+
+.hns-menu button:active {
+  background: var(--color-danger-active) !important;
+}
+
+.hns-menu button.black-button {
+  background: hsl(0, 0%, 0%) !important;
+}
+
+.hns-menu button.black-button:hover {
+  background: hsl(0, 0%, 20%) !important;
+}
+
+.hns-menu button.black-button:active {
+  background: hsl(0, 0%, 30%) !important;
+}
+
+.hns-menu input[type="text"] {
+  background: hsl(0, 0%, 100%) !important;
+  border-radius: 8px !important;
+  color: hsl(0, 0%, 0%) !important;
+  cursor: auto !important;
+  padding: 4px 8px !important;
+}
+
+.hns-container[data-hns-job-board-id="glassdoor"]:has(.hns-menu) {
+  z-index: 2 !important;
+}
+
+.hns-container[data-hns-job-board-id="indeed"]:has(.hns-menu) {
+  z-index: 2 !important;
+}
+
+.hns-container[data-hns-job-board-id="linkedIn"]:has(.hns-menu) {
+  z-index: 4 !important;
 }
