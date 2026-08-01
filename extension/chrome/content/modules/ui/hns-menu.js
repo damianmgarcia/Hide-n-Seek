@@ -13,7 +13,7 @@ const hnsMenu = {
     const list = element.querySelector("ul");
     for (const item of items) {
       const listItem = document.createElement("li");
-      listItem.append(item.element);
+      listItem.append(item);
       list.append(listItem);
     }
     return { element };
