@@ -7,16 +7,15 @@ class AttributeBlocker {
   constructor(jobBoard, attribute, storage, hnsMap) {
     this.jobBoard = jobBoard;
     this.attribute = attribute;
-    this.defaultAttribute = attribute.default;
     this.hnsMap = hnsMap;
-    this.getValue = createAttributeProcessor(attribute);
+    this.getValue = getAttributeValueGetter(attribute);
     this.storageKey = attribute.storageKey;
     this.backupStorageKey = attribute.backupStorageKey;
     this.blockedValues = new Set(storage[this.storageKey]);
     this.valueIsBlocked = (() => {
-      if (attribute.match === "exact") {
+      if (attribute.valueMatch === "exact") {
         return (value) => this.blockedValues.has(value);
-      } else if (attribute.match === "pattern") {
+      } else if (attribute.valueMatch === "pattern") {
         return (value, pattern) => {
           const regexMatch = /^\/(?<pattern>.+)\/(?<flags>[dgimsuy]*)$/.exec(
             pattern,
@@ -74,31 +73,20 @@ class AttributeBlocker {
     if (this.attribute.removableValues) {
       for (const blockedValue of this.blockedValues) {
         hns.addToggle(
-          this.attribute.id,
+          this.attribute,
           blockedValue,
-          this.attribute.name,
-          this.defaultAttribute,
-          this.attribute.removableValues,
           this.valueIsBlocked(value, blockedValue),
           () => this.unblockValue(blockedValue),
         );
       }
     } else {
-      hns.addToggle(
-        this.attribute.id,
-        value,
-        this.attribute.name,
-        this.defaultAttribute,
-        this.attribute.removableValues,
-        this.valueIsBlocked(value),
-        () => {
-          if (this.valueIsBlocked(value)) {
-            this.unblockValue(value);
-          } else {
-            this.blockValue(value);
-          }
-        },
-      );
+      hns.addToggle(this.attribute, value, this.valueIsBlocked(value), () => {
+        if (this.valueIsBlocked(value)) {
+          this.unblockValue(value);
+        } else {
+          this.blockValue(value);
+        }
+      });
     }
   }
 
