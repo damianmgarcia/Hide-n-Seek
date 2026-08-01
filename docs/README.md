@@ -92,8 +92,8 @@ The promotional video was created with a combination of Adobe After Effects and 
   - Release date
     - 2026-08-01
   - Major updates
-    - Block button options: Pressing the block button now opens a menu that lets you easily block jobs by keyword, company, or job. The block button action can be set to "Ask", "Block company", or "Block job" by going to the Hide n' Seek popup > Settings > Block button action.
-    - Block specific jobs: You can now easily block specific jobs. For the purposes of blocking, a job is defined as {Company Name}: {Job Title}, which is how it will be saved in your blocked jobs list.
+    - Block button options: Pressing the block button now opens a menu that lets you easily block jobs by keyword, company, or the specific job. The block button action can be set to "Ask", "Block company", or "Block job" by going to the Hide n' Seek popup > Settings > Block button action.
+    - Block specific jobs: You can now easily block specific jobs. For the purposes of blocking, a job is defined by its company name and job title.
     - Enhanced accessibility: The interface has been updated to enhance accessibility, especially keyboard accessibility.
 - 9.0.2
   - Release date
