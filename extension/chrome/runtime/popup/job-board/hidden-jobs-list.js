@@ -9,6 +9,9 @@ class HiddenJobsListManager {
   constructor(jobBoard) {
     this.jobBoard = jobBoard;
     this.jobAttributes = jobBoard.attributes.map((attribute) => attribute.id);
+    this.jobAttributeIdToName = Object.fromEntries(
+      jobBoard.attributes.map((attribute) => [attribute.id, attribute.name]),
+    );
 
     chrome.storage.local.onChanged.addListener((changes) => {
       const changesIncludesBlockedValues = Object.keys(changes).some(
@@ -147,11 +150,14 @@ class HiddenJobsListManager {
     button.classList.add("hidden-job-button");
     button.setAttribute("data-job-attribute", jobAttribute);
     button.setAttribute("data-job-attribute-value", jobAttributeValue);
+    button.setAttribute(
+      "aria-label",
+      `Unblock ${this.jobAttributeIdToName[jobAttribute]}: ${jobAttributeValue}`,
+    );
 
     const jobAttributeValueElement = document.createElement("div");
     jobAttributeValueElement.classList.add("hidden-job-name");
     jobAttributeValueElement.textContent = jobAttributeValue;
-    jobAttributeValueElement.setAttribute("title", jobAttributeValue);
 
     const removeIconSvg = document.createElementNS(
       "http://www.w3.org/2000/svg",
