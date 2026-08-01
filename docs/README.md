@@ -8,11 +8,11 @@
 
 # **Hide n' Seek: Hide Promoted Jobs & Companies**
 
-![A promotional marquee. The logo and name are featured on the left side of the marquee. The logo is a simple drawing of a briefcase, bisected diagonally, with one side a light-brown color and the other side a black color. The face of a black cat with yellow eyes is partially visible as it peeks around the brown edge of the diagonal bisection. A "before and after" diagram on the right side of the marquee shows how the extension hides jobs and is titled "View the jobs you seek. Hide the ones you don't"](assets/images/promotional-marquee-2-normalized.svg)
+![Hide n' Seek promotional marquee"](assets/images/promotional-marquee-2-normalized.svg)
 
 ## **Description**
 
-**Hide n' Seek** lets you easily remove promoted job postings and companies from your search results on LinkedIn, Indeed, and Glassdoor. You can also block job listings by keyword.
+**Hide n' Seek** lets you easily block jobs by keyword, company, specific job, or promotional status on LinkedIn, Indeed, and Glassdoor.
 
 [**Check it out on YouTube**](https://youtu.be/zhh7mI7bgRg)
 
@@ -30,7 +30,7 @@
 
 - “Block” buttons are added next to every listing. If you see a listing you don’t like, simply click the button to hide it. By default, the listing will be hidden under an overlay. Alternatively, you can completely eliminate it from search results by enabling the “Do not display hidden jobs” option.
 
-- Click a job's "block" button and all jobs by that company will be hidden behind an overlay.
+- Click a job's "block" button and then decide whether to block by keyword, job, or company.
 
 <img src="assets/images/usage-hide-job-normalized.svg" width="100%" alt='A "before and after" diagram shows the effect of hiding a job' /><br><br>
 
@@ -42,8 +42,7 @@
   - Block jobs by keyword (or a regular expression as /pattern/flags format, for example /part[\s-]?time/i)
   - Scroll through your list of hidden jobs and click a hidden job's name to remove it
   - Click the "Unhide all jobs" button to reset your hidden jobs list. This action can be undone by clicking the "Undo" button
-  - Click the "Do not display hidden jobs" button to remove hidden jobs from display, rather than hide them behind overlays
-  - Click the settings button where you can find options to backup and restore your data, manage job board permissions, see what's new, or report issues.
+  - Click the settings button where you can find options to customize the blocking experience, to backup and restore your data, manage job board permissions, see what's new, or report issues.
 
 <img src="assets/images/usage-unhide-all-jobs-normalized.svg" width="73.449131513647642679900744416873%" alt="A diagram of the extension's toolbar button, along with the options panel, shows a list of hidden jobs and controls for managing the list." /><br><br>
 
@@ -89,6 +88,13 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 10.0.0
+  - Release date
+    - 2026-08-01
+  - Major updates
+    - Block button options: Pressing the block button now opens a menu that lets you easily block jobs by keyword, company, or job. The block button action can be set to "Ask", "Block company", or "Block job" by going to the Hide n' Seek popup > Settings > Block button action.
+    - Block specific jobs: You can now easily block specific jobs. For the purposes of blocking, a job is defined as {Company Name}: {Job Title}, which is how it will be saved in your blocked jobs list.
+    - Enhanced accessibility: The interface has been updated to enhance accessibility, especially keyboard accessibility.
 - 9.0.2
   - Release date
     - 2026-05-25
