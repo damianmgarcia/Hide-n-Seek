@@ -43,13 +43,13 @@ const hnsToggle = {
 
     const toggleOn = () => {
       element.setAttribute("data-hns-blocked-attribute", "");
-      element.setAttribute("aria-label", `Unblock ${label}`);
+      element.setAttribute("aria-label", `Unblock: ${label}`);
       element.setAttribute("aria-pressed", "true");
     };
 
     const toggleOff = () => {
       element.removeAttribute("data-hns-blocked-attribute");
-      element.setAttribute("aria-label", `Bock ${label}`);
+      element.setAttribute("aria-label", `Block: ${label}`);
       element.setAttribute("aria-pressed", "false");
       if (removeOnToggleOff) removeToggle();
     };

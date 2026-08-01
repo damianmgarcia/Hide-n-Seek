@@ -152,7 +152,7 @@ class HiddenJobsListManager {
     button.setAttribute("data-job-attribute-value", jobAttributeValue);
     button.setAttribute(
       "aria-label",
-      `Unblock ${this.jobAttributeIdToName[jobAttribute]}: ${jobAttributeValue}`,
+      `Unblock: ${this.jobAttributeIdToName[jobAttribute]}: ${jobAttributeValue}`,
     );
 
     const jobAttributeValueElement = document.createElement("div");
