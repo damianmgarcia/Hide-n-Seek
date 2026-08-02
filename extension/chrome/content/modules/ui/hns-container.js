@@ -22,7 +22,8 @@ const hnsContainer = {
 
     const blockButton = element.querySelector(".hns-block-button");
     let blockButtonAssignedToggle;
-    blockButton.addEventListener("click", async () => {
+    blockButton.addEventListener("click", async (event) => {
+      event.preventDefault();
       if (blockButtonAssignedToggle) {
         blockButtonAssignedToggle.click();
         blockButtonAssignedToggle.focus();
@@ -48,6 +49,7 @@ const hnsContainer = {
           blockAttributeButton.textContent = `Block ${blockButtonToggle.getAttribute("data-hns-attribute-name")}`;
           const blockAttributeButtonClickPromise = new Promise((resolve) => {
             blockAttributeButton.addEventListener("click", (event) => {
+              event.preventDefault();
               blockButtonToggle.click();
               blockButtonToggle.focus();
               resolve(event);
@@ -95,6 +97,7 @@ const hnsContainer = {
           (blockAttributeButton) => blockAttributeButton.clickPromise,
         ),
       ]).then((event) => {
+        event.preventDefault();
         blockButton.setAttribute("aria-expanded", "false");
         menu.element.remove();
         if (event.target === cancelButton) {
@@ -103,13 +106,11 @@ const hnsContainer = {
           const valueToggleButton = element.querySelector(
             `[data-hns-attribute-value="${keywordInput.value.trim()}"]`,
           );
-          setTimeout(() => {
-            if (valueToggleButton) {
-              valueToggleButton.focus();
-            } else {
-              blockButton.focus();
-            }
-          });
+          if (valueToggleButton) {
+            valueToggleButton.focus();
+          } else {
+            blockButton.focus();
+          }
         }
       });
 
@@ -160,9 +161,10 @@ const hnsContainer = {
       if (toggles.has(toggleId) || (attribute.removableValues && !toggledOn))
         return;
       const originalOnToggle = onToggle;
-      onToggle = () => {
+      onToggle = (event) => {
         originalOnToggle();
         if (!element.querySelector("[data-hns-blocked-attribute]")) {
+          event.preventDefault();
           blockButton.focus();
         }
       };
