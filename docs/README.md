@@ -88,6 +88,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 10.0.1
+  - Release date
+    - 2026-08-01
+  - Patches
+    - Fix keyword blocking race condition in Firefox due to competing focus/blur events
 - 10.0.0
   - Release date
     - 2026-08-01
