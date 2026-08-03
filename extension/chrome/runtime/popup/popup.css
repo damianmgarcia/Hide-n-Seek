@@ -468,7 +468,7 @@ html:has(#request-permissions[data-permissions-needed])
 }
 
 .hidden-job-button {
-  background: var(--color-shade-active);
+  background: hsl(0, 0%, 100%, 0.7);
   border-radius: 0.5rem;
   box-sizing: border-box;
   cursor: pointer;
@@ -484,47 +484,47 @@ html:has(#request-permissions[data-permissions-needed])
 }
 
 .hidden-job-button:hover {
-  background: var(--color-shade-hover);
+  background: hsl(0, 0%, 100%, 0.8);
 }
 
 .hidden-job-button:active {
-  background: var(--color-shade);
+  background: hsl(0, 0%, 100%, 0.9);
 }
 
 .hidden-job-button[data-job-attribute="promoted"] {
-  background: hsl(60, 100%, 50%, 0.3);
+  background: hsl(60, 100%, 50%, 0.7);
 }
 
 .hidden-job-button[data-job-attribute="promoted"]:hover {
-  background: hsl(60, 100%, 50%, 0.5);
+  background: hsl(60, 100%, 50%, 0.8);
 }
 
 .hidden-job-button[data-job-attribute="promoted"]:active {
-  background: hsl(60, 100%, 50%, 0.6);
+  background: hsl(60, 100%, 50%, 0.9);
 }
 
 .hidden-job-button[data-job-attribute="keyword"] {
-  background: hsl(150, 100%, 90%, 0.5);
-}
-
-.hidden-job-button[data-job-attribute="keyword"]:hover {
   background: hsl(150, 100%, 90%, 0.7);
 }
 
-.hidden-job-button[data-job-attribute="keyword"]:active {
+.hidden-job-button[data-job-attribute="keyword"]:hover {
   background: hsl(150, 100%, 90%, 0.8);
 }
 
+.hidden-job-button[data-job-attribute="keyword"]:active {
+  background: hsl(150, 100%, 90%, 0.9);
+}
+
 .hidden-job-button[data-job-attribute="job"] {
-  background: hsl(200, 100%, 75%, 0.4);
+  background: hsl(200, 100%, 75%, 0.7);
 }
 
 .hidden-job-button[data-job-attribute="job"]:hover {
-  background: hsl(200, 100%, 75%, 0.6);
+  background: hsl(200, 100%, 75%, 0.8);
 }
 
 .hidden-job-button[data-job-attribute="job"]:active {
-  background: hsl(200, 100%, 75%, 0.7);
+  background: hsl(200, 100%, 75%, 0.9);
 }
 
 .hidden-job-button.remove {
