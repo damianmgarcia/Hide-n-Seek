@@ -88,6 +88,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 10.0.2
+  - Release date
+    - 2026-08-02
+  - Patches
+    - Improve readability by increasing button text contrast
 - 10.0.1
   - Release date
     - 2026-08-01
