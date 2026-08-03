@@ -67,7 +67,7 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
   align-content: space-evenly !important;
   align-items: center !important;
   backdrop-filter: blur(10px) !important;
-  background: hsl(0, 0%, 50%, 0.75) !important;
+  background: hsl(0, 0%, 20%, 0.8) !important;
   border-bottom: 1px solid #000000 !important;
   border-top: 1px solid #000000 !important;
   box-sizing: border-box !important;
@@ -136,7 +136,7 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
 
 .hns-block-attribute-toggle {
   --gap: 2.4px !important;
-  --hidden-indicator-height: 20.4px !important;
+  --hidden-indicator-height: 16px !important;
   align-items: center !important;
   border: 1px hsl(0, 0%, 100%) solid !important;
   border-radius: 10px !important;
@@ -247,6 +247,7 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
 
 .hns-block-attribute-toggle[data-hns-attribute="job"] {
   background: hsl(200, 100%, 80%, 0) !important;
+  color: hsl(200, 100%, 80%, 1) !important;
 }
 
 .hns-block-attribute-toggle[data-hns-attribute="job"]:hover {
@@ -259,6 +260,7 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
 
 .hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="job"] {
   background: hsl(200, 100%, 80%, 1) !important;
+  color: hsl(0, 0%, 0%) !important;
 }
 
 .hns-block-attribute-toggle[data-hns-blocked-attribute][data-hns-attribute="job"]:hover {
@@ -292,8 +294,8 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
 
 .hns-block-attribute-toggle-hidden-indicator {
   align-items: center !important;
-  background: hsl(0, 0%, 50%) !important;
-  border-radius: 12px !important;
+  background: hsl(0, 0%, 20%) !important;
+  border-radius: 4px !important;
   color: hsl(0, 0%, 100%) !important;
   display: grid !important;
   font-size: 10px !important;
@@ -303,7 +305,7 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
   top: calc(
     60% + (var(--hidden-indicator-height) * 0.5) + var(--gap)
   ) !important;
-  width: 53.4px !important;
+  width: 40px !important;
 }
 
 .hns-container[data-hns-job-board-id="indeed"]
