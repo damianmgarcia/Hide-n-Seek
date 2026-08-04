@@ -88,6 +88,11 @@ The promotional video was created with a combination of Adobe After Effects and 
 
 ## **Release Notes**
 
+- 10.0.3
+  - Release date
+    - 2026-08-03
+  - Patches
+    - Update job detection and some CSS styles for LinkedIn
 - 10.0.2
   - Release date
     - 2026-08-02
