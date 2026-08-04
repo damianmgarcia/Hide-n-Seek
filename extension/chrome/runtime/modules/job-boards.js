@@ -214,6 +214,7 @@ const jobBoards = (() => {
             },
             {
               selector:
+                ".artdeco-entity-lockup__title > *:not(.visually-hidden)," +
                 "[data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > div:not(:has(> a)) figure + div > div:first-child div:first-child > p > span:nth-child(2)," +
                 "[data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > div > a figure + div > div:first-child *:nth-child(1):has(> p) > p > span:nth-child(2)," +
                 "[data-component-type=LazyColumn] :is(div:has(+ hr, + a), hr + div:last-child):has(figure) > a figure + div > div:first-child *:nth-child(1):has(> p) > p > span:nth-child(2)",
