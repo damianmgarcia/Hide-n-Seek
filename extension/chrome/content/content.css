@@ -396,6 +396,11 @@ html[data-hns-remove-block-buttons="true"] .hns-block-button {
   color: hsl(0, 0%, 0%) !important;
   cursor: auto !important;
   padding: 4px 8px !important;
+  width: auto !important;
+}
+
+.hns-menu input[type="text"]::placeholder {
+  color: hsl(0, 0%, 46%) !important;
 }
 
 .hns-container[data-hns-job-board-id="glassdoor"]:has(.hns-menu) {
